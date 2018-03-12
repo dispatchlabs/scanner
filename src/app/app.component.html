@@ -1,0 +1,28 @@
+<div class="site-container">
+    <div [class]="headerClass">
+        <div class="logo" (click)="appService.navigateToHome()"></div>
+        <div class="right-buttons">
+            <div class="circle-button" [matMenuTriggerFor]="appMenu">
+                <i class="fa fa-bars"></i>
+            </div>
+            <mat-menu #appMenu="matMenu">
+                <button mat-menu-item (click)="appService.navigatetoBlog()">Blog</button>
+                <div class="account-buttons">
+                    <div *ngIf="!appService.isSignedIn()">
+                        <button mat-menu-item (click)="appService.openSignIn()">Sign In</button>
+                    </div>
+                    <div *ngIf="appService.isSignedIn()">
+                        <button *ngIf="appService.isAppAdmin()" mat-menu-item (click)="appService.navigateToMeta()"> Meta</button>
+                        <button mat-menu-item (click)="appService.signOut()">Sign Out</button>
+                    </div>
+                </div>
+            </mat-menu>
+        </div>
+    </div>
+
+    <router-outlet></router-outlet>
+
+    <footer>
+        FOOTER
+    </footer>
+</div>

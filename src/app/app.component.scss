@@ -1,0 +1,147 @@
+@import 'styles/colors';
+
+.header {
+  text-align: center;
+  height: 100px;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 1920px;
+  z-index: 1000;
+  transition: background-color 1s;
+
+  .logo {
+    cursor: pointer;
+    width: 200px;
+    height: 60px;
+    background: url(../assets/images/logo.png) no-repeat;
+    transition: background 1s;
+  }
+
+  .right-buttons {
+    position: absolute;
+    top: 20px;
+    right: 26px;
+    transition: color .3s, border-color .3s;
+
+    .circle-button {
+      border: 1px solid #FFF;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      margin-left: 10px;
+      padding-top: 9px;
+
+      &:hover {
+        background: rgba(255,255,255,0.3);
+      }
+
+      .fa {
+        color: #FFF;
+        font-size: 28px;
+      }
+    }
+  }
+
+
+  &.scrolled {
+    background: #FFF;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+
+    .logo {
+      background: url(../assets/images/logo.png) no-repeat;
+    }
+
+    .right-buttons {
+
+      .mat-button.outline {
+        border-color: #999;
+        color: #999;
+      }
+
+      .circle-button {
+        border-color: #999;
+
+        &:hover {
+          background: #CCC;
+        }
+
+        .fa {
+          color: #999;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 961px) {
+    .logo {
+      margin: 0;
+    }
+
+    .right-buttons {
+      padding-top: 0;
+    }
+
+  }
+
+  @media (max-width: 640px) {
+    height: 80px;
+    padding-top: 16px;
+
+    .logo {
+      width: 160px;
+    }
+
+    &.scrolled {
+      .logo {
+        width: 160px;
+      }
+    }
+  }
+}
+
+footer {
+  background: #8692a2;
+  color: #FFF;
+  padding: 20px 0 90px 0;
+  position: relative;
+  margin-top: -20px;
+  z-index: 60;
+
+  a {
+    color: #FFF;
+  }
+
+  > div {
+    margin: 0 auto;
+    max-width: 640px;
+
+    > div {
+      padding-left: 40px;
+    }
+  }
+
+  h4 {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  ul {
+    font-weight: 300;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 20px;
+  }
+
+  i {
+    width: 20px;
+    text-align: center;
+  }
+}

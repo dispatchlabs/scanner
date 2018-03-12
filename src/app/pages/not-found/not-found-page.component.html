@@ -1,0 +1,16 @@
+<div class="not-found-page">
+    <div class="container">
+        <div fxLayout="column" fxLayout.gt-sm="row">
+            <div fxFlex class="not-found-text">
+                <div>
+                    <h1>Oops!</h1>
+                    <p class="h2">We can't seem to find the page you're looking for</p>
+                    <a (click)="appService.navigateToHome()"><i class="fa fa-home"></i> Go to our homepage</a>
+                </div>
+            </div>
+            <div fxFlex class="center">
+                <img src="assets/img/404.png"/>
+            </div>
+        </div>
+    </div>
+</div>

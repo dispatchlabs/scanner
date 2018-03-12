@@ -1,0 +1,224 @@
+// Partials
+@import 'app/styles/colors';
+@import 'app/styles/fonts';
+@import 'app/styles/forms';
+
+body {
+  font-family: "Helvetica Neue", SansSerif;
+  margin: 0;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+a {
+  color: $primary;
+  cursor: pointer;
+  transition: color .3s;
+
+  &:hover {
+    color: darken($primary, 15%)
+  }
+}
+
+ul.none {
+  list-style: none;
+  padding-left: 0;
+}
+
+.mb0 {
+  margin-bottom: 0 !important;
+}
+
+.mt-10 {
+  margin-top: -10px;
+}
+
+.mt0 {
+  margin-top: 0 !important;
+}
+
+.mt10 {
+  margin-top: 10px !important;
+}
+
+.mt20 {
+  margin-top: 20px !important;
+}
+
+.mt30 {
+  margin-top: 30px !important;
+}
+
+.mt40 {
+  margin-top: 40px !important;
+}
+
+.mt60 {
+  margin-top: 60px !important;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+}
+
+.p20 {
+  padding: 20px !important;
+}
+.bottom-line {
+  border-bottom: 1px solid #666;
+}
+
+.large {
+  font-size: 22px !important;
+}
+
+.x-large {
+  font-size: 28px !important;
+}
+
+.meta {
+  font-family: 'ffMeta';
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.left {
+  text-align: left;
+}
+
+.font-light {
+  font-weight: 300 !important;
+}
+
+.font-regular {
+  font-weight: 500;
+}
+
+.font-primary {
+  color: $primary
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.tip {
+  color: #999;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.flip-h {
+  transform: scaleX(-1);
+}
+
+.flip-v {
+  transform: scaleY(-1);
+}
+
+.flip-both {
+  transform: scale(-1, -1);
+}
+
+.callout {
+  background: #DDD;
+  border-radius: 3px;
+  color: #222;
+  padding: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 50px;
+
+  @media (min-width: 961px) {
+    width: 100%;
+    max-width: 1200px;
+  }
+}
+
+.bg-white {
+  background: #FFF;
+}
+
+.collapse-link {
+
+  &:after {
+    content: '\f056';
+    font-family: 'FontAwesome';
+    padding-left: 8px;
+  }
+
+  &.closed:after {
+    content: '\f055';
+  }
+}
+
+.collapse-panel {
+  overflow: hidden;
+}
+
+.separator {
+  width: 240px;
+  height: 6px;
+  border-radius: 3px;
+  background: $primary;
+  margin: 0 auto;
+
+  &.thin {
+    height: 2px;
+  }
+}
+
+.separator-line {
+  width: 100%;
+  border-bottom: 1px solid #CCC;
+  margin: 20px 0;
+}
+
+.or-separator {
+  position: relative;
+  height: 20px;
+  border-bottom: 1px solid #CCC;
+  width: 200px;
+  margin-bottom: 30px;
+
+  div {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-style: italic;
+    color: #ccc;
+    width: 30px;
+    background: #F4F4F4;
+    bottom: -10px;
+    text-align: center;
+  }
+}
+
+// Material Styles
+.mat-dialog-container {
+  position: relative;
+}
+
+.mat-icon-button {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.mat-paginator-page-size-select {
+  width: 56px !important;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
