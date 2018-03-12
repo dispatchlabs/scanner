@@ -1,7 +1,9 @@
 <div class="site-container">
-    <div [class]="headerClass">
-        <div class="logo" (click)="appService.navigateToHome()"></div>
-        <div class="right-buttons">
+    <div [class]="headerClass" fxLayout="row" fxLayoutAlign="center center">
+        <div class="logo" (click)="appService.navigateToHome()">
+            <img src="assets/images/logo-white.png">
+        </div>
+        <div fxFlex class="right-buttons">
             <div class="circle-button" [matMenuTriggerFor]="appMenu">
                 <i class="fa fa-bars"></i>
             </div>
@@ -20,9 +22,11 @@
         </div>
     </div>
 
-    <router-outlet></router-outlet>
+    <div class="router-container">
+        <router-outlet></router-outlet>
+    </div>
 
     <footer>
-        FOOTER
+        &copy; 2018 Dispatch Labs
     </footer>
 </div>
