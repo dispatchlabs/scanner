@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation, Inject, OnInit, AfterViewInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {AppService} from '../app.service';
-import {environment} from '../../environments/environment';
+import {AppService} from '../../app.service';
+import {environment} from '../../../environments/environment';
 import {Router} from '@angular/router';
 
 /**

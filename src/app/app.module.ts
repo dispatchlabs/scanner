@@ -24,7 +24,7 @@ import {environment} from '../environments/environment';
 import {AppService} from './app.service';
 import {NotFoundPageComponent} from './pages/not-found/not-found-page.component';
 import {RouterModule, Routes} from '@angular/router';
-import {SignInDialogComponent} from './dialogs/sign-in-dialog.component';
+import {SignInDialogComponent} from './dialogs/sign-in/sign-in-dialog.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import {M2Action} from './m2-angular/store/reducers/m2.reducer';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -35,6 +35,7 @@ import {APP_CLEAR_ALL_STATES} from './m2-angular/services/m2.service';
 import {MetaPageComponent} from './pages/meta/meta-page.component';
 import {ChangeMeAction} from './store/reducers/change-me.reducer';
 import {NewsListPageComponent} from './pages/news/news-list-page.component';
+import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
 
 /**
  *
@@ -104,7 +105,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         NewsListPageComponent,
         // Components
         // Dialogs
-        SignInDialogComponent
+        SignInDialogComponent,
+        WalletDialogComponent
     ],
     imports: [
         // Angular
@@ -149,7 +151,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         environment.browserModulesOnly
     ],
     entryComponents: [
-        SignInDialogComponent
+        SignInDialogComponent,
+        WalletDialogComponent
     ],
     providers: [{provide: 'AppService', useClass: AppService}],
     bootstrap: [AppComponent]

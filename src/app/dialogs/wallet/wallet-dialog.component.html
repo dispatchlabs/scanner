@@ -1,0 +1,40 @@
+<div class="dialog-header">
+    <button type="button" class="close" (click)="close()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h1 class="section-number">My Wallet</h1>
+</div>
+
+<mat-dialog-content>
+    <div [formGroup]="formGroup">
+        <h3>My Wallet</h3>
+        <mat-form-field>
+            <input matInput formControlName="privateKey" placeholder="Private Key">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput formControlName="address" placeholder="Address">
+        </mat-form-field>
+        <div fxLayout="row">
+            <div fxFlex>
+                <a><i class="fa fa-plus-circle"></i> Generate New Wallet</a>
+            </div>
+            <div fxFlex>
+                <a><i class="fa fa-save"></i> Save My Private Key</a>
+            </div>
+        </div>
+
+        <h3 class="mt30">Recipient</h3>
+        <mat-form-field>
+            <input matInput formControlName="recipientAddress" placeholder="Address">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput formControlName="numberOfTokens" placeholder="Number of Tokens">
+        </mat-form-field>
+
+        <div class="mt30">
+            <m2-button text="Send Tokens"></m2-button>
+        </div>
+    </div>
+
+</mat-dialog-content>

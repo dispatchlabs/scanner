@@ -6,9 +6,10 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from './app.state';
 import {APP_SERVER_DOWN_FOR_MAINTENANCE, APP_SIGN_OUT, M2Service} from './m2-angular/services/m2.service';
-import {SignInDialogComponent} from './dialogs/sign-in-dialog.component';
+import {SignInDialogComponent} from './dialogs/sign-in/sign-in-dialog.component';
 import {routes} from './app.module';
 import {environment} from '../environments/environment';
+import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
 
 /**
  * Events
@@ -123,6 +124,23 @@ export class AppService extends M2Service {
                 right: ''
             },
             data: {}
+        });
+    }
+
+    /**
+     *
+     * @returns {MatDialogRef<WalletDialogComponent>}
+     */
+    public openWallet() {
+        return this.mdDialogRef = this.mdDialog.open(WalletDialogComponent, {
+            width: '600px',
+            height: '',
+            position: {
+                top: '16px',
+                bottom: '',
+                left: '',
+                right: ''
+            },
         });
     }
 }

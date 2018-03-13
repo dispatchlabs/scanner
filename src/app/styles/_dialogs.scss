@@ -1,0 +1,38 @@
+.dialog-header {
+  background: #123985;
+  background: linear-gradient(to left, #123985 0%, #007DC5 50%, #3CBFBE 100%);
+  border-bottom: 1px solid #DFDFDF;
+  margin: -24px -24px 24px -24px;
+  padding: 24px 24px 18px 24px;
+
+  h1 {
+    color: #FFF;
+    margin: 0;
+    font-size: 36px;
+  }
+
+  .section-number:after {
+    bottom: -10px;
+  }
+
+  button.close {
+    background: transparent;
+    border: none;
+    color: #FFF;
+    cursor: pointer;
+    font-size: 28px;
+    position: absolute;
+    right: 2px;
+    top: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.mat-dialog-content {
+  h3 {
+    margin: 0;
+  }
+}

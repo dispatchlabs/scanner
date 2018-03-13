@@ -2,11 +2,16 @@
 @import 'app/styles/colors';
 @import 'app/styles/fonts';
 @import 'app/styles/forms';
+@import 'app/styles/dialogs';
 
 body {
   color: #2D434B;
-  font-family: "Helvetica Neue", SansSerif;
+  font-family: 'Caecilia', Serif;
   margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Avant Garde', Futura, SansSerif;
 }
 
 div {
@@ -203,6 +208,10 @@ ul.none {
     bottom: -10px;
     text-align: center;
   }
+}
+
+.caecilia {
+  font-family: 'Caecilia';
 }
 
 // Material Styles

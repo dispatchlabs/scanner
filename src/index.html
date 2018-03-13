@@ -7,15 +7,13 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://use.fontawesome.com/06dced8430.js"></script>
-    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-    <script type="text/javascript" src="https://cdnjs.tradepending.com/javascript/snap-search.js"></script>
 
 </head>
 <body>
 <app-root>
     <style>
         body {
-            background: #333;
+            background: #2D434B;
             color: #FFF;
             font-family: Helvetica, SansSerif;
         }
@@ -28,12 +26,68 @@
             text-align: center;
         }
 
-        h1 {
-            font-weight: normal;
+        .loading {
+            position: relative;
+            height: 200px;
+            width: 200px;
+        }
+
+        .ping {
+            border: 3px solid #FFF;
+            border-radius: 50%;
+            position: absolute;
+            animation: wave-out 2s infinite;
+        }
+
+        .ping.one {
+             opacity: 0;
+             animation-delay: .5s;
+         }
+
+        .ping.two {
+             opacity: 0;
+             animation-delay: 1s;
+        }
+
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .icon img {
+            width: 50px;
+        }
+
+        @keyframes wave-out {
+            0% {
+                border-width: 0;
+                height: 0;
+                width: 0;
+                top: 50%;
+                right: 50%;
+                opacity: 1;
+            }
+            100% {
+                border-width: 5px;
+                height: 100px;
+                width: 100px;
+                top: calc(50% - 50px);
+                right: calc(50% - 50px);;
+                opacity: 0;
+            }
         }
     </style>
     <div class="content">
-        <h1>LOADING...</h1>
+        <div class="loading">
+            <div class="ping"></div>
+            <div class="ping one"></div>
+            <div class="ping two"></div>
+            <div class="icon">
+                <img src="assets/images/icon.png">
+            </div>
+        </div>
     </div>
 </app-root>
 </body>

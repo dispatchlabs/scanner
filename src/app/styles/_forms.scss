@@ -67,19 +67,6 @@ button.mat-button, button.mat-raised-button {
   }
 }
 
-button.close {
-  background: transparent;
-  border: none;
-  font-size: 28px;
-  position: absolute;
-  right: 2px;
-  top: 0;
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .mat-calendar-controls button.mat-button {
   color: #666;
   font-size: 14px;
