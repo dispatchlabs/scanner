@@ -2,6 +2,9 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {AppService} from '../../app.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import * as secp256k1 from 'secp256k1';
+
+declare const Buffer
 
 @Component({
     selector: 'app-wallet-dialog',
@@ -29,6 +32,9 @@ export class WalletDialogComponent implements OnInit {
         });
     }
 
+    /**
+     *
+     */
     ngOnInit() {
     }
 
@@ -37,6 +43,29 @@ export class WalletDialogComponent implements OnInit {
      */
     public close(): void {
         this.mdDialogRef.close();
+    }
+
+    /**
+     *
+     */
+    public generateWallet() {
+        const privateKey = new Buffer(32);
+        do {
+            crypto.getRandomValues(privateKey);
+        } while (!secp256k1.privateKeyVerify(privateKey));
+
+        const publicKey = secp256k1.publicKeyCreate(privateKey);
+        const address = new Buffer(20);
+        for (let i = 0; i < address.length; i++) {
+            address[i] = publicKey[i + 12];
+        }
+        const hexAddress = Buffer.from(address).toString('hex');
+        const hexPrivateKey = Buffer.from(privateKey).toString('hex');
+
+        console.log(hexAddress);
+        console.log(hexPrivateKey);
+
+
     }
 
 }
