@@ -53,6 +53,7 @@ export class WalletDialogComponent implements OnInit {
         do {
             crypto.getRandomValues(privateKey);
         } while (!secp256k1.privateKeyVerify(privateKey));
+        const hexPrivateKey = Buffer.from(privateKey).toString('hex');
 
         const publicKey = secp256k1.publicKeyCreate(privateKey);
         const address = new Buffer(20);
@@ -60,10 +61,10 @@ export class WalletDialogComponent implements OnInit {
             address[i] = publicKey[i + 12];
         }
         const hexAddress = Buffer.from(address).toString('hex');
-        const hexPrivateKey = Buffer.from(privateKey).toString('hex');
 
-        console.log(hexAddress);
-        console.log(hexPrivateKey);
+        this.formGroup.get('privateKey').setValue(hexPrivateKey);
+        this.formGroup.get('address').setValue(hexAddress);
+
 
 
     }
