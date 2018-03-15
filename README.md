@@ -19,7 +19,8 @@ To change the node IP to connect to modify nodeIp in the appropriate ./src/envir
 export const environment = {
     name: 'dev',
     production: false,
-    nodeIp: 'localhost
+    nodeIp: 'localhost'
+    
 ~~~
 
 
