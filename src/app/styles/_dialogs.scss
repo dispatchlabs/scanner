@@ -1,3 +1,5 @@
+@import 'colors';
+
 .dialog-header {
   background: #123985;
   background: linear-gradient(to left, #123985 0%, #007DC5 50%, #3CBFBE 100%);
@@ -34,5 +36,17 @@
 .mat-dialog-content {
   h3 {
     margin: 0;
+  }
+
+  a {
+    color: $primary-blue;
+
+    &:hover {
+      color: darken($primary-blue, 10%);
+    }
+  }
+
+  button.mat-button.primary {
+    background: $primary-blue;
   }
 }
