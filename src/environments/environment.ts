@@ -14,7 +14,7 @@ export const environment = {
     m2WebsiteUrl: 'http://outside.mcgegor.io',
     m2WebProxyPort: 3001,
     m2InfoUrl: 'assets/images/blue-bear.svg',
-    m2ConfirmUrl: 'assets/images/blue-bear.svg',
+    m2ConfirmUrl: null,
     m2PostListImageUrl: 'assets/images/outside-icon-white.svg',
     stripePublishableKey: 'pk_test_2ub2SvNkrXpT9u2gKNoUYr1R',
     googleApiKey: 'AIzaSyA8KexBx7KwxEUikqfvUg0T4GTAmjIZcaI',
