@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="mt30">
-            <a><i class="fa fa-refresh"></i> Reset to Dispatch test wallet</a>
+            <a (click)="reset()"><i class="fa fa-refresh"></i> Reset to Dispatch Test Wallet</a>
         </div>
 
         <h3 class="mt30">Recipient</h3>
@@ -36,7 +36,7 @@
         </mat-form-field>
 
         <div class="mt30">
-            <m2-button (click)="sendTokens()" text="Send Tokens"></m2-button>
+            <m2-button [disabled]="!formGroup.valid" (click)="sendTokens()" text="Send Tokens"></m2-button>
         </div>
     </div>
 

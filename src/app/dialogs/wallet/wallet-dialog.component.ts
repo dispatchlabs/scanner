@@ -33,7 +33,7 @@ export class WalletDialogComponent implements OnInit {
         this.formGroup = formBuilder.group({
             privateKey: new FormControl('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9', Validators.compose([Validators.required, Validators.minLength(64)])),
             address: new FormControl('9d6fa5845833c42e1aa4b768f944c5e09fe968b0', Validators.compose([Validators.required])),
-            recipientAddress: new FormControl('', Validators.compose([Validators.required])),
+            recipientAddress: new FormControl('c296220327589dc04e6ee01bf16563f0f53895bb', Validators.compose([Validators.required])),
             numberOfTokens: new FormControl(0, Validators.compose([Validators.required])),
         });
     }
@@ -92,10 +92,10 @@ export class WalletDialogComponent implements OnInit {
             privateKey: this.formGroup.get('privateKey').value,
             from: this.formGroup.get('address').value,
             to: this.formGroup.get('recipientAddress').value,
-            value: this.formGroup.get('numberOfTokens').value,
+            value: parseInt(this.formGroup.get('numberOfTokens').value, 10),
         }
 
-        this.post('http://localhost:1975//v1/test_transaction', json).subscribe(response => {
+        this.post('http://localhost:1975/v1/test_transaction', json).subscribe(response => {
             console.log(response);
         });
     }
@@ -114,7 +114,7 @@ export class WalletDialogComponent implements OnInit {
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {
             if (e.status === 0) {
-                    this.appService.error('Unable to connect to Dispatch node.');
+                    this.appService.error('Dispatch node is currently down for maintenance.');
             } else {
                 const response = e.json();
                 return new Observable(observer => {
@@ -131,5 +131,6 @@ export class WalletDialogComponent implements OnInit {
     public reset(): void {
         this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
         this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
+        this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
     }
 }
