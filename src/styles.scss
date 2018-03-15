@@ -220,6 +220,8 @@ ul.none {
   min-height: 300px;
 
   .loading {
+    background: url('assets/images/icon-bg-purple.png') center no-repeat;
+    background-size: 50%;
     position: absolute;
     top: calc(50% - 100px);
     left: calc(50% - 100px);
@@ -228,7 +230,7 @@ ul.none {
   }
 
   .ping {
-    border: 3px solid #00303C;
+    border: 20px solid #FFF;
     border-radius: 50%;
     position: absolute;
     animation: wave-out 2s infinite;
