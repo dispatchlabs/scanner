@@ -4,9 +4,8 @@ import {AppService} from '../../app.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as secp256k1 from 'secp256k1';
 import * as keccak from 'keccak';
-import {Observable} from "rxjs/Rx";
-import {M2Action} from "../../m2-angular/store/reducers/m2.reducer";
-import {Headers, Http, RequestOptions} from "@angular/http";
+import {Observable} from 'rxjs/Rx';
+import {Headers, Http, RequestOptions} from '@angular/http';
 
 declare const Buffer
 
@@ -33,9 +32,9 @@ export class WalletDialogComponent implements OnInit {
     constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<WalletDialogComponent>, private formBuilder: FormBuilder, private http: Http) {
         this.formGroup = formBuilder.group({
             privateKey: new FormControl('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9', Validators.compose([Validators.required, Validators.minLength(64)])),
-            address: new FormControl('9d6fa5845833c42e1aa4b768f944c5e09fe968b0', Validators.compose([Validators.required])),
-            recipientAddress: new FormControl('c296220327589dc04e6ee01bf16563f0f53895bb', Validators.compose([Validators.required])),
-            numberOfTokens: new FormControl(0, Validators.compose([Validators.required])),
+            address: new FormControl('9d6fa5845833c42e1aa4b768f944c5e09fe968b0', Validators.compose([Validators.required, Validators.minLength(40)])),
+            recipientAddress: new FormControl('c296220327589dc04e6ee01bf16563f0f53895bb', Validators.compose([Validators.required, Validators.minLength(40)])),
+            numberOfTokens: new FormControl(0, Validators.compose([Validators.required, Validators.min(1)])),
         });
     }
 
@@ -115,9 +114,10 @@ export class WalletDialogComponent implements OnInit {
         this.spinner = true;
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {
-            // this.spinner = false;
+            this.spinner = false;
             if (e.status === 0) {
-                    this.appService.error('Dispatch node is currently down for maintenance.');
+                this.spinner = false;
+                this.appService.error('Dispatch node is currently down for maintenance.');
             } else {
                 const response = e.json();
                 return new Observable(observer => {
@@ -132,6 +132,7 @@ export class WalletDialogComponent implements OnInit {
      *
      */
     public reset(): void {
+        console.log('FOOK ME')
         this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
         this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
         this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
