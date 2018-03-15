@@ -45,10 +45,13 @@ export class WalletDialogComponent implements OnInit {
      */
     ngOnInit() {
         this.loading = true;
-        this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
-            this.loading = false;
-            this.balance = response.balance;
-        });
+        setTimeout(() => {
+            this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+                this.loading = false;
+                this.balance = response.balance;
+            });
+        }, 2 * 1000);
+
     }
 
     /**
@@ -120,13 +123,16 @@ export class WalletDialogComponent implements OnInit {
      *
      */
     public reset(): void {
-        this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
-            this.spinner = false;
-            this.balance = response.balance;
-            this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
-            this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
-            this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
-        });
+        this.loading = true;
+        this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
+        this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
+        this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
+        setTimeout(() => {
+            this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+                this.loading = false;
+                this.balance = response.balance;
+            });
+        }, 2 * 1000);
     }
 
     /**
