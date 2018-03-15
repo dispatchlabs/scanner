@@ -21,6 +21,7 @@ export class WalletDialogComponent implements OnInit {
      */
     public formGroup: FormGroup;
     public spinner = false;
+    public loading = false;
 
     /**
      *

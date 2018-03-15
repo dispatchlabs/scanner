@@ -214,6 +214,67 @@ ul.none {
   font-family: 'Caecilia';
 }
 
+.loading-background {
+  position: relative;
+  z-index: 1000;
+  min-height: 300px;
+
+  .loading {
+    position: absolute;
+    top: calc(50% - 100px);
+    left: calc(50% - 100px);
+    height: 200px;
+    width: 200px;
+  }
+
+  .ping {
+    border: 3px solid #00303C;
+    border-radius: 50%;
+    position: absolute;
+    animation: wave-out 2s infinite;
+  }
+
+  .ping.one {
+    opacity: 0;
+    animation-delay: .5s;
+  }
+
+  .ping.two {
+    opacity: 0;
+    animation-delay: 1s;
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .icon img {
+    width: 50px;
+  }
+
+  @keyframes wave-out {
+    0% {
+      border-width: 0;
+      height: 0;
+      width: 0;
+      top: 50%;
+      right: 50%;
+      opacity: 1;
+    }
+    100% {
+      border-width: 5px;
+      height: 100px;
+      width: 100px;
+      top: calc(50% - 50px);
+      right: calc(50% - 50px);;
+      opacity: 0;
+    }
+  }
+}
+
 // Material Styles
 .mat-dialog-container {
   position: relative;
