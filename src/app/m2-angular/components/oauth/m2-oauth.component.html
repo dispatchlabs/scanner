@@ -1,0 +1,116 @@
+<div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="8px" class="m2-oauth">
+    <div *ngIf="isIncluded(0)" fxFlex>
+        <button mat-raised-button type="button" class="accent twitter" (click)="connectOrDisconnect(0)">
+            <span [hidden]="twitterSpinner" class="{{isConnected(0)}}"><i class="fa fa-twitter"></i> Twitter</span>
+            <div [hidden]="!twitterSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="!twitterOAuth" class="center m2-content">
+            You have not connected a Twitter account yet
+        </div>
+
+        <div *ngIf="twitterOAuth" class="center m2-content">
+            Connected to twitter
+        </div>
+    </div>
+    <div *ngIf="isIncluded(1)" fxFlex>
+        <button mat-raised-button type="button" class="accent facebook" (click)="connectOrDisconnect(1)">
+            <span [hidden]="facebookSpinner" class="{{isConnected(1)}}"><i class="fa fa-facebook-square"></i> Facebook</span>
+            <div [hidden]="!facebookSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="facebookOAuth" class="m2-content">
+            <mat-checkbox (change)="facebookOAuth.postToFacebookTimeline = !facebookOAuth.postToFacebookTimeline; update(facebookOAuth)" [checked]="facebookOAuth.postToFacebookTimeline">Post to timeline</mat-checkbox>
+            <mat-checkbox *ngFor="let facebookPage of facebookOAuth.facebookPages" (change)="facebookPage.post = !facebookPage.post; update(facebookOAuth)" [checked]="facebookPage.post">Post to {{facebookPage.name}} page</mat-checkbox>
+        </div>
+
+        <div *ngIf="!facebookOAuth" class="center m2-content">
+            You have not connected a Facebook account yet
+        </div>
+
+    </div>
+    <div *ngIf="isIncluded(2)" fxFlex>
+        <button mat-raised-button type="button" class="accent pinterest" (click)="connectOrDisconnect(2)">
+            <span [hidden]="pinterestSpinner" class="{{isConnected(2)}}"><i class="fa fa-pinterest"></i> Pinterest</span>
+            <div [hidden]="!pinterestSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="pinterestOAuth" class="m2-content">
+            <mat-checkbox *ngFor="let pinterestBoard of pinterestOAuth.pinterestBoards" (change)="pinterestBoard.post = !pinterestBoard.post; update(pinterestOAuth)" [checked]="pinterestBoard.post">Pin to {{pinterestBoard.name}} board</mat-checkbox>
+        </div>
+
+        <div *ngIf="!pinterestOAuth" class="center m2-content">
+            You have not connected a Pinterest account yet
+        </div>
+    </div>
+    <div *ngIf="isIncluded(5)" fxFlex>
+        <button mat-raised-button type="button" class="accent wordpress" (click)="connectOrDisconnect(5)">
+            <span [hidden]="wordpressSpinner" class="{{isConnected(5)}}"><i class="fa fa-wordpress"></i> Wordpress</span>
+            <div [hidden]="!wordpressSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="wordpressOAuth" class="center m2-content">
+            Connected to Wordpress
+        </div>
+
+        <div *ngIf="!wordpressOAuth" class="center m2-content">
+            You have not connected a Wordpress account yet
+        </div>
+    </div>
+    <div *ngIf="isIncluded(6)" fxFlex>
+        <button mat-raised-button type="button" class="accent medium" (click)="connectOrDisconnect(6)">
+            <span [hidden]="mediumSpinner" class="{{isConnected(6)}}"><i class="fa fa-medium"></i> Medium</span>
+            <div [hidden]="!mediumSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="mediumOAuth" class="center m2-content">
+            Connected to Medium
+        </div>
+
+        <div *ngIf="!mediumOAuth" class="center m2-content">
+            You have not connected a Medium account yet
+        </div>
+    </div>
+    <div *ngIf="isIncluded(7)" fxFlex>
+        <button mat-raised-button type="button" class="accent medium" (click)="connectOrDisconnect(7)">
+            <span [hidden]="linkedInSpinner" class="{{isConnected(7)}}"><i class="fa fa-medium"></i> LinkedIn</span>
+            <div [hidden]="!linkedInSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="linkedInOAuth" class="center m2-content">
+            You have not connected a LinkedIn account yet
+        </div>
+
+        <div *ngIf="!linkedInOAuth" class="center m2-content">
+            You have not connected a LinkedIn account yet
+        </div>
+    </div>
+    <div *ngIf="isIncluded(8)" fxFlex>
+        <button mat-raised-button type="button" class="accent medium" (click)="connectOrDisconnect(8)">
+            <span [hidden]="googleInSpinner" class="{{isConnected(8)}}"><i class="fa fa-medium"></i> Google</span>
+            <div [hidden]="!googleInSpinner">
+                <mat-progress-spinner mode="indeterminate" [style.width]="'40px'" class="mat-accent"></mat-progress-spinner>
+            </div>
+        </button>
+
+        <div *ngIf="linkedInOAuth" class="center m2-content">
+            You have not connected a Google account yet
+        </div>
+
+        <div *ngIf="!linkedInOAuth" class="center m2-content">
+            You have not connected a Google account yet
+        </div>
+    </div>
+</div>

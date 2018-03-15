@@ -1,0 +1,53 @@
+<div class="header">
+    <div fxFlex="row" fxLayoutAlign="start center">
+        <div class="logo">
+            API Documentation
+        </div>
+        <div fxFlex class="right">
+            <a (click)="scrollTo(appSection)">App Specific</a> |
+            <a (click)="scrollTo(m2Section)">M2 Specific</a>
+        </div>
+    </div>
+</div>
+
+<div class="code-list" style="margin-top: 80px">
+    <div class="scroll-target" #appSection></div>
+    <h1>App Specific Actions / End Points</h1>
+    <div *ngFor="let actionContext of actionContexts" class="code-item">
+
+        <h2>
+            {{actionContext.name}}
+        </h2>
+
+        <i class="fa fa-arrow-up"></i> Request JSON Object:
+        <pre> {{actionContext.request | json}}</pre>
+
+        <i class="fa fa-arrow-down"></i> Response JSON Object:
+        <pre> {{actionContext.response | json}}</pre>
+
+        <i class="fa fa-terminal"></i> cURL Example:
+        <pre>{{actionContext.curl}}</pre>
+
+    </div>
+</div>
+
+<div class="code-list">
+    <div class="scroll-target" #m2Section></div>
+    <h1>M2 Specific Actions / End Points</h1>
+    <div *ngFor="let actionContext of m2ActionContexts" class="code-item">
+
+        <h2>
+            {{actionContext.name}}
+        </h2>
+
+        Request JSON Object:
+        <pre> {{actionContext.request | json}}</pre>
+
+        Response JSON Object:
+        <pre> {{actionContext.response | json}}</pre>
+
+        cURL Example:
+        <pre>{{actionContext.curl}}</pre>
+
+    </div>
+</div>

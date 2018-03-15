@@ -1,0 +1,52 @@
+<div [formGroup]="formGroup" [class]="cssClassName">
+    <h3>Credit Card Information</h3>
+    <div layout-xs="column" layout="row" layout-align-gt-sm="center center" layout-wrap>
+        <mat-input-container>
+            <input matInput placeholder="Card Number" formControlName="creditCard"
+                   onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        </mat-input-container>
+    </div>
+    <div layout-xs="column" layout="row" layout-align-gt-sm="center center" layout-wrap>
+        <mat-input-container>
+            <input matInput placeholder="CVC" formControlName="cvc"
+                   onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        </mat-input-container>
+    </div>
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="center center">
+        <div fxFlex.gt-xs="20">
+            Exp Month
+        </div>
+        <div fxFlex.gt-xs="30">
+            <mat-select formControlName="expMonth">
+                <mat-option value="1">01 - Jan</mat-option>
+                <mat-option value="2">02 - Feb</mat-option>
+                <mat-option value="3">03 - Mar</mat-option>
+                <mat-option value="4">04 - Apr</mat-option>
+                <mat-option value="5">05 - May</mat-option>
+                <mat-option value="6">06 - Jun</mat-option>
+                <mat-option value="7">07 - Jul</mat-option>
+                <mat-option value="8">08 - Aug</mat-option>
+                <mat-option value="9">09 - Sep</mat-option>
+                <mat-option value="10">10 - Oct</mat-option>
+                <mat-option value="11">11 - Nov</mat-option>
+                <mat-option value="12">12 - Dec</mat-option>
+            </mat-select>
+        </div>
+        <div fxFlex.gt-xs="20">
+            Year
+        </div>
+        <div fxFlex.gt-xs="30">
+            <mat-select formControlName="expYear">
+                <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="24px" class="top30">
+        <div fxFlex>
+            <m2-button (click)="close(null)" className="light" text="Cancel"></m2-button>
+        </div>
+        <div fxFlex>
+            <m2-button [disabled]="!formGroup.valid || spinner" [spinner]="spinner" text="Update Credit Card" (click)="update()"></m2-button>
+        </div>
+    </div>
+</div>

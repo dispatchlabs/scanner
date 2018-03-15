@@ -1,0 +1,22 @@
+<div class="m2-post-list-item" *ngIf="(!loading && post !== null); else spinnerTemplete">
+    <div class="m2-post-feature-image">
+        <img [src]="post.media.url">
+    </div>
+    <div fxLayoutAlign="row" fxLayoutGap="24px" class="m2-post-list-header">
+        <div class="m2-post-date">
+
+        </div>
+        <div fxFlex>
+            <h2>{{post.title}}</h2>
+            <p>
+                Blog Post by {{post.author}} - {{post.published | m2SimpleDateTime}}
+            </p>
+        </div>
+    </div>
+    <div>
+        <p [innerHTML]="post.content"></p>
+    </div>
+</div>
+<ng-template #spinnerTemplete>
+    <!--<m2-spinner></m2-spinner>--> <!-- TODO: Revisit this! -->
+</ng-template>

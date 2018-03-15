@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div *ngIf="imageUrl" class="m2-info-image">
+    <img [src]="imageUrl">
+</div>
+<mat-dialog-content>
+    <p [innerHTML]="message"></p>
+    <div fxLayout="row" class="mt40">
+        <div fxFlex>
+            <m2-button text="Cancel" (click)="close(false)" className="outline">Cancel</m2-button>
+        </div>
+        <div fxFlex class="right">
+            <m2-button text="OK" (click)="close(true)">OK</m2-button>
+        </div>
+    </div>
+</mat-dialog-content>

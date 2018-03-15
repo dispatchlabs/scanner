@@ -1,0 +1,27 @@
+h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.mat-input-container {
+  margin-top: 10px
+}
+
+span {
+  cursor: pointer;
+  display: block;
+
+  .fa {
+    transition: color .3s;
+  }
+
+  &:hover .fa {
+    color: #999;
+  }
+}
+
+.mat-dialog-content {
+  border-top: 1px solid #CCC;
+  height: 600px;
+  padding-top: 12px;
+}

@@ -1,0 +1,8 @@
+<input #fileInput type="file" ng2FileSelect [uploader]="fileUploader" accept="image/png,image/gif,image/jpeg,image/jpg,text/plain" style="display:none;"/>
+<div class="m2-upload-container">
+    <div (click)="delete()" *ngIf="!deleteDisabled" class="close">&times;</div>
+    <div class="m2-upload-overlay" (click)="fileInput.click()"></div>
+    <img [hidden]="spinner" mat-card-image [src]="media ? media.url : 'app/m2-angular/assets/img/placeholder-image.png'">
+        <m2-spinner [hidden]="!spinner"></m2-spinner>
+</div>
+

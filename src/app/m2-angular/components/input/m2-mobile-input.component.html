@@ -1,0 +1,7 @@
+<div [formGroup]="formGroup">
+    <input [readonly]="readonly" #part1Input class="area" formControlName="part1" size="3" (keydown)="KeyHelper.onNumericKeyDown($event, 3)">
+    <span>&ndash;</span>
+    <input [readonly]="readonly" #part2Input class="part2" formControlName="part2" size="3" (keydown)="KeyHelper.onNumericKeyDown($event, 3)">
+    <span>&ndash;</span>
+    <input [readonly]="readonly" #part3Input class="part3" formControlName="part3" size="4" (keydown)="KeyHelper.onNumericKeyDown($event, 4)">
+</div>

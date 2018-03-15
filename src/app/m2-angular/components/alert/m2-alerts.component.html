@@ -1,0 +1,24 @@
+<mat-table #table [dataSource]="dataSource">
+
+    <!-- Message -->
+    <ng-container cdkColumnDef="message">
+        <mat-header-cell *cdkHeaderCellDef> Message</mat-header-cell>
+        <mat-cell *cdkCellDef="let row"> {{row.message}}</mat-cell>
+    </ng-container>
+
+    <!-- Updated -->
+    <ng-container cdkColumnDef="updated">
+        <mat-header-cell *cdkHeaderCellDef> Updated</mat-header-cell>
+        <mat-cell *cdkCellDef="let row"> {{row.updated | m2SimpleDateTime}}</mat-cell>
+    </ng-container>
+
+    <!-- Created -->
+    <ng-container cdkColumnDef="created">
+        <mat-header-cell *cdkHeaderCellDef> Created</mat-header-cell>
+        <mat-cell *cdkCellDef="let row"> {{row.created | m2SimpleDateTime}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator [length]="count" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>

@@ -1,0 +1,23 @@
+<div [formGroup]="formGroup" fxLayout="column">
+    <mat-input-container>
+        <input matInput placeholder="Email" type="email" formControlName="email">
+    </mat-input-container>
+    <mat-input-container>
+        <input matInput placeholder="Password" formControlName="password" type="password" (keyup.enter)="signIn()">
+    </mat-input-container>
+    <div>
+        <mat-checkbox color="primary">Remember me</mat-checkbox>
+    </div>
+    <div style="margin-top: 20px;">
+        <m2-button [spinner]="spinner" (click)="signIn()" [disabled]="!formGroup.valid || spinner" text="Sign In" className="primary"></m2-button>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="border-top: 1px solid #CCC; padding-top: 10px; margin-top: 30px">
+        <div>
+            <a (click)="forgotPassword()">Forgot Password?</a>
+        </div>
+        <div [hidden]="hideRegister">
+            <a (click)="register.emit()">Register</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<button type="button" class="close" (click)="close()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+<mat-dialog-content>
+    <div *ngIf="imageUrl" class="m2-info-image">
+        <img [src]="imageUrl">
+    </div>
+    <div [innerHTML]="message"></div>
+</mat-dialog-content>

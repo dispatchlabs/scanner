@@ -1,0 +1,14 @@
+<div>
+    <h3>Current Account</h3>
+
+    <p *ngIf="!bankAccount">
+        No bank account registered
+    </p>
+    <p *ngIf="bankAccount">
+        {{bankAccount.bank_name}} - Account ending in: {{bankAccount.last4}}
+    </p>
+
+    <div class="dialog-button">
+        <m2-button (click)="update()" text="Update Bank Account"></m2-button>
+    </div>
+</div>

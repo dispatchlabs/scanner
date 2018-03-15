@@ -1,0 +1,43 @@
+<div fxLayout="row" class="m2-post-search container" fxLayoutAlign="center center">
+    <div fxFlex>
+        <h1>{{getTitle()}}</h1>
+    </div>
+    <div fxFlex>
+        <mat-input-container>
+            <input matInput placeholder="Search blog posts">
+        </mat-input-container>
+    </div>
+</div>
+
+<div class="m2-post-list-container">
+    <div class="container">
+        <div class="m2-post-list" *ngIf="!loading; else loadingTemplate">
+            <div class="m2-post-list-item" *ngFor="let post of posts" [routerLink]="getRouterLink(post)">
+                <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px">
+                    <div fxFlex.gt-sm="20" class="m2-post-list-image">
+                        <div *ngIf="post?.media?.url">
+                            <img [src]="post.media.url">
+                        </div>
+                    </div>
+                    <div fxFlex.gt-sm="80" class="m2-post-list-header">
+                        <h2>{{post.title}}</h2>
+                        <p>
+                            Blog Post by {{post.author}} - {{post.published | m2SimpleDateTime}}
+                        </p>
+                        <p [innerHTML]="post.description"></p>
+                    </div>
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+        <div class="m2-post-pagination">
+            <mat-paginator [length]="count" (page)="onPageIndexChange($event)" [pageSize]="perPage"
+                           [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+        </div>
+        <ng-template #loadingTemplate>
+            <!--<m2-spinner></m2-spinner>--> <!-- TODO: Revisit this! -->
+        </ng-template>
+    </div>
+</div>

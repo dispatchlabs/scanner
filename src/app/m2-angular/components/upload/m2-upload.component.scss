@@ -1,0 +1,40 @@
+.m2-upload-container {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1px;
+
+  img {
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: auto;
+    height: 100%;
+  }
+
+  .m2-upload-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    transition: background .3s;
+  }
+
+  .close {
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    right: 4px;
+  }
+
+  &:hover .m2-upload-overlay {
+    background: rgba(0,0,0,0.1);
+  }
+}

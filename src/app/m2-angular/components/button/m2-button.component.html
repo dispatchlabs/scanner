@@ -1,0 +1,11 @@
+<button mat-button [disabled]="disabled" type="button" [class]="className" [style.min-width]="minWidth">
+    <div (click)="onClick()">
+        <span *ngIf="!spinner">
+            <span *ngIf="iconClass">
+                <i class="{{iconClass}}"></i>
+            </span>
+            {{text}}
+        </span>
+        <m2-spinner *ngIf="spinner"></m2-spinner>
+    </div>
+</button>

@@ -1,0 +1,124 @@
+.m2-oauth {
+
+  div {
+    background: #F9F9F9;
+  }
+
+  button {
+    border-radius: 0 !important;
+
+    .fa {
+      color: #FFF;
+    }
+
+    &.accent {
+      background-color: #666;
+      color: #FFF;
+      position: relative;
+      text-align: left;
+      transition: all .3s;
+      width: 100%;
+
+      span:after {
+        content: '\f055';
+        font-family: 'FontAwesome';
+        position: absolute;
+        right: 10px;
+      }
+
+      img {
+        max-width: 22px;
+      }
+
+      &:hover {
+        background-color: #444;
+      }
+
+      &[disabled]:hover {
+        background-color: #666;
+      }
+
+      &:focus, &:active {
+        background-color: #333;
+      }
+
+      &.lightspeed {
+        background: #ee5153;
+
+        &:hover {
+          background: darken(#EE5153, 10%);
+        }
+
+        span:after {
+          content: '';
+        }
+      }
+
+      &.square {
+        background: #000;
+
+        &:hover {
+          background: lighten(#000000, 10%);
+        }
+
+        span:after {
+          content: '';
+        }
+      }
+
+      &.facebook {
+        background: #3664a0;
+
+        &:hover {
+          background: darken(#3664a0, 10%);
+        }
+      }
+
+      &.twitter {
+        background: #55acee;
+
+        &:hover {
+          background: darken(#55acee, 10%);
+        }
+      }
+
+      &.pinterest{
+        background: #cb2027;
+
+        &:hover {
+          background: darken(#cb2027, 10%);
+        }
+      }
+
+      &.instagram {
+        background: radial-gradient(circle at 33% 100%, #FED373 4%, #F15245 30%, #D92E7F 62%, #9B36B7 85%, #515ECF);
+      }
+
+      &.medium{
+        background: #02b875;
+
+        &:hover {
+          background: darken(#02b875, 10%);
+        }
+      }
+
+      &.wordpress{
+        background: #0087be;
+
+        &:hover {
+          background: darken(#0087be, 10%);
+        }
+      }
+
+      span.completed:after {
+        content: '\f056';
+      }
+    }
+
+  }
+
+  .m2-content {
+    padding: 8px;
+  }
+
+}

@@ -1,0 +1,16 @@
+<div [class]="cssClassName">
+    <h3>Meta Content</h3>
+
+    <mat-input-container>
+        <input matInput [(ngModel)]="meta.content" placeholder="Content">
+    </mat-input-container>
+
+    <div fxLayout="row" fxLayoutGap="24px">
+        <div fxFlex>
+            <m2-button (click)="close(null)" className="light" text="Cancel"></m2-button>
+        </div>
+        <div fxFlex>
+            <m2-button [spinner]="spinner" [disabled]="spinner" text="Update" (click)="update()"></m2-button>
+        </div>
+    </div>
+</div>

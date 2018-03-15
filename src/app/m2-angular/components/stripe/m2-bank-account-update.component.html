@@ -1,0 +1,35 @@
+<div [class]="cssClassName" [formGroup]="formGroup">
+    <h3>Bank Account Information</h3>
+
+    <mat-input-container>
+        <input matInput onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="routingNumber" placeholder="Routing Number">
+    </mat-input-container>
+    <mat-input-container>
+        <input matInput onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="accountNumber" placeholder="Account Number">
+    </mat-input-container>
+
+    <p class="small">
+        Tax Type
+    </p>
+    <mat-radio-group formControlName="taxType">
+        <mat-radio-button value="company" color="primary">Company</mat-radio-button>
+        <mat-radio-button value="individual" color="primary">Individual</mat-radio-button>
+    </mat-radio-group>
+    <div fxLayout="row" fxLayoutGap="12px" class="m2-terms-box">
+        <div>
+            <mat-checkbox formControlName="stripeTerms"></mat-checkbox>
+        </div>
+        <div fxFlex>
+            By registering your account, you agree to the <a target="_blank" href="https://stripe.com/connect-account/legal">Stripe Connected
+            Account Agreement</a>.
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="24px" class="top30">
+        <div fxFlex>
+            <m2-button (click)="close(null)" className="light" text="Cancel"></m2-button>
+        </div>
+        <div fxFlex>
+            <m2-button text="Update" [disabled]="!formGroup.valid || spinner" [spinner]="spinner" (click)="update()"></m2-button>
+        </div>
+    </div>
+</div>

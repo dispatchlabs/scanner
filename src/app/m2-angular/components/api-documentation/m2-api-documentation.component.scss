@@ -1,0 +1,80 @@
+.header {
+  background: #000;
+  text-align: center;
+  height: 60px;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+
+  .logo {
+    cursor: pointer;
+    color: #FFF;
+    font-size: 2em;
+  }
+
+  .right-buttons {
+    text-align: right;
+    transition: color .3s, border-color .3s;
+
+    .circle-button {
+      border: 1px solid #FFF;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      margin-left: 10px;
+      padding-top: 9px;
+      text-align: center;
+
+      &:hover {
+        background: rgba(255,255,255,0.3);
+      }
+
+      .fa {
+        color: #FFF;
+        font-size: 28px;
+      }
+    }
+  }
+}
+
+.code-list {
+  position: relative;
+
+  .scroll-target {
+    position: absolute;
+    top: -80px;
+  }
+
+  .code-item {
+    padding: 30px;
+
+    h2 {
+      color: skyblue;
+      margin-top: 0;
+    }
+
+    .fa {
+      color: powderblue;
+    }
+
+    &:nth-child(odd) {
+      background: #444;
+    }
+
+    pre {
+      background: #222;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: inset 1px 1px 2px black;
+      white-space: normal;
+    }
+  }
+}
+
+h1 {
+  padding-left: 20px;
+}
