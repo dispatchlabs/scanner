@@ -46,9 +46,10 @@ export class WalletDialogComponent implements OnInit {
     ngOnInit() {
         this.loading = true;
         setTimeout(() => {
-            this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+            this.get('http://mcgregor.io:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
                 this.loading = false;
                 this.balance = response.balance;
+                console.log(response);
             });
         }, 2 * 1000);
 
@@ -105,9 +106,9 @@ export class WalletDialogComponent implements OnInit {
                 value: parseInt(this.formGroup.get('numberOfTokens').value, 10),
             }
             this.spinner = true;
-            this.post('http://localhost:1975/v1/test_transaction', json).subscribe( () => {
+            this.post('http://mcgregor.io:1975/v1/test_transaction', json).subscribe( () => {
                 setTimeout(() => {
-                    this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+                    this.get('http://mcgregor.io:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
                         this.spinner = false;
                         this.balance = response.balance;
                         this.appService.success('Tokens sent! Your new balance is ' + this.balance);
@@ -128,7 +129,7 @@ export class WalletDialogComponent implements OnInit {
         this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
         this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
         setTimeout(() => {
-            this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+            this.get('http://mcgregor.io:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
                 this.loading = false;
                 this.balance = response.balance;
             });
