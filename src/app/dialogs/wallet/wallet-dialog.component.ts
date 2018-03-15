@@ -4,6 +4,9 @@ import {AppService} from '../../app.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as secp256k1 from 'secp256k1';
 import * as keccak from 'keccak';
+import {Observable} from "rxjs/Rx";
+import {M2Action} from "../../m2-angular/store/reducers/m2.reducer";
+import {Headers, Http, RequestOptions} from "@angular/http";
 
 declare const Buffer
 
@@ -23,13 +26,15 @@ export class WalletDialogComponent implements OnInit {
      *
      * @param appService
      * @param {MatDialogRef<WalletDialogComponent>} mdDialogRef
+     * @param {FormBuilder} formBuilder
+     * @param {Http} http
      */
-    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<WalletDialogComponent>, private formBuilder: FormBuilder) {
+    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<WalletDialogComponent>, private formBuilder: FormBuilder, private http: Http) {
         this.formGroup = formBuilder.group({
             privateKey: new FormControl('', Validators.compose([Validators.required])),
             address: new FormControl('', Validators.compose([Validators.required])),
             recipientAddress: new FormControl('', Validators.compose([Validators.required])),
-            numberOfTokens: new FormControl('', Validators.compose([Validators.required])),
+            numberOfTokens: new FormControl(0, Validators.compose([Validators.required])),
         });
     }
 
@@ -89,5 +94,41 @@ export class WalletDialogComponent implements OnInit {
 
         console.log(Buffer.from(hex, 'hex'));
         */
+
+        const json = {
+            privateKey: this.formGroup.get('privateKey').value,
+            from: this.formGroup.get('address').value,
+            to: this.formGroup.get('recipientAddress').value,
+            value: this.formGroup.get('numberOfTokens').value,
+        }
+
+        this.post('http://localhost:1975//v1/test_transaction', json).subscribe(response => {
+            console.log(response);
+        });
+    }
+
+    /**
+     *
+     * @param {string} className
+     * @param json
+     * @returns {Observable<any | any>}
+     */
+    public post(url: string, json: any) {
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const requestOptions = new RequestOptions({headers: headers});
+
+        // Post.
+        return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
+        }).catch(e => {
+            if (e.status === 0) {
+                    this.appService.error('Unable to connect to Dispatch node.');
+            } else {
+                const response = e.json();
+                return new Observable(observer => {
+                    observer.next(response);
+                    observer.complete();
+                });
+            }
+        });
     }
 }
