@@ -1,6 +1,6 @@
 export const environment = {
-    name: 'dev',
-    production: false,
+    name: 'dispatch',
+    production: true,
     dispatchNodeIp: 'localhost',
     m2AppName: 'Dispatch',
     m2AppId: '',

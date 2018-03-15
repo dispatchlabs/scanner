@@ -29,8 +29,7 @@
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
-        "qa": "environments/environment.qa.ts",
-        "amazon": "environments/environment.amazon.ts"
+        "dispatch": "environments/environment.dispatch.ts"
       }
     },
     {
