@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Prerequisites
 Node `brew install node` 
 
-## Setup and Run
+# ![](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_directions_run_black_24px.svg) Setup and Run
 `git clone https://github.com/dispatchlabs/web-wallet.git`<br>
 `cd web-wallet`<br>
 `npm i`<br>
