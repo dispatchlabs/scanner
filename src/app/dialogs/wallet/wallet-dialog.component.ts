@@ -22,6 +22,7 @@ export class WalletDialogComponent implements OnInit {
     public formGroup: FormGroup;
     public spinner = false;
     public loading = false;
+    public balance = 0;
 
     /**
      *
@@ -43,6 +44,11 @@ export class WalletDialogComponent implements OnInit {
      *
      */
     ngOnInit() {
+        this.loading = true;
+        this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+            this.loading = false;
+            this.balance = response.balance;
+        });
     }
 
     /**
@@ -65,6 +71,7 @@ export class WalletDialogComponent implements OnInit {
         for (let i = 0; i < address.length; i++) {
             address[i] = publicKey[i + 12];
         }
+        this.balance = 0;
         this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
         this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
     }
@@ -77,9 +84,7 @@ export class WalletDialogComponent implements OnInit {
         const privateKey = new Buffer('2093fde230170efc92b2c122b8b831b30f916dd5568b50a427caa76e13e7effd', 'hex')
         const hashBytes = new Buffer('FOOK ME')
         const hash = keccak('keccak256').update(hashBytes).digest();
-
         console.log(keccak('keccak256').update('Hello world!').digest('hex'))
-
         console.log(hashBytes);
         console.log(hash);
 
@@ -96,19 +101,30 @@ export class WalletDialogComponent implements OnInit {
                 to: this.formGroup.get('recipientAddress').value,
                 value: parseInt(this.formGroup.get('numberOfTokens').value, 10),
             }
-
-            this.spinner = true;
             this.post('http://localhost:1975/v1/test_transaction', json).subscribe( () => {
                 setTimeout(() => {
                     this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
                         this.spinner = false;
                         this.appService.success('Tokens sent! Your new balance is ' + response.balance);
                     });
-                }, 7 * 1000);
+                }, 5 * 1000);
             });
         });
 
 
+    }
+
+    /**
+     *
+     */
+    public reset(): void {
+        this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+            this.spinner = false;
+            this.balance = response.balance;
+            this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
+            this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
+            this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
+        });
     }
 
     /**
@@ -122,10 +138,10 @@ export class WalletDialogComponent implements OnInit {
         const requestOptions = new RequestOptions({headers: headers});
 
         // Post.
-        this.spinner = true;
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {
             this.spinner = false;
+            this.loading = false;
             if (e.status === 0) {
                 this.spinner = false;
                 this.appService.error('Dispatch node is currently down for maintenance.');
@@ -149,10 +165,10 @@ export class WalletDialogComponent implements OnInit {
         const requestOptions = new RequestOptions({headers: headers});
 
         // Post.
-        this.spinner = true;
         return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {
             this.spinner = false;
+            this.loading = false;
             if (e.status === 0) {
                 this.spinner = false;
                 this.appService.error('Dispatch node is currently down for maintenance.');
@@ -164,14 +180,5 @@ export class WalletDialogComponent implements OnInit {
                 });
             }
         });
-    }
-
-    /**
-     *
-     */
-    public reset(): void {
-        this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
-        this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
-        this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
     }
 }
