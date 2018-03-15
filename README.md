@@ -11,6 +11,18 @@ Node `brew install node`
 `ng serve -e=dev` or `ng serve -e=dispatch`<br>
 Open in browser `http://localhost:4200/`
 
+## Node IP 
+To change the node IP to connect to modify nodeIp in the appropriate ./src/environments/ file. 
+
+~~~javascript
+export const environment = {
+    name: 'dev',
+    production: false,
+    nodeIp: 'localhost
+~~~
+
+
+
 ## Build
 Run `ng build -e=dev` or `ng build -e=dispatch`to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 

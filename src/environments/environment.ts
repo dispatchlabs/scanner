@@ -3,7 +3,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 export const environment = {
     name: 'dev',
     production: false,
-    dispatchNodeIp: 'localhost',
+    nodeIp: 'localhost',
     m2AppName: 'Dispatch',
     m2AppId: '',
     m2AppVersion: '',
