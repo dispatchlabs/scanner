@@ -1,6 +1,6 @@
 import { OutsidePage } from './app.po';
 
-describe('outside App', () => {
+describe('dispatch App', () => {
   let page: OutsidePage;
 
   beforeEach(() => {
