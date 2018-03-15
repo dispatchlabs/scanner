@@ -217,6 +217,7 @@ ul.none {
 // Material Styles
 .mat-dialog-container {
   position: relative;
+  animation: dialog-fade-in-up .5s;
 }
 
 .mat-icon-button {

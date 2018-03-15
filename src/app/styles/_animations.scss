@@ -23,6 +23,33 @@
   }
 }
 
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 100;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dialog-fade-in-up {
+  0% {
+    opacity: 0;
+    margin-top: 100px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+.fade-in-up {
+  opacity: 0;
+  animation: fade-in-up .5s forwards;
+}
+
 .delay-1 {
   animation-delay: .5s;
 }
