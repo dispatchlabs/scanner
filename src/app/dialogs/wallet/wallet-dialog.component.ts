@@ -88,23 +88,33 @@ export class WalletDialogComponent implements OnInit {
         console.log(Buffer.from(hex, 'hex'));
         */
 
-        const json = {
-            privateKey: this.formGroup.get('privateKey').value,
-            from: this.formGroup.get('address').value,
-            to: this.formGroup.get('recipientAddress').value,
-            value: parseInt(this.formGroup.get('numberOfTokens').value, 10),
-        }
+        this.appService.confirm('Are you sure you want to send ' + this.formGroup.get('numberOfTokens').value + ' tokens to ' + this.formGroup.get('recipientAddress').value + '?', () => {
+            const json = {
+                privateKey: this.formGroup.get('privateKey').value,
+                from: this.formGroup.get('address').value,
+                to: this.formGroup.get('recipientAddress').value,
+                value: parseInt(this.formGroup.get('numberOfTokens').value, 10),
+            }
 
-        this.post('http://localhost:1975/v1/test_transaction', json).subscribe(response => {
-            console.log(response);
+            this.spinner = true;
+            this.post('http://localhost:1975/v1/test_transaction', json).subscribe( () => {
+                setTimeout(() => {
+                    this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
+                        this.spinner = false;
+                        this.appService.success('Tokens sent! Your new balance is ' + response.balance);
+                    });
+                }, 7 * 1000);
+            });
         });
+
+
     }
 
     /**
      *
-     * @param {string} className
+     * @param {string} url
      * @param json
-     * @returns {Observable<any | any>}
+     * @returns {Observable<any>}
      */
     public post(url: string, json: any) {
         const headers = new Headers({'Content-Type': 'application/json'});
@@ -130,9 +140,35 @@ export class WalletDialogComponent implements OnInit {
 
     /**
      *
+     * @param {string} url
+     * @returns {Observable<any>}
+     */
+    public get(url: string) {
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const requestOptions = new RequestOptions({headers: headers});
+
+        // Post.
+        this.spinner = true;
+        return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
+        }).catch(e => {
+            this.spinner = false;
+            if (e.status === 0) {
+                this.spinner = false;
+                this.appService.error('Dispatch node is currently down for maintenance.');
+            } else {
+                const response = e.json();
+                return new Observable(observer => {
+                    observer.next(response);
+                    observer.complete();
+                });
+            }
+        });
+    }
+
+    /**
+     *
      */
     public reset(): void {
-        console.log('FOOK ME')
         this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
         this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
         this.formGroup.get('recipientAddress').setValue('c296220327589dc04e6ee01bf16563f0f53895bb');
