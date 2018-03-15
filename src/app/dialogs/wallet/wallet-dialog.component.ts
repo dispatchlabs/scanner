@@ -101,11 +101,13 @@ export class WalletDialogComponent implements OnInit {
                 to: this.formGroup.get('recipientAddress').value,
                 value: parseInt(this.formGroup.get('numberOfTokens').value, 10),
             }
+            this.spinner = true;
             this.post('http://localhost:1975/v1/test_transaction', json).subscribe( () => {
                 setTimeout(() => {
                     this.get('http://localhost:1975/v1/balance/' + this.formGroup.get('address').value).subscribe( response => {
                         this.spinner = false;
-                        this.appService.success('Tokens sent! Your new balance is ' + response.balance);
+                        this.balance = response.balance;
+                        this.appService.success('Tokens sent! Your new balance is ' + this.balance);
                     });
                 }, 5 * 1000);
             });
