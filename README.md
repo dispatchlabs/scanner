@@ -5,11 +5,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Node `brew install node` 
 
 # ![](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_directions_run_black_24px.svg) Setup and Run
-`git clone https://github.com/dispatchlabs/web-wallet.git`<br>
-`cd web-wallet`<br>
-`npm i`<br>
-`ng serve -e=dev` or `ng serve -e=dispatch`<br>
-Open in browser `http://localhost:4200/`
+- `git clone https://github.com/dispatchlabs/web-wallet.git`<br>
+- `cd web-wallet`<br>
+- `npm i`<br>
+- `ng serve -e=dev` or `ng serve -e=dispatch`<br>
+- Open in browser `http://localhost:4200/`
 
 ## Node IP 
 To change the node IP to connect to modify nodeIp in the appropriate ./src/environments/ file. 
