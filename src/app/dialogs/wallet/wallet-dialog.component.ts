@@ -3,6 +3,7 @@ import {MatDialogRef} from '@angular/material';
 import {AppService} from '../../app.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as secp256k1 from 'secp256k1';
+import * as keccak from 'keccak';
 
 declare const Buffer
 
@@ -48,25 +49,45 @@ export class WalletDialogComponent implements OnInit {
     /**
      *
      */
-    public generateWallet() {
+    public generateWallet(): void {
         const privateKey = new Buffer(32);
         do {
             crypto.getRandomValues(privateKey);
         } while (!secp256k1.privateKeyVerify(privateKey));
-        const hexPrivateKey = Buffer.from(privateKey).toString('hex');
-
         const publicKey = secp256k1.publicKeyCreate(privateKey);
         const address = new Buffer(20);
         for (let i = 0; i < address.length; i++) {
             address[i] = publicKey[i + 12];
         }
-        const hexAddress = Buffer.from(address).toString('hex');
-
-        this.formGroup.get('privateKey').setValue(hexPrivateKey);
-        this.formGroup.get('address').setValue(hexAddress);
-
-
-
+        this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
+        this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
     }
 
+    /**
+     *
+     */
+    public sendTokens(): void {
+
+        const privateKey = new Buffer('2093fde230170efc92b2c122b8b831b30f916dd5568b50a427caa76e13e7effd', 'hex')
+        const hashBytes = new Buffer('FOOK ME')
+        const hash = keccak('keccak256').update(hashBytes).digest();
+
+        console.log(keccak('keccak256').update('Hello world!').digest('hex'))
+
+        console.log(hashBytes);
+        console.log(hash);
+
+
+
+        /*
+
+
+
+
+
+        console.log(hex);
+
+        console.log(Buffer.from(hex, 'hex'));
+        */
+    }
 }
