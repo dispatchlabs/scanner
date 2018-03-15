@@ -8,7 +8,7 @@
 
 <mat-dialog-content>
     <div [formGroup]="formGroup">
-        <h3>My Wallet</h3>
+        <h3>My Info</h3>
         <mat-form-field>
             <input matInput formControlName="privateKey" placeholder="Private Key">
         </mat-form-field>
@@ -20,8 +20,11 @@
                 <a (click)="generateWallet()"><i class="fa fa-plus-circle"></i> Generate New Wallet</a>
             </div>
             <div fxFlex class="right">
-                <a><i class="fa fa-save"></i> Save My Private Key</a>
+                <a *ngIf="formGroup.get('privateKey').valid"><i class="fa fa-save"></i> Save My Private Key</a>
             </div>
+        </div>
+        <div class="mt30">
+            <a><i class="fa fa-refresh"></i> Reset to dispatch wallet</a>
         </div>
 
         <h3 class="mt30">Recipient</h3>

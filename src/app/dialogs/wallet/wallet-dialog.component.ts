@@ -26,8 +26,8 @@ export class WalletDialogComponent implements OnInit {
      */
     constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<WalletDialogComponent>, private formBuilder: FormBuilder) {
         this.formGroup = formBuilder.group({
-            privateKey: new FormControl('', Validators.compose([Validators.required])),
-            address: new FormControl('', Validators.compose([Validators.required])),
+            privateKey: new FormControl('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9', Validators.compose([Validators.required, Validators.minLength(64)])),
+            address: new FormControl('9d6fa5845833c42e1aa4b768f944c5e09fe968b0', Validators.compose([Validators.required])),
             recipientAddress: new FormControl('', Validators.compose([Validators.required])),
             numberOfTokens: new FormControl('', Validators.compose([Validators.required])),
         });
@@ -77,17 +77,18 @@ export class WalletDialogComponent implements OnInit {
         console.log(hashBytes);
         console.log(hash);
 
-
-
         /*
-
-
-
-
-
         console.log(hex);
 
         console.log(Buffer.from(hex, 'hex'));
         */
+    }
+
+    /**
+     *
+     */
+    public reset(): void {
+        this.formGroup.get('privateKey').setValue('dbb9eb135089c47e7ae678eed35933e13efa79c88731794add26c1a370b9efc9');
+        this.formGroup.get('address').setValue('9d6fa5845833c42e1aa4b768f944c5e09fe968b0');
     }
 }
