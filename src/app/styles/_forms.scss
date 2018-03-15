@@ -64,6 +64,14 @@ button.mat-button, button.mat-raised-button {
       margin-top: 7px;
     }
   }
+
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #FFF;
+  }
+
+  .mat-progress-spinner {
+    margin: 0 auto;
+  }
 }
 
 .mat-calendar-controls button.mat-button {

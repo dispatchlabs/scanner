@@ -21,6 +21,7 @@ export class WalletDialogComponent implements OnInit {
      * Class Level Declarations
      */
     public formGroup: FormGroup;
+    public spinner = false;
 
     /**
      *
@@ -111,8 +112,10 @@ export class WalletDialogComponent implements OnInit {
         const requestOptions = new RequestOptions({headers: headers});
 
         // Post.
+        this.spinner = true;
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {
+            // this.spinner = false;
             if (e.status === 0) {
                     this.appService.error('Unable to connect to Dispatch node.');
             } else {
