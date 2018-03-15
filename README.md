@@ -2,7 +2,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.1.
 
 ## Prerequisites
-Homebrew `brew install node` 
+Node `brew install node` 
 
 ## Setup and Run
 `git clone https://github.com/dispatchlabs/web-wallet.git`<br>
