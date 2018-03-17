@@ -7,5 +7,24 @@
 </div>
 
 <mat-dialog-content>
-
+    <ul class="none">
+        <li>
+            <strong>Hash:</strong> {{transaction?.hash}}
+        </li>
+        <li>
+            <strong>From:</strong> {{transaction?.from}}
+        </li>
+        <li>
+            <strong>To:</strong> {{transaction?.to}}
+        </li>
+        <li>
+            <strong>Value:</strong> {{transaction?.value}}
+        </li>
+        <li>
+            <strong>Time:</strong> {{transaction?.time}}
+        </li>
+        <li>
+            <strong>Signature:</strong> {{transaction?.signature}}
+        </li>
+    </ul>
 </mat-dialog-content>

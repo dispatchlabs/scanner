@@ -309,6 +309,13 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px white inset;
 }
 
+.mat-row:hover {
+  background: #EEE;
+  cursor: pointer;
+  transform: scale(1.025);
+  transition: all .3s;
+}
+
 .mat-cell {
   padding: 10px 0;
 }
