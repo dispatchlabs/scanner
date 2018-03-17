@@ -36,6 +36,7 @@ import {MetaPageComponent} from './pages/meta/meta-page.component';
 import {NewsListPageComponent} from './pages/news/news-list-page.component';
 import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
 import {ConfigAction} from './store/reducers/config.reducer';
+import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
 
 /**
  *
@@ -106,7 +107,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // Components
         // Dialogs
         SignInDialogComponent,
-        WalletDialogComponent
+        WalletDialogComponent,
+        SendTokensDialogComponent
     ],
     imports: [
         // Angular

@@ -6,13 +6,12 @@ import * as secp256k1 from 'secp256k1';
 import * as keccak from 'keccak';
 import {Observable} from 'rxjs/Rx';
 import {Headers, Http, RequestOptions} from '@angular/http';
-import {environment} from "../../../environments/environment";
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {ConfigAction} from '../../store/reducers/config.reducer';
 
-declare const Buffer
+declare const Buffer;
 
 @Component({
     selector: 'app-wallet-dialog',
