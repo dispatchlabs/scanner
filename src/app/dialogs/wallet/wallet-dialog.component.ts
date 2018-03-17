@@ -92,13 +92,13 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
         this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
         this.config.privateKey = this.formGroup.get('privateKey').value;
         this.config.address = this.formGroup.get('address').value;
-        this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
     }
 
     /**
      *
      */
     public save(): void {
+        this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
         this.appService.appEvents.emit({type: APP_REFRESH});
         this.close();
         this.appService.success('Your wallet has been saved.');

@@ -11,6 +11,8 @@ import {routes} from './app.module';
 import {environment} from '../environments/environment';
 import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
 import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
+import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
+import {Transaction} from './store/states/transaction';
 
 /**
  * Events
@@ -159,6 +161,27 @@ export class AppService extends M2Service {
                 left: '',
                 right: ''
             },
+        });
+    }
+
+    /**
+     *
+     * @param {Transaction} transaction
+     * @returns {any}
+     */
+    public openTransaction(transaction: Transaction): any {
+        return this.mdDialogRef = this.mdDialog.open(TransactionDialogComponent, {
+            width: '600px',
+            height: '',
+            position: {
+                top: '16px',
+                bottom: '',
+                left: '',
+                right: ''
+            },
+            data: {
+                transaction: transaction
+            }
         });
     }
 }

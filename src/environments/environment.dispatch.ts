@@ -1,4 +1,3 @@
-import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 export const environment = {
     name: 'dispatch',
@@ -19,5 +18,5 @@ export const environment = {
     m2InfoUrl: '',
     m2ConfirmUrl: '',
     m2PostListImageUrl: '',
-    browserModulesOnly: [NgxChartsModule]
+    browserModulesOnly: []
 };
