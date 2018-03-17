@@ -37,7 +37,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private http: Http, private store: Store<AppState>) {
         this.formGroup = formBuilder.group({
-            to: new FormControl('', Validators.compose([Validators.required, Validators.minLength(40)])),
+            to: new FormControl('c296220327589dc04e6ee01bf16563f0f53895bb', Validators.compose([Validators.required, Validators.minLength(40)])),
             tokens: new FormControl(0, Validators.compose([Validators.required, Validators.min(1)])),
         });
         this.configState = this.store.select('config');
