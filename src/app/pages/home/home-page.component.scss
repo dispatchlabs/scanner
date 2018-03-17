@@ -1,5 +1,17 @@
 .home-page {
   background: #FAFAFA;
   min-height: 100vh;
-  padding: 40px;
+  padding: 20px 40px 40px;
+
+  a {
+    .fa {
+      transition: all .3s;
+    }
+
+    &:hover {
+      .fa {
+        transform: rotate(45deg);
+      }
+    }
+  }
 }
