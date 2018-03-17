@@ -12,6 +12,7 @@
             </div>
             <mat-menu #appMenu="matMenu">
                 <button mat-menu-item (click)="appService.openWallet()">My Wallet</button>
+                <button mat-menu-item (click)="appService.openSendTokens()">Send Tokens</button>
                 <!--<button mat-menu-item (click)="appService.navigatetoBlog()">Blog</button>
                 <div class="account-buttons">
                     <div *ngIf="!appService.isSignedIn()">

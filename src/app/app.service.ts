@@ -10,6 +10,7 @@ import {SignInDialogComponent} from './dialogs/sign-in/sign-in-dialog.component'
 import {routes} from './app.module';
 import {environment} from '../environments/environment';
 import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
+import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
 
 /**
  * Events
@@ -131,8 +132,25 @@ export class AppService extends M2Service {
      *
      * @returns {MatDialogRef<WalletDialogComponent>}
      */
-    public openWallet() {
+    public openWallet(): any {
         return this.mdDialogRef = this.mdDialog.open(WalletDialogComponent, {
+            width: '600px',
+            height: '',
+            position: {
+                top: '16px',
+                bottom: '',
+                left: '',
+                right: ''
+            },
+        });
+    }
+
+    /**
+     *
+     * @returns {MatDialogRef<SendTokensDialogComponent>}
+     */
+    public openSendTokens(): any {
+        return this.mdDialogRef = this.mdDialog.open(SendTokensDialogComponent, {
             width: '600px',
             height: '',
             position: {

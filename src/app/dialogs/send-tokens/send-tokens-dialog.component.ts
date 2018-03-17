@@ -43,8 +43,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
-            this.formGroup.get('privateKey').setValue(this.config.privateKey);
-            this.formGroup.get('address').setValue(this.config.address);
         });
     }
 

@@ -154,7 +154,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
     ],
     entryComponents: [
         SignInDialogComponent,
-        WalletDialogComponent
+        WalletDialogComponent,
+        SendTokensDialogComponent
     ],
     providers: [{provide: 'AppService', useClass: AppService}],
     bootstrap: [AppComponent]
