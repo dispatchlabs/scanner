@@ -1,7 +1,7 @@
 export const environment = {
     name: 'dispatch',
     production: true,
-    nodeIp: '35.230.30.125',
+    delegateIps: ['35.199.173.199', '35.227.16.102', '35.230.76.164', '35.230.101.49'],
     m2AppName: 'Dispatch',
     m2AppId: '',
     m2AppVersion: '',

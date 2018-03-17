@@ -197,6 +197,7 @@ export class WalletDialogComponent implements OnInit {
      * @returns {string}
      */
     private getBaseUrl(): string {
-        return 'http://' + environment.nodeIp + ':1975';
+        return null;
+        //return 'http://' + environment.nodeIp + ':1975';
     }
 }

@@ -33,9 +33,9 @@ import {BlogListPageComponent} from './pages/blog/blog-list-page.component';
 import {M2Module} from './m2-angular/m2.module';
 import {APP_CLEAR_ALL_STATES} from './m2-angular/services/m2.service';
 import {MetaPageComponent} from './pages/meta/meta-page.component';
-import {ChangeMeAction} from './store/reducers/change-me.reducer';
 import {NewsListPageComponent} from './pages/news/news-list-page.component';
 import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
+import {ConfigAction} from './store/reducers/config.reducer';
 
 /**
  *
@@ -64,7 +64,7 @@ export const routes: Routes = [
  */
 const reducers: ActionReducerMap<AppState> = {
     m2: M2Action.reducer,
-    foo: ChangeMeAction.reducer
+    config: ConfigAction.reducer
 };
 
 /**
