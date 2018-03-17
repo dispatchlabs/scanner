@@ -29,6 +29,24 @@
     font-family: 'Avant Garde', SansSerif, sans-serif;
     padding-right: 20px;
     text-align: right;
+
+    p {
+      margin: 10px 0 0;
+    }
+
+    a {
+      color: #FFF;
+
+      .fa {
+        transition: all .3s;
+      }
+
+      &:hover {
+        .fa {
+          transform: rotate(45deg);
+        }
+      }
+    }
   }
 
   .right-buttons {

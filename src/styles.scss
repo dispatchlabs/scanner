@@ -216,10 +216,10 @@ ul.none {
 
 .two-column-container {
   > div:nth-child(odd) {
-    padding-right: 10px;
+    padding-right: 20px;
   }
   > div:nth-child(even) {
-    padding-left: 10px;
+    padding-left: 20px;
   }
 }
 
