@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
      */
     ngDoCheck() {
         if (typeof window !== 'undefined') {
-            window.pageYOffset > 50 ? this.headerClass = 'header scrolled' : this.headerClass = 'header';
+            window.pageYOffset > 25 ? this.headerClass = 'header scrolled' : this.headerClass = 'header';
         }
     }
 
