@@ -35,7 +35,7 @@ import {APP_CLEAR_ALL_STATES} from './m2-angular/services/m2.service';
 import {MetaPageComponent} from './pages/meta/meta-page.component';
 import {NewsListPageComponent} from './pages/news/news-list-page.component';
 import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
-import {DispatchAction} from './store/reducers/disptach.reducer';
+import {ConfigAction} from './store/reducers/config.reducer';
 
 /**
  *
@@ -64,7 +64,7 @@ export const routes: Routes = [
  */
 const reducers: ActionReducerMap<AppState> = {
     m2: M2Action.reducer,
-    dispatch: DispatchAction.reducer
+    config: ConfigAction.reducer
 };
 
 /**
