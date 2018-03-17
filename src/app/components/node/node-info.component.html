@@ -1,38 +1,42 @@
 <div class="node-info-header">
     <h3>Node 1</h3>
 </div>
-<div fxLayout="row" class="node-info-body">
-<div fxFlex>
-    Number of Tx: <strong>{{transactions?.length}}</strong>
-</div>
-<div fxFlex>
-    Balance: <strong>100</strong>
-</div>
-<div fxFlex>
-    Node IP <strong>192.168.0.1</strong>
-</div>
-<div>
-<mat-table #table [dataSource]="dataSource">
+<div class="node-info-body">
+    <div fxLayout="row">
+        <div fxFlex>
+            Number of Tx: <strong>{{transactions?.length}}</strong>
+        </div>
+        <div fxFlex>
+            Balance: <strong>100</strong>
+        </div>
+        <div fxFlex>
+            Node IP <strong>192.168.0.1</strong>
+        </div>
+    </div>
+    <div>
+        <mat-table #table [dataSource]="dataSource">
 
-    <!-- To -->
-<ng-container cdkColumnDef="to">
-    <mat-header-cell *cdkHeaderCellDef> To</mat-header-cell>
-<mat-cell *cdkCellDef="let row"> {{row.to}}</mat-cell>
-</ng-container>
+            <!-- To -->
+            <ng-container cdkColumnDef="to">
+                <mat-header-cell *cdkHeaderCellDef> To</mat-header-cell>
+                <mat-cell *cdkCellDef="let row"> {{row.to}}</mat-cell>
+            </ng-container>
 
-    <!-- Value -->
-<ng-container cdkColumnDef="value">
-    <mat-header-cell *cdkHeaderCellDef> Value</mat-header-cell>
-<mat-cell *cdkCellDef="let row"> {{row.value}}</mat-cell>
-</ng-container>
+            <!-- Value -->
+            <ng-container cdkColumnDef="value">
+                <mat-header-cell *cdkHeaderCellDef> Value</mat-header-cell>
+                <mat-cell *cdkCellDef="let row"> {{row.value}}</mat-cell>
+            </ng-container>
 
-    <!-- Time -->
-<ng-container cdkColumnDef="time">
-    <mat-header-cell *cdkHeaderCellDef> Time</mat-header-cell>
-<mat-cell *cdkCellDef="let row"> {{row.time | m2SimpleDateTime}}</mat-cell>
-</ng-container>
+            <!-- Time -->
+            <ng-container cdkColumnDef="time">
+                <mat-header-cell *cdkHeaderCellDef> Time</mat-header-cell>
+                <mat-cell *cdkCellDef="let row"> {{row.time | m2SimpleDateTime}}</mat-cell>
+            </ng-container>
 
-    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+            <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
 </div>
+
