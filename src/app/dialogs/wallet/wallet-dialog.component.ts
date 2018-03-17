@@ -11,6 +11,7 @@ import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {ConfigAction} from '../../store/reducers/config.reducer';
 import {APP_SIGN_OUT} from '../../m2-angular/services/m2.service';
+import {APP_REFRESH} from '../../app.component';
 
 declare const Buffer;
 
@@ -98,7 +99,7 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
      *
      */
     public save(): void {
-        this.appService.appEvents.emit({type: APP_SIGN_OUT});
+        this.appService.appEvents.emit({type: APP_REFRESH});
         this.close();
         this.appService.success('Your wallet has been saved.');
     }
