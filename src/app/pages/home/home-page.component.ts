@@ -16,6 +16,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     @ViewChild('getStartedDiv')
     public getStartedDiv: any;
+    public loading = false;
 
     /**
      *

@@ -4,6 +4,7 @@ import {RouterModule} from '@angular/router';
 import {HomePageComponent} from './home-page.component';
 import {MatButtonModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {NodeInfoComponent} from "../../components/node/node-info.component";
 
 /**
  *
@@ -19,7 +20,10 @@ import {FlexLayoutModule} from '@angular/flex-layout';
         MatButtonModule,
         FlexLayoutModule
     ],
-    declarations: [HomePageComponent]
+    declarations: [
+        HomePageComponent,
+        NodeInfoComponent
+    ]
 })
 export class HomeModule {
 }

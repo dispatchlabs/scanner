@@ -214,10 +214,23 @@ ul.none {
   font-family: 'Caecilia';
 }
 
-.loading-background {
-  position: relative;
+.two-column-container {
+  > div:nth-child(odd) {
+    padding-right: 10px;
+  }
+  > div:nth-child(even) {
+    padding-left: 10px;
+  }
+}
+
+.loading-overlay {
+  background: rgba(0,0,0,0.25);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 1000;
-  min-height: 300px;
 
   .loading {
     background: url('assets/images/icon-bg-purple.png') center no-repeat;
