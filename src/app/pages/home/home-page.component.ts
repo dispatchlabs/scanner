@@ -1,6 +1,7 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild} from '@angular/core';
 import {AppService} from '../../app.service';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 /**
  * HomePageComponent
@@ -17,6 +18,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('getStartedDiv')
     public getStartedDiv: any;
     public loading = false;
+    public delegateIps: string [];
 
     /**
      *
@@ -24,6 +26,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      * @param {Router} router
      */
     constructor(@Inject('AppService') public appService: any, private router: Router) {
+        this.delegateIps = environment.delegateIps;
     }
 
     /**
