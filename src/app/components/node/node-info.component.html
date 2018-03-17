@@ -1,19 +1,20 @@
-<div class="node-info-header">
-    <h3>Node 1</h3>
-</div>
-<div class="node-info-body">
-    <div fxLayout="row">
+<div class="node-info-container">
+    <div class="node-info-header" fxLayout="column">
         <div fxFlex>
-            Number of Tx: <strong>{{transactions?.length}}</strong>
+            <h3>Node {{ip}}</h3>
         </div>
         <div fxFlex>
-            Balance: <strong>{{balance}}</strong>
-        </div>
-        <div fxFlex>
-            Node IP <strong>{{ip}}</strong>
+            <div fxLayout="row">
+                <div fxFlex>
+                    Transactions: <strong>{{transactions?.length}}</strong>
+                </div>
+                <div fxFlex class="right">
+                    Balance: <strong>{{balance}}</strong>
+                </div>
+            </div>
         </div>
     </div>
-    <div>
+    <div class="node-info-body">
         <mat-table #table [dataSource]="dataSource">
 
             <!-- To -->
@@ -24,14 +25,14 @@
 
             <!-- Value -->
             <ng-container cdkColumnDef="value">
-                <mat-header-cell *cdkHeaderCellDef> Value</mat-header-cell>
-                <mat-cell *cdkCellDef="let row"> {{row.value}}</mat-cell>
+                <mat-header-cell *cdkHeaderCellDef class="right"> Value</mat-header-cell>
+                <mat-cell *cdkCellDef="let row" class="right"> {{row.value}}</mat-cell>
             </ng-container>
 
             <!-- Time -->
             <ng-container cdkColumnDef="time">
-                <mat-header-cell *cdkHeaderCellDef> Time</mat-header-cell>
-                <mat-cell *cdkCellDef="let row"> {{row.time | m2SimpleDateTime}}</mat-cell>
+                <mat-header-cell *cdkHeaderCellDef class="right"> Time</mat-header-cell>
+                <mat-cell *cdkCellDef="let row" class="right"> {{row.time | m2SimpleDateTime}}</mat-cell>
             </ng-container>
 
             <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>

@@ -1,11 +1,23 @@
-.node-info-header {
-  background: #123985;
-  background: linear-gradient(to left, #123985 0%, #007DC5 50%, #3CBFBE 100%);
-  border-bottom: 1px solid #DFDFDF;
-  padding: 10px;
+.node-info-container {
+  border: 1px solid #CCC;
+  margin-bottom: 40px;
 
-  h3 {
+  .node-info-header {
+    background: #123985;
+    background: linear-gradient(to left, #123985 0%, #007DC5 50%, #3CBFBE 100%);
+    border-bottom: 1px solid #DFDFDF;
     color: #FFF;
-    margin: 0;
+    padding: 10px;
+
+    h3 {
+      color: #FFF;
+      margin: 10px 0 10px;
+    }
+  }
+
+  .node-info-body {
+    max-height: 400px;
+    overflow: auto;
+    margin-bottom: 10px;
   }
 }

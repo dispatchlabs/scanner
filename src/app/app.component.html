@@ -3,6 +3,9 @@
         <div class="logo" (click)="appService.navigateToHome()">
             <img src="assets/images/logo-white.png">
         </div>
+        <div fxFlex class="my-address">
+            <strong>My Address:</strong> {{config.address}}
+        </div>
         <div fxFlex class="right-buttons">
             <div class="circle-button" [matMenuTriggerFor]="appMenu">
                 <i class="fa fa-bars"></i>

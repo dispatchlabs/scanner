@@ -6,6 +6,7 @@ import {AppService} from './app.service';
 import {Router} from '@angular/router';
 import {Config} from './store/states/config';
 import {environment} from '../environments/environment';
+import {Observable} from 'rxjs/Rx';
 
 /**
  * AppComponent
@@ -16,12 +17,15 @@ import {environment} from '../environments/environment';
     styleUrls: ['./app.component.scss'],
     host: {'(window:scroll)': '($event)'}
 })
-export class AppComponent implements OnInit, AfterViewInit, DoCheck {
+export class AppComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
 
     /**
      * Class level-declarations.
      */
     public headerClass = 'header';
+    public configState: Observable<Config>;
+    public config: Config;
+    public configSubscription: any
 
     /**
      *
@@ -31,6 +35,10 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck {
      * @param {} router
      */
     constructor(@Inject('AppService') public appService: any, private store: Store<AppState>, private mdDialog: MatDialog, private router: Router) {
+        this.configState = this.store.select('config');
+        this.configSubscription = this.configState.subscribe((config: Config) => {
+            this.config = config;
+        });
     }
 
     /**
@@ -52,5 +60,12 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck {
         if (typeof window !== 'undefined') {
             window.pageYOffset > 50 ? this.headerClass = 'header scrolled' : this.headerClass = 'header';
         }
+    }
+
+    /**
+     *
+     */
+    ngOnDestroy() {
+        this.configSubscription.unsubscribe();
     }
 }
