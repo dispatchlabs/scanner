@@ -3,7 +3,9 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 export const environment = {
     name: 'dev',
     production: false,
-    nodeIp: 'localhost',
+    delegateIps: ['35.199.173.199', '35.227.16.102', '35.230.76.164', '35.230.101.49'],
+    privateKey: '9dc7a0f09dba1ae2fec78c5238a0917208bd6012e335eda0f6bef87bb7a15a30',
+    address: '10c11543c310560e18478c97041b69add1c92b37',
     m2AppName: 'Dispatch',
     m2AppId: '',
     m2AppVersion: '',

@@ -29,6 +29,9 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck {
      * @param {} router
      */
     constructor(@Inject('AppService') public appService: any, private store: Store<AppState>, private mdDialog: MatDialog, private router: Router) {
+
+
+
     }
 
     /**
