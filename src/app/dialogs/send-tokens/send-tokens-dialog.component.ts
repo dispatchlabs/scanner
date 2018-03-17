@@ -76,9 +76,9 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 from: this.config.address,
                 to: this.formGroup.get('to').value,
                 value: parseInt(this.formGroup.get('tokens').value, 10),
-            }
+            };
             this.spinner = true;
-            this.post(this.config.delegateIps[0] + '/v1/test_transaction', json).subscribe( () => {
+            this.post('http://' + this.config.delegateIps[0] + ':1975/v1/test_transaction', json).subscribe( () => {
                 this.close();
                 this.appService.appEvents.emit({type: APP_REFRESH});
             });
@@ -94,7 +94,8 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public post(url: string, json: any) {
         const headers = new Headers({'Content-Type': 'application/json'});
         const requestOptions = new RequestOptions({headers: headers});
-
+        console.log(url);
+        console.log(json);
         // Post.
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {

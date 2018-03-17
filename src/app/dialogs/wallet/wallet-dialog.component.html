@@ -7,18 +7,8 @@
 </div>
 
 <mat-dialog-content>
-    <div *ngIf="loading" class="loading-overlay">
-        <div class="loading">
-            <div class="ping"></div>
-            <div class="ping one"></div>
-            <div class="ping two"></div>
-            <div class="icon">
-                <img src="assets/images/icon-black.png">
-            </div>
-        </div>
-    </div>
 
-    <div *ngIf="!loading" [formGroup]="formGroup">
+    <div [formGroup]="formGroup">
         <mat-form-field>
             <input matInput formControlName="privateKey" placeholder="Private Key">
         </mat-form-field>

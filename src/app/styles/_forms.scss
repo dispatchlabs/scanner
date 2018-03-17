@@ -53,7 +53,7 @@ button.mat-button, button.mat-raised-button {
   }
 
   &[disabled] {
-    background: #CCC;
+    background: #CCC !important;
     color: #FFF !important;
     cursor: not-allowed;
   }
@@ -73,6 +73,7 @@ button.mat-button, button.mat-raised-button {
     margin: 0 auto;
   }
 }
+
 
 .mat-calendar-controls button.mat-button {
   color: #666;

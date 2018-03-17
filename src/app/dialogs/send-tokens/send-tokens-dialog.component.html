@@ -7,20 +7,7 @@
 </div>
 
 <mat-dialog-content>
-    <div *ngIf="loading" class="loading-overlay">
-        <div class="loading">
-            <div class="ping"></div>
-            <div class="ping one"></div>
-            <div class="ping two"></div>
-            <div class="icon">
-                <img src="assets/images/icon-black.png">
-            </div>
-        </div>
-    </div>
-
     <div [formGroup]="formGroup">
-
-        <h3 class="mt30">Recipient</h3>
         <mat-form-field>
             <input matInput formControlName="to" placeholder="Address">
         </mat-form-field>
@@ -32,5 +19,4 @@
             <m2-button [disabled]="!formGroup.valid || spinner" [spinner]="spinner" (click)="send()" text="Send Tokens"></m2-button>
         </div>
     </div>
-
 </mat-dialog-content>

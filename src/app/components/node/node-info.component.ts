@@ -116,7 +116,6 @@ export class NodeInfoComponent implements OnInit, OnDestroy, OnChanges {
     ngOnChanges() {
         if (this.transactions && this.transactions.length > 0) {
             this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
-            console.log(this.transactions);
         }
     }
 }
