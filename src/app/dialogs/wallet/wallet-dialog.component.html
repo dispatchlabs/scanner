@@ -19,12 +19,6 @@
     </div>
 
     <div *ngIf="!loading" [formGroup]="formGroup">
-        <h3>My Balance</h3>
-        <p>
-            Tokens: <strong>{{balance}}</strong>
-        </p>
-
-        <h3 class="mt30">My Info</h3>
         <mat-form-field>
             <input matInput formControlName="privateKey" placeholder="Private Key">
         </mat-form-field>
@@ -39,17 +33,6 @@
                 <a *ngIf="formGroup.get('privateKey').valid"><i class="fa fa-save"></i> Save My Private Key</a>
             </div>
         </div>
-        <div class="mt30">
-            <a (click)="reset()"><i class="fa fa-refresh"></i> Reset to Dispatch test wallet</a>
-        </div>
-
-        <h3 class="mt30">Recipient</h3>
-        <mat-form-field>
-            <input matInput formControlName="recipientAddress" placeholder="Address">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput formControlName="numberOfTokens" placeholder="Number of Tokens">
-        </mat-form-field>
 
         <div class="mt30">
             <m2-button [disabled]="!formGroup.valid || spinner" [spinner]="spinner" (click)="save()" text="Save"></m2-button>
