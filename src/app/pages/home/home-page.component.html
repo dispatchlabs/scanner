@@ -10,10 +10,10 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" *ngIf="!loading">
         <div fxLayout="row wrap" class="two-column-container">
-            <div fxFlex="50" *ngFor="let delegateIp of delegateIps">
-                <app-node-info></app-node-info>
+            <div fxFlex="50" *ngFor="let delegate of delegates">
+                <app-node-info [ip]="delegate?.ip" [balance]="delegate?.balance" [transactions]="delegate?.transactions"></app-node-info>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Transaction} from '../../store/states/transaction';
 import {Observable} from 'rxjs/Observable';
 import {Config} from '../../store/states/config';
@@ -68,19 +68,22 @@ class TransactionDataSource extends DataSource<any> {
     templateUrl: './node-info.component.html',
     styleUrls: ['./node-info.component.scss']
 })
-export class NodeInfoComponent implements OnInit, OnDestroy {
+export class NodeInfoComponent implements OnInit, OnDestroy, OnChanges {
 
     /**
      * Class level declarations
      */
     @Input()
-    public delegateIp: string;
+    public ip: string;
+    @Input()
+    public balance: number;
     @Input()
     public transactions: Transaction [];
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
     public dataSource: TransactionDataSource | null;
+    public displayedColumns = ['to', 'value', 'time'];
 
     /**
      *
@@ -92,7 +95,6 @@ export class NodeInfoComponent implements OnInit, OnDestroy {
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
         });
-        this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
     }
 
     /**
@@ -106,5 +108,15 @@ export class NodeInfoComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy() {
         this.configSubscription.unsubscribe();
+    }
+
+    /**
+     *
+     */
+    ngOnChanges() {
+        if (this.transactions && this.transactions.length > 0) {
+            this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
+            console.log(this.transactions);
+        }
     }
 }

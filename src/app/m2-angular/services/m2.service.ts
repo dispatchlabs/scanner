@@ -79,14 +79,16 @@ export class M2Service implements OnDestroy {
         });
         this.routerSubscription = this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                this.createOrUpdateMeta(event.url);
+                // this.createOrUpdateMeta(event.url);
             }
         });
         if (typeof window !== 'undefined') {
             this.setTimestamp();
         }
+        /*
         this.refresh().subscribe(response => {
         });
+        */
     }
 
     /**
@@ -144,8 +146,8 @@ export class M2Service implements OnDestroy {
      * @param routes
      */
     public createMetas(routes: any): void {
-        this.post('m2.action.meta.CreateAction', {routes: routes}).subscribe(response => {
-        });
+        //this.post('m2.action.meta.CreateAction', {routes: routes}).subscribe(response => {
+        //});
     }
 
     /**

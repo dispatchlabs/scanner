@@ -4,6 +4,8 @@ import {Store} from '@ngrx/store';
 import {MatDialog} from '@angular/material';
 import {AppService} from './app.service';
 import {Router} from '@angular/router';
+import {Config} from './store/states/config';
+import {environment} from '../environments/environment';
 
 /**
  * AppComponent
@@ -29,6 +31,9 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck {
      * @param {} router
      */
     constructor(@Inject('AppService') public appService: any, private store: Store<AppState>, private mdDialog: MatDialog, private router: Router) {
+
+
+
 
 
 

@@ -2,9 +2,11 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {HomePageComponent} from './home-page.component';
-import {MatButtonModule} from '@angular/material';
+import {MatButtonModule, MatTableModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {NodeInfoComponent} from "../../components/node/node-info.component";
+import {NodeInfoComponent} from '../../components/node/node-info.component';
+import {CdkTableModule} from '@angular/cdk/table';
+import {M2Module} from '../../m2-angular/m2.module';
 
 /**
  *
@@ -18,7 +20,10 @@ import {NodeInfoComponent} from "../../components/node/node-info.component";
             component: HomePageComponent
         }]),
         MatButtonModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        MatTableModule,
+        CdkTableModule,
+        M2Module,
     ],
     declarations: [
         HomePageComponent,
