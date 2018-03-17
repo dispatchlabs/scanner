@@ -8,6 +8,7 @@ import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {Transaction} from '../../store/states/transaction';
+import {APP_REFRESH} from '../../app.component';
 
 /**
  *
@@ -37,6 +38,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public config: Config;
     public configSubscription: any;
     public delegates = [];
+    private appEventSubscription: any;
 
     /**
      *
@@ -53,6 +55,13 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         for (let i = 0; i < 4; i++) {
             this.delegates.push(new Delegate());
         }
+        this.appEventSubscription = this.appService.appEvents.subscribe((event: any) => {
+            switch (event.type) {
+                case APP_REFRESH:
+                    this.refresh();
+                    return;
+            }
+        });
     }
 
     /**
@@ -73,6 +82,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnDestroy() {
         this.configSubscription.unsubscribe();
+        this.appEventSubscription.unsubscribe();
     }
 
     /**

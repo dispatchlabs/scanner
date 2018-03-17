@@ -5,8 +5,9 @@ import {MatDialog} from '@angular/material';
 import {AppService} from './app.service';
 import {Router} from '@angular/router';
 import {Config} from './store/states/config';
-import {environment} from '../environments/environment';
 import {Observable} from 'rxjs/Rx';
+
+export const APP_REFRESH = 'APP_REFRESH';
 
 /**
  * AppComponent

@@ -10,6 +10,7 @@ import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {ConfigAction} from '../../store/reducers/config.reducer';
+import {APP_SIGN_OUT} from '../../m2-angular/services/m2.service';
 
 declare const Buffer;
 
@@ -91,5 +92,6 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
         this.config.privateKey = this.formGroup.get('privateKey').value;
         this.config.address = this.formGroup.get('address').value;
         this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
+        this.appService.appEvents.emit({type: APP_SIGN_OUT});
     }
 }

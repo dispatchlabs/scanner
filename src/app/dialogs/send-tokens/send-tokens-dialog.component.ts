@@ -7,6 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
+import {APP_REFRESH} from '../../app.component';
 
 declare const Buffer
 
@@ -81,6 +82,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             this.spinner = true;
             this.post(this.config.delegateIps[0] + '/v1/test_transaction', json).subscribe( () => {
                 this.close();
+                this.appService.appEvents.emit({type: APP_REFRESH});
             });
         });
     }
