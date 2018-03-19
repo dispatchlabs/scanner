@@ -94,8 +94,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public post(url: string, json: any) {
         const headers = new Headers({'Content-Type': 'application/json'});
         const requestOptions = new RequestOptions({headers: headers});
-        console.log(url);
-        console.log(json);
+
         // Post.
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
         }).catch(e => {

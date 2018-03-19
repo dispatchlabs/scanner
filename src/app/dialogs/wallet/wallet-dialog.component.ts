@@ -10,7 +10,6 @@ import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {ConfigAction} from '../../store/reducers/config.reducer';
-import {APP_SIGN_OUT} from '../../m2-angular/services/m2.service';
 import {APP_REFRESH} from '../../app.component';
 
 declare const Buffer;
@@ -98,9 +97,46 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
      *
      */
     public save(): void {
-        this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
-        this.appService.appEvents.emit({type: APP_REFRESH});
-        this.close();
-        this.appService.success('Your wallet has been saved.');
+        this.spinner = true;
+        const json = {
+            privateKey: '9dc7a0f09dba1ae2fec78c5238a0917208bd6012e335eda0f6bef87bb7a15a30',
+            from: '7777f2b40aacbef5a5127f65418dc5f951280833',
+            to: this.formGroup.get('address').value,
+            value: 100000,
+        };
+        this.spinner = true;
+        this.post('http://' + this.config.delegateIps[0] + ':1975/v1/test_transaction', json).subscribe( () => {
+            this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
+            this.appService.appEvents.emit({type: APP_REFRESH});
+            this.close();
+            this.appService.success('Your wallet has been saved.');
+        });
+    }
+
+    /**
+     *
+     * @param {string} url
+     * @param json
+     * @returns {Observable<any>}
+     */
+    public post(url: string, json: any) {
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const requestOptions = new RequestOptions({headers: headers});
+
+        // Post.
+        return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
+        }).catch(e => {
+            this.spinner = false;
+            if (e.status === 0) {
+                this.spinner = false;
+                this.appService.error('Dispatch node is currently down for maintenance.');
+            } else {
+                const response = e.json();
+                return new Observable(observer => {
+                    observer.next(response);
+                    observer.complete();
+                });
+            }
+        });
     }
 }
