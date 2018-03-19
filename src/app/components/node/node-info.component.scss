@@ -1,5 +1,5 @@
 .node-info-container {
-   background: #FFF;
+  background: #FFF;
   border: 1px solid #CCC;
   margin-bottom: 40px;
 
@@ -19,5 +19,9 @@
   .node-info-body {
     max-height: 400px;
     overflow: auto;
+  }
+
+  @media (max-width: 640px) {
+    margin-bottom: 20px;
   }
 }

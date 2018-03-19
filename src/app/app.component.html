@@ -1,10 +1,14 @@
 <div class="site-container">
     <div [class]="headerClass" fxLayout="row" fxLayoutAlign="center center">
-        <div class="logo" (click)="appService.navigateToHome()">
-            <img src="assets/images/logo-white.png">
-        </div>
-        <div fxFlex class="my-address">
-            <strong>My Address:</strong> {{config.address}}
+        <div fxFlex>
+            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center center">
+                <div class="logo" (click)="appService.navigateToHome()">
+                    <img src="assets/images/logo-white.png">
+                </div>
+                <div fxFlex class="my-address">
+                    <strong>My Address:</strong> {{config.address}}
+                </div>
+            </div>
         </div>
         <div class="right-buttons">
             <div class="circle-button" [matMenuTriggerFor]="appMenu">
@@ -13,16 +17,6 @@
             <mat-menu #appMenu="matMenu">
                 <button mat-menu-item (click)="appService.openWallet()">My Wallet</button>
                 <button mat-menu-item (click)="appService.openSendTokens()">Send Tokens</button>
-                <!--<button mat-menu-item (click)="appService.navigatetoBlog()">Blog</button>
-                <div class="account-buttons">
-                    <div *ngIf="!appService.isSignedIn()">
-                        <button mat-menu-item (click)="appService.openSignIn()">Sign In</button>
-                    </div>
-                    <div *ngIf="appService.isSignedIn()">
-                        <button *ngIf="appService.isAppAdmin()" mat-menu-item (click)="appService.navigateToMeta()"> Meta</button>
-                        <button mat-menu-item (click)="appService.signOut()">Sign Out</button>
-                    </div>
-                </div>-->
             </mat-menu>
         </div>
     </div>
