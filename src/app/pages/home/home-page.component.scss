@@ -14,4 +14,12 @@
       }
     }
   }
+
+  @media (max-width: 640px) {
+    padding: 20px 0;
+
+    .container {
+      padding: 0 20px;
+    }
+  }
 }
