@@ -89,6 +89,10 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
         this.balance = 0;
         this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
         this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
+
+        // console.log(keccak('keccak256').digest().toString('hex'));
+        const hash1 = keccak('keccak256').update('fook').digest('hex');
+        console.log(hash1);
     }
 
     /**
