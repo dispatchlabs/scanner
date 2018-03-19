@@ -70,7 +70,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
-        this.appService.confirm('Are you sure you want to send ' + this.formGroup.get('tokens').value + ' tokens to ' + this.formGroup.get('to').value + '?', () => {
+        this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
             const json = {
                 privateKey: this.config.privateKey,
                 from: this.config.address,

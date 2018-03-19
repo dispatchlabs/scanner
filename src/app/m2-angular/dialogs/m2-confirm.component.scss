@@ -21,3 +21,15 @@
     max-width: 40px;
   }
 }
+
+.m2-confirm-buttons {
+  margin-top: 40px;
+
+  @media (max-width: 640px) {
+    text-align: center;
+
+    button:first-child {
+      margin-bottom: 20px;
+    }
+  }
+}

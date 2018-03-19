@@ -5,7 +5,9 @@
 
   .node-info-header {
     background: #123985;
-    background: linear-gradient(to left, #123985 0%, #007DC5 50%, #3CBFBE 100%);
+    background: url('../../../assets/images/rainbow-bg.png');
+    background-attachment: fixed;
+    background-position: top center;
     border-bottom: 1px solid #DFDFDF;
     color: #FFF;
     padding: 10px;

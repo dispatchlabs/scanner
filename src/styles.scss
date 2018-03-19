@@ -290,6 +290,16 @@ ul.none {
   }
 }
 
+// M2 Styles local override
+.m2-info-image {
+  margin-top: -20px;
+  text-align: center;
+
+  img {
+    max-width: 80px !important;
+  }
+}
+
 // Material Styles
 .mat-dialog-container {
   position: relative;

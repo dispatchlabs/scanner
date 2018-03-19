@@ -250,11 +250,11 @@ export class M2Service implements OnDestroy {
      */
     public confirm(message: string, ok: any): void {
         this.matDialog.open(M2ConfirmComponent, {
-            disableClose: false,
-            width: '600px',
+            disableClose: true,
+            width: '560px',
             height: '',
             position: {
-                top: '100px',
+                top: '40px',
                 bottom: '',
                 left: '',
                 right: ''

@@ -15,8 +15,8 @@ export const environment = {
     m2ButtonMinWidth: '180px',
     m2WebsiteUrl: '',
     m2WebProxyPort: 3001,
-    m2InfoUrl: '',
-    m2ConfirmUrl: '',
+    m2InfoUrl: 'assets/images/icon-purple.png',
+    m2ConfirmUrl: 'assets/images/icon-purple.png',
     m2PostListImageUrl: '',
     browserModulesOnly: []
 };
