@@ -89,8 +89,6 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
         this.balance = 0;
         this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
         this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
-        this.config.privateKey = this.formGroup.get('privateKey').value;
-        this.config.address = this.formGroup.get('address').value;
     }
 
     /**
@@ -106,6 +104,8 @@ export class WalletDialogComponent implements OnInit, OnDestroy {
         };
         this.spinner = true;
         this.post('http://' + this.config.delegateIps[0] + ':1975/v1/test_transaction', json).subscribe( () => {
+            this.config.privateKey = this.formGroup.get('privateKey').value;
+            this.config.address = this.formGroup.get('address').value;
             this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
             this.appService.appEvents.emit({type: APP_REFRESH});
             this.close();
