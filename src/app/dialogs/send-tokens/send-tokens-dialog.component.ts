@@ -86,10 +86,10 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             const to = Buffer.from(this.formGroup.get('to').value, 'hex');
             const tokens = this.numberToBuffer(parseInt(this.formGroup.get('tokens').value, 10));
             const millseconds = 0;
-            //const millseconds = new Date().getTime();
+            // const millseconds = new Date().getTime();
             const time = this.numberToBuffer(millseconds);
             const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
-            const signature = secp256k1.sign(hash, Buffer.from(this.config.privateKey, 'hex'))
+            const signature = secp256k1.sign(hash, Buffer.from(this.config.privateKey, 'hex'));
             const transaction: Transaction = {
                 hash: hash.toString('hex'),
                 type: 0,
@@ -116,20 +116,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             });
         });
     }
-
-    /*
-            // console.log(keccak('keccak256').digest().toString('hex'));
-        const hash = keccak('keccak256').update('fook me').digest();
-        console.log(hash);
-
-        const p = Buffer.from('2093fde230170efc92b2c122b8b831b30f916dd5568b50a427caa76e13e7effd', 'hex');
-
-        console.log(p);
-
-       const signature = secp256k1.sign(hash, p);
-
-       console.log(signature)
-     */
 
     /**
      *
