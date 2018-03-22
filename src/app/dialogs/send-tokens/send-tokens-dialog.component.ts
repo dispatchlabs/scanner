@@ -13,7 +13,7 @@ import {M2Util} from '../../m2-angular/utils/m2-util';
 import * as secp256k1 from 'secp256k1';
 import {Transaction} from '../../store/states/transaction';
 
-declare const Buffer
+declare const Buffer;
 
 @Component({
     selector: 'app-send-tokens-dialog',
@@ -30,7 +30,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
-    public M2Util: M2Util;
 
     /**
      *
@@ -75,7 +74,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
-        if (M2Util.isNullOrEmpty(this.config.address)) {
+        if (M2Util.isNullOrEmpty(this.config.privateKey) || M2Util.isNullOrEmpty(this.config.address)) {
             this.appService.error('Please generate a wallet before sending tokens.');
             return;
         }
@@ -100,7 +99,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 signature: new Buffer(signature.signature).toString('hex') + '00',
             };
 
-
             console.log(JSON.stringify(transaction));
 
             const json = {
@@ -110,7 +108,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 value: parseInt(this.formGroup.get('tokens').value, 10),
             };
             this.spinner = true;
-            this.post('http://' + this.config.delegateIps[0] + ':1975/v1/test_transaction', json).subscribe( () => {
+            this.post('http://' + this.config.delegateIps[0] + ':1975/v1/test_transaction', json).subscribe(() => {
                 this.close();
                 this.appService.appEvents.emit({type: APP_REFRESH});
             });
@@ -124,10 +122,10 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     private numberToBuffer(value: number): any {
         const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
-        for (let i = 0; i < bytes.length; i ++ ) {
+        for (let i = 0; i < bytes.length; i++) {
             const byte = value & 0xff;
             bytes [i] = byte;
-            value = (value - byte) / 256 ;
+            value = (value - byte) / 256;
         }
         return new Buffer(bytes);
     }
