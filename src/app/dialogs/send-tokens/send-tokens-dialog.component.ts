@@ -12,7 +12,7 @@ import * as keccak from 'keccak';
 import {M2Util} from '../../m2-angular/utils/m2-util';
 import * as secp256k1 from 'secp256k1';
 import {Transaction} from '../../store/states/transaction';
-
+import * as moment from 'moment/moment';
 declare const Buffer;
 
 @Component({
@@ -80,13 +80,12 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         }
 
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
+            const date = new Date();
             const type = this.numberToBuffer(0);
             const from = Buffer.from(this.config.address, 'hex');
             const to = Buffer.from(this.formGroup.get('to').value, 'hex');
             const tokens = this.numberToBuffer(parseInt(this.formGroup.get('tokens').value, 10));
-            const millseconds = 0;
-            // const millseconds = new Date().getTime();
-            const time = this.numberToBuffer(millseconds);
+            const time = this.numberToBuffer(date.getTime());
             const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
             const signature = secp256k1.sign(hash, Buffer.from(this.config.privateKey, 'hex'));
             const transaction: Transaction = {
@@ -95,10 +94,9 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 from: from.toString('hex'),
                 to: to.toString('hex'),
                 value: parseInt(this.formGroup.get('tokens').value, 10),
-                time: millseconds,
+                time: date.getTime(),
                 signature: new Buffer(signature.signature).toString('hex') + '00',
             };
-
             console.log(JSON.stringify(transaction));
 
             const json = {
