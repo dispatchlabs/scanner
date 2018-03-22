@@ -39,9 +39,9 @@ export class ConfigAction implements Action {
     public static getInitialState(): Config {
         return {
             delegateIps: environment.delegateIps,
-            privateKey: environment.privateKey,
-            address: environment.address,
-            balance: 10000000,
+            privateKey: '',
+            address: '',
+            balance: 0,
         };
     }
 

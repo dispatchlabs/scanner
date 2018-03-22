@@ -8,6 +8,10 @@ import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {APP_REFRESH} from '../../app.component';
+import * as keccak from 'keccak';
+import {M2Util} from '../../m2-angular/utils/m2-util';
+import * as secp256k1 from 'secp256k1';
+import {Transaction} from '../../store/states/transaction';
 
 declare const Buffer
 
@@ -26,6 +30,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
+    public M2Util: M2Util;
 
     /**
      *
@@ -37,7 +42,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private http: Http, private store: Store<AppState>) {
         this.formGroup = formBuilder.group({
-            to: new FormControl('c296220327589dc04e6ee01bf16563f0f53895bb', Validators.compose([Validators.required, Validators.minLength(40)])),
+            to: new FormControl('', Validators.compose([Validators.required, Validators.minLength(40)])),
             tokens: new FormControl(0, Validators.compose([Validators.required, Validators.min(1)])),
         });
         this.configState = this.store.select('config');
@@ -70,7 +75,31 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
+        if (M2Util.isNullOrEmpty(this.config.address)) {
+            this.appService.error('Please generate a wallet before sending tokens.');
+            return;
+        }
+
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
+            const type = this.numberToBuffer(0);
+            const from = Buffer.from(this.config.address, 'hex');
+            const to = Buffer.from(this.formGroup.get('to').value, 'hex');
+            const tokens = this.numberToBuffer(parseInt(this.formGroup.get('tokens').value, 10));
+            const millseconds = new Date().getTime();
+            const time = this.numberToBuffer(millseconds);
+            const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
+            const signature = secp256k1.sign(hash, Buffer.from(this.config.privateKey, 'hex'))
+            const transaction: Transaction = {
+                hash: hash.toString('hex'),
+                type: 0,
+                from: from.toString('hex'),
+                to: to.toString('hex'),
+                value: parseInt(this.formGroup.get('tokens').value, 10),
+                time: millseconds,
+                signature: signature,
+            };
+
+
             const json = {
                 privateKey: this.config.privateKey,
                 from: this.config.address,
@@ -83,6 +112,35 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 this.appService.appEvents.emit({type: APP_REFRESH});
             });
         });
+    }
+
+    /*
+            // console.log(keccak('keccak256').digest().toString('hex'));
+        const hash = keccak('keccak256').update('fook me').digest();
+        console.log(hash);
+
+        const p = Buffer.from('2093fde230170efc92b2c122b8b831b30f916dd5568b50a427caa76e13e7effd', 'hex');
+
+        console.log(p);
+
+       const signature = secp256k1.sign(hash, p);
+
+       console.log(signature)
+     */
+
+    /**
+     *
+     * @param {number} value
+     * @returns {any}
+     */
+    private numberToBuffer(value: number): any {
+        const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
+        for (let i = 0; i < bytes.length; i ++ ) {
+            const byte = value & 0xff;
+            bytes [i] = byte;
+            value = (value - byte) / 256 ;
+        }
+        return new Buffer(bytes);
     }
 
     /**
