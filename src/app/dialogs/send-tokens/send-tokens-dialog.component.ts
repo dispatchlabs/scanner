@@ -12,7 +12,7 @@ import * as keccak from 'keccak';
 import {M2Util} from '../../m2-angular/utils/m2-util';
 import * as secp256k1 from 'secp256k1';
 import {Transaction} from '../../store/states/transaction';
-import * as moment from 'moment/moment';
+
 declare const Buffer;
 
 @Component({
@@ -129,8 +129,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public post(url: string, json: any) {
         const headers = new Headers({'Content-Type': 'application/json'});
         const requestOptions = new RequestOptions({headers: headers});
-
-        console.log(url)
 
         // Post.
         return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
