@@ -44,6 +44,7 @@
     "ng2-file-upload": "^1.2.1",
     "ngrx-store-freeze": "^0.1.9",
     "ngrx-store-localstorage": "^0.2.0",
+    "node-int64": "^0.4.0",
     "node-sass": "^4.5.3",
     "node-schedule": "^1.2.5",
     "request": "^2.83.0",
