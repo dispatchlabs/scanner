@@ -14,10 +14,8 @@
         <p class="right mt0 fade-in-up">
             <a (click)="refresh()"><i class="fa fa-refresh"></i> Refresh</a>
         </p>
-        <div fxLayout="column" fxLayout.gt-sm="row wrap" ngClass.gt-sm="two-column-container">
-            <div fxFlex="50" *ngFor="let delegate of delegates; let i = index" class="fade-in-up" [style.animation-delay]="i + '00ms'">
-                <app-node-info [ip]="delegate?.ip" [balance]="delegate?.balance" [transactions]="delegate?.transactions"></app-node-info>
-            </div>
+        <div class="mt20">
+            <!-- TODO: Table here -->
         </div>
     </div>
 </div>
