@@ -15,7 +15,36 @@
             <a (click)="refresh()"><i class="fa fa-refresh"></i> Refresh</a>
         </p>
         <div class="mt20">
-            <!-- TODO: Table here -->
+            <mat-input-container floatPlaceholder="never">
+                <input matInput #filter placeholder="Filter URLs">
+            </mat-input-container>
+
+            <mat-table #table [dataSource]="dataSource">
+
+                <!-- Url -->
+                <ng-container cdkColumnDef="url">
+                    <mat-header-cell *cdkHeaderCellDef> URL</mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.url}}</mat-cell>
+                </ng-container>
+
+                <!-- Name -->
+                <ng-container cdkColumnDef="name">
+                    <mat-header-cell *cdkHeaderCellDef> Name</mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.name}}</mat-cell>
+                </ng-container>
+
+                <!-- Content -->
+                <ng-container cdkColumnDef="content">
+                    <mat-header-cell *cdkHeaderCellDef> Content</mat-header-cell>
+                    <mat-cell *cdkCellDef="let row">
+                        <span (click)="edit(row)"><i class="fa fa-pencil"></i> {{row.content}}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator [length]="count" (page)="onPageIndexChange($event)" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
         </div>
     </div>
 </div>

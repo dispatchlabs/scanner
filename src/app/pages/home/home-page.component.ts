@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild} from '@angular/core';
+import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild, ElementRef} from "@angular/core";
 import {AppService} from '../../app.service';
 import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
@@ -9,6 +9,9 @@ import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {Transaction} from '../../store/states/transaction';
 import {APP_REFRESH} from '../../app.component';
+import {Meta} from "../../m2-angular/store/states/meta";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {DataSource} from "@angular/cdk/collections";
 
 /**
  *
@@ -17,6 +20,63 @@ class Delegate {
     public ip;
     public transactions: Transaction [];
     public balance: number;
+}
+
+/**
+ *
+ */
+class MetaDatabase {
+
+    public metaBehaviorSubject: BehaviorSubject<Meta[]> = new BehaviorSubject<Meta[]>([]);
+
+    get data(): Meta[] {
+        return this.metaBehaviorSubject.value;
+    }
+
+    /**
+     *
+     * @param {Meta[]} metas
+     */
+    constructor(metas: Meta[]) {
+        this.metaBehaviorSubject.next(metas);
+    }
+}
+
+/**
+ *
+ */
+class MetaDataSource extends DataSource<any> {
+    filterBehaviorSubject = new BehaviorSubject('');
+
+    get filter(): string {
+        return this.filterBehaviorSubject.value;
+    }
+
+    set filter(filter: string) {
+        this.filterBehaviorSubject.next(filter);
+    }
+
+    constructor(private _exampleDatabase: MetaDatabase) {
+        super();
+    }
+
+    /** Connect function called by the table to retrieve one stream containing the data to render. */
+    connect(): Observable<Meta[]> {
+        const displayDataChanges = [
+            this._exampleDatabase.metaBehaviorSubject,
+            this.filterBehaviorSubject,
+        ];
+
+        return Observable.merge(...displayDataChanges).map(() => {
+            return this._exampleDatabase.data.slice().filter((meta: Meta) => {
+                const searchString = meta.url.toLowerCase();
+                return searchString.indexOf(this.filter.toLowerCase()) !== -1;
+            });
+        });
+    }
+
+    disconnect() {
+    }
 }
 
 /**
@@ -39,6 +99,14 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public configSubscription: any;
     public delegates = [];
     private appEventSubscription: any;
+    displayedColumns = ['url', 'name', 'content'];
+    dataSource: MetaDataSource | null;
+    @ViewChild('filter') filter: ElementRef;
+    private contentHandle: any;
+    private metas: Meta[];
+    public page = 0;
+    public perPage = 10;
+    public count = 0;
 
     /**
      *
@@ -69,6 +137,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnInit() {
         this.refresh();
+        this.find();
     }
 
     /**
@@ -110,6 +179,30 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             };
             getTransactions(i);
         }
+    }
+
+    /**
+     *
+     */
+    public find(): void {
+        this.appService.post('m2.action.meta.FindStaticByAppAction', {page: this.page, perPage: this.perPage}).subscribe(response => {
+            if (response.status !== 'OK') {
+                this.appService.error(response.humanReadableStatus);
+            } else {
+                this.count = response.count;
+                this.metas = response.metas;
+                this.dataSource = new MetaDataSource(new MetaDatabase(response.metas));
+                Observable.fromEvent(this.filter.nativeElement, 'keyup')
+                    .debounceTime(150)
+                    .distinctUntilChanged()
+                    .subscribe(() => {
+                        if (!this.dataSource) {
+                            return;
+                        }
+                        this.dataSource.filter = this.filter.nativeElement.value;
+                    });
+            }
+        });
     }
 
     /**
