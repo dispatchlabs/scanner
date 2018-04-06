@@ -14,9 +14,10 @@
         <p class="right mt0 fade-in-up">
             <a (click)="refresh()"><i class="fa fa-refresh"></i> Refresh</a>
         </p>
-        <div class="mt20">
-            <mat-input-container floatPlaceholder="never">
-                <input matInput #filter placeholder="Filter URLs">
+        <div class="mt20 fade-in-up delay-1">
+            <mat-input-container>
+                <input matInput #filter placeholder="Search Delegates">
+                <mat-icon matSuffix>search</mat-icon>
             </mat-input-container>
 
             <mat-table #table [dataSource]="dataSource">

@@ -9,9 +9,9 @@ import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {Transaction} from '../../store/states/transaction';
 import {APP_REFRESH} from '../../app.component';
-import {Meta} from "../../m2-angular/store/states/meta";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {DataSource} from "@angular/cdk/collections";
+import {Meta} from '../../m2-angular/store/states/meta';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {DataSource} from '@angular/cdk/collections';
 
 /**
  *
@@ -203,6 +203,15 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
             }
         });
+    }
+
+    /**
+     *
+     */
+    public onPageIndexChange(event: any): void {
+        this.page = event.pageIndex;
+        this.perPage = event.pageSize;
+        this.find();
     }
 
     /**
