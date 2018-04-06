@@ -1,3 +1,5 @@
+@import '../../styles/colors';
+
 .home-page {
   min-height: 100vh;
   padding: 20px 40px 40px;
@@ -12,6 +14,48 @@
         transform: rotate(45deg);
       }
     }
+  }
+
+  .list-header {
+    background: #123985;
+    background: url('../../../assets/images/rainbow-bg.png');
+    background-attachment: fixed;
+    background-position: top center;
+    border-bottom: 1px solid #DFDFDF;
+    color: #FFF;
+    padding: 10px;
+
+    h3 {
+      color: #FFF;
+      margin: 10px 0 10px;
+    }
+  }
+
+  .list-body {
+    background: #FFF;
+
+    .svg-inline--fa {
+      color: $primary;
+    }
+  }
+
+  .list-item {
+    padding: 20px;
+    border-bottom: 1px solid #CCC;
+
+    &:hover {
+      background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('assets/images/rainbow-bg.png');
+      background-attachment: fixed;
+      background-position: top center;
+      cursor: pointer;
+      transform: scale(1.025);
+      transition: all .3s;
+    }
+  }
+
+  .search {
+    padding: 20px 20px 0;
+    border-bottom: 1px solid #CCC;
   }
 
   @media (max-width: 640px) {

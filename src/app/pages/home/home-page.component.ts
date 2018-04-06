@@ -107,6 +107,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public page = 0;
     public perPage = 10;
     public count = 0;
+    public activeDelegate = true;
 
     /**
      *

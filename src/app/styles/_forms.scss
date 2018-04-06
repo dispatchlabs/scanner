@@ -48,6 +48,14 @@ button.mat-button, button.mat-raised-button {
     height: 40px;
   }
 
+  &.input-button {
+    font-size: 12px;
+    height: 40px;
+    border-radius: 0;
+    min-width: auto !important;
+    margin-top: 6px;
+  }
+
   .mat-button-focus-overlay, .mat-button-ripple {
     border-radius: 25px;
   }
