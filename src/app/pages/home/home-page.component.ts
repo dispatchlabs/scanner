@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild, ElementRef} from "@angular/core";
+import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild, ElementRef} from '@angular/core';
 import {AppService} from '../../app.service';
 import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
@@ -7,74 +7,65 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
-import {Transaction} from '../../store/states/transaction';
 import {APP_REFRESH} from '../../app.component';
-import {Meta} from '../../m2-angular/store/states/meta';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Contact} from '../../store/states/contact';
+import {Transaction} from '../../store/states/transaction';
 import {DataSource} from '@angular/cdk/collections';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {M2Util} from '../../m2-angular/utils/m2-util';
+import {KeyHelper} from '../../m2-angular/helpers/key-helper';
 
 /**
  *
  */
-class Delegate {
-    public ip;
-    public transactions: Transaction [];
-    public balance: number;
-}
+class TransactionDatabase {
 
-/**
- *
- */
-class MetaDatabase {
+    /**
+     * Class level-declarations.
+     */
+    public transactionBehaviorSubject: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]);
 
-    public metaBehaviorSubject: BehaviorSubject<Meta[]> = new BehaviorSubject<Meta[]>([]);
-
-    get data(): Meta[] {
-        return this.metaBehaviorSubject.value;
+    /**
+     *
+     * @returns {Transaction[]}
+     */
+    get data(): Transaction[] {
+        return this.transactionBehaviorSubject.value;
     }
 
     /**
      *
-     * @param {Meta[]} metas
+     * @param {Transaction[]} transactions
      */
-    constructor(metas: Meta[]) {
-        this.metaBehaviorSubject.next(metas);
+    constructor(transactions: Transaction[]) {
+        this.transactionBehaviorSubject.next(transactions);
     }
 }
 
 /**
  *
  */
-class MetaDataSource extends DataSource<any> {
-    filterBehaviorSubject = new BehaviorSubject('');
+class TransactionDataSource extends DataSource<any> {
 
-    get filter(): string {
-        return this.filterBehaviorSubject.value;
-    }
-
-    set filter(filter: string) {
-        this.filterBehaviorSubject.next(filter);
-    }
-
-    constructor(private _exampleDatabase: MetaDatabase) {
+    /**
+     *
+     * @param {TransactionDatabase} transactionDatabase
+     */
+    constructor(private transactionDatabase: TransactionDatabase) {
         super();
     }
 
-    /** Connect function called by the table to retrieve one stream containing the data to render. */
-    connect(): Observable<Meta[]> {
-        const displayDataChanges = [
-            this._exampleDatabase.metaBehaviorSubject,
-            this.filterBehaviorSubject,
-        ];
-
-        return Observable.merge(...displayDataChanges).map(() => {
-            return this._exampleDatabase.data.slice().filter((meta: Meta) => {
-                const searchString = meta.url.toLowerCase();
-                return searchString.indexOf(this.filter.toLowerCase()) !== -1;
-            });
-        });
+    /**
+     *
+     * @returns {Observable<Transaction[]>}
+     */
+    connect(): Observable<Transaction[]> {
+        return this.transactionDatabase.transactionBehaviorSubject;
     }
 
+    /**
+     *
+     */
     disconnect() {
     }
 }
@@ -97,17 +88,14 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
-    public delegates = [];
     private appEventSubscription: any;
-    displayedColumns = ['url', 'name', 'content'];
-    dataSource: MetaDataSource | null;
-    @ViewChild('filter') filter: ElementRef;
-    private contentHandle: any;
-    private metas: Meta[];
-    public page = 0;
-    public perPage = 10;
-    public count = 0;
-    public activeDelegate = true;
+    public delegates: Contact[];
+    public selectedDelegate: Contact;
+    public transactions: Transaction [];
+    public dataSource: TransactionDataSource | null;
+    public displayedColumns = ['to', 'value', 'time'];
+    public search: string;
+    public KeyHelper = KeyHelper;
 
     /**
      *
@@ -121,9 +109,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
         });
-        for (let i = 0; i < 4; i++) {
-            this.delegates.push(new Delegate());
-        }
         this.appEventSubscription = this.appService.appEvents.subscribe((event: any) => {
             switch (event.type) {
                 case APP_REFRESH:
@@ -138,7 +123,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnInit() {
         this.refresh();
-        this.find();
     }
 
     /**
@@ -160,59 +144,48 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     public refresh(): void {
         this.loading = true;
+        /*
         setTimeout(() => {
             this.loading = false;
-        }, 1000 * 5);
-        for (let i = 0; i < 4; i++) {
-            this.delegates[i].ip = this.config.delegateIps[i];
-            const getBalance = (index) => {
-                this.get('http://' + this.config.delegateIps[index] + ':1975/v1/balance/' + this.config.address).subscribe(response => {
-                    this.delegates[index].balance = response.balance;
-                });
+        }, 1000 * 3);
+        */
 
-            };
-            getBalance(i);
+        this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
+            this.delegates = response.data;
+            this.loading = false;
+        });
+    }
 
-            const getTransactions = (index) => {
-                this.get('http://' + this.config.delegateIps[index] + ':1975/v1/transactions/' + this.config.address).subscribe(response => {
-                    this.delegates[index].transactions = response.transactions;
-                });
-            };
-            getTransactions(i);
+    /**
+     *
+     * @param {Contact} delegate
+     */
+    public select(delegate: Contact): void {
+        this.selectedDelegate = delegate;
+        this.loading = true;
+        if (M2Util.isNullOrEmpty(this.search)) {
+            this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
+                this.loading = false;
+                this.transactions = response.data;
+                if (this.transactions && this.transactions.length > 0) {
+                    this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
+                }
+            });
         }
     }
 
     /**
      *
      */
-    public find(): void {
-        this.appService.post('m2.action.meta.FindStaticByAppAction', {page: this.page, perPage: this.perPage}).subscribe(response => {
-            if (response.status !== 'OK') {
-                this.appService.error(response.humanReadableStatus);
-            } else {
-                this.count = response.count;
-                this.metas = response.metas;
-                this.dataSource = new MetaDataSource(new MetaDatabase(response.metas));
-                Observable.fromEvent(this.filter.nativeElement, 'keyup')
-                    .debounceTime(150)
-                    .distinctUntilChanged()
-                    .subscribe(() => {
-                        if (!this.dataSource) {
-                            return;
-                        }
-                        this.dataSource.filter = this.filter.nativeElement.value;
-                    });
+    public searchByAddress(): void {
+        this.loading = true;
+        this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
+            this.loading = false;
+            this.transactions = response.data;
+            if (this.transactions && this.transactions.length > 0) {
+                this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
             }
         });
-    }
-
-    /**
-     *
-     */
-    public onPageIndexChange(event: any): void {
-        this.page = event.pageIndex;
-        this.perPage = event.pageSize;
-        this.find();
     }
 
     /**
@@ -221,7 +194,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public scrollDown() {
         this.getStartedDiv.nativeElement.scrollIntoView({block: 'start', behavior: 'smooth'});
     }
-
 
     /**
      *

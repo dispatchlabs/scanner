@@ -12,10 +12,16 @@
             <strong>Hash:</strong> {{transaction?.hash}}
         </li>
         <li>
-            <strong>From:</strong> {{transaction?.from}}
+            <strong>From Address:</strong> {{transaction?.from}}
+        </li>
+        <li *ngIf="transaction?.fromName">
+            <strong>From Name:</strong> {{transaction?.fromName}}
         </li>
         <li>
-            <strong>To:</strong> {{transaction?.to}}
+            <strong>To Address:</strong> {{transaction?.to}}
+        </li>
+        <li *ngIf="transaction?.toName">
+            <strong>To Name:</strong> {{transaction?.toName}}
         </li>
         <li>
             <strong>Value:</strong> {{transaction?.value}}

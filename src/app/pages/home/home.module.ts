@@ -4,9 +4,9 @@ import {RouterModule} from '@angular/router';
 import {HomePageComponent} from './home-page.component';
 import {MatButtonModule, MatIconModule, MatInputModule, MatPaginatorModule, MatRadioModule, MatTableModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {NodeInfoComponent} from '../../components/node/node-info.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {M2Module} from '../../m2-angular/m2.module';
+import {FormsModule} from '@angular/forms';
 
 /**
  *
@@ -14,6 +14,7 @@ import {M2Module} from '../../m2-angular/m2.module';
 @NgModule({
     imports: [
         CommonModule,
+        FormsModule,
         RouterModule.forChild([{
             path: '',
             pathMatch: 'full',
@@ -30,8 +31,7 @@ import {M2Module} from '../../m2-angular/m2.module';
         MatRadioModule,
     ],
     declarations: [
-        HomePageComponent,
-        NodeInfoComponent
+        HomePageComponent
     ]
 })
 export class HomeModule {

@@ -52,4 +52,32 @@ export class KeyHelper {
         }
         return true;
     }
+
+    /**
+     *
+     * @param event
+     * @param {number} maxLength
+     * @returns {boolean}
+     */
+    public static onHexKeyDown(event: any, maxLength: number): boolean {
+        if (event.metaKey === true && event.key === 'v') {
+            return true;
+        }
+        switch (event.key) {
+            case 'Tab':
+            case 'ArrowLeft':
+            case 'ArrowRight':
+            case 'Enter':
+            case 'Backspace':
+                return true;
+            default:
+                if (!/^[0-9a-fA-F]+$/.test(event.key)) {
+                    return false;
+                }
+                if (event.target.selectionStart >= maxLength && event.target.selectionEnd >= maxLength) {
+                    return false;
+                }
+        }
+        return true;
+    }
 }

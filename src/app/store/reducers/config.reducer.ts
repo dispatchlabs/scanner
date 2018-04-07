@@ -38,7 +38,7 @@ export class ConfigAction implements Action {
      */
     public static getInitialState(): Config {
         return {
-            delegateIps: environment.delegateIps,
+            seedNodeIp: environment.seedNodeIp,
             privateKey: '',
             address: '',
             balance: 0,

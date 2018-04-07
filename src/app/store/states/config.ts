@@ -1,12 +1,12 @@
 /**
-
+ * Config
  */
 export interface Config {
 
     /**
      * Interface level-declarations.
      */
-    delegateIps: string[];
+    seedNodeIp: string[];
     privateKey: string;
     address: string;
     balance: number;

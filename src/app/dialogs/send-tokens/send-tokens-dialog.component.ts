@@ -88,7 +88,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             const time = this.numberToBuffer(date.getTime());
             const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
             const signature = secp256k1.sign(hash, Buffer.from(this.config.privateKey, 'hex'));
-            const transaction: Transaction = {
+            const transaction = {
                 hash: hash.toString('hex'),
                 type: 0,
                 from: from.toString('hex'),
@@ -98,10 +98,12 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 signature: new Buffer(signature.signature).toString('hex') + '00',
             };
             this.spinner = true;
+            /*
             this.post('http://' + this.config.delegateIps[0] + ':1975/v1/transactions', transaction).subscribe(() => {
                 this.close();
                 this.appService.appEvents.emit({type: APP_REFRESH});
             });
+            */
         });
     }
 

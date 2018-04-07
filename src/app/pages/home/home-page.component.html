@@ -17,11 +17,13 @@
                     <h3><i class="far fa-cubes"></i> Delegates</h3>
                 </div>
                 <div class="list-body">
-                    <div fxLayout="row" *ngFor="let delegate of delegates" class="list-item">
+                    <div fxLayout="row" *ngFor="let delegate of delegates" class="list-item" (click)="select(delegate)">
                         <div fxFlex>
-                            {{delegate?.ip}}
+                        {{delegate.address}}
+                                 {{delegate.endpoint.host}}
+                                 {{delegate.endpoint.port}}
                         </div>
-                        <div *ngIf="true"> <!-- TODO: only show on active delegate -->
+                        <div *ngIf="selectedDelegate?.address === delegate.address">
                             <i class="fa fa-check-circle"></i>
                         </div>
                     </div>
@@ -33,22 +35,42 @@
                     <h3><i class="fal fa-list-ul"></i> Transactions</h3>
                 </div>
                 <div class="list-body">
-                    <div *ngIf="activeDelegate; else noActiveDelegateTemplate">
+                    <div *ngIf="selectedDelegate; else noActiveDelegateTemplate">
                         <div class="search">
                             <div fxLayout="row">
                                 <div fxFlex>
-                                    <mat-form-field>
-                                        <input matInput placeholder="Enter Address">
+                                    <mat-form-field >
+                                        <input [(ngModel)]="search" matInput placeholder="Enter Address" (keydown)="KeyHelper.onHexKeyDown($event, 40)">
                                     </mat-form-field>
                                 </div>
                                 <div>
-                                    <m2-button text="search" className="primary input-button"></m2-button>
+                                    <m2-button [disabled]="search?.length < 40" text="search" className="primary input-button" (click)="searchByAddress()"></m2-button>
                                 </div>
                             </div>
                         </div>
-                        <div class="list-item"> <!-- TODO: for loop here -->
-                            Transaction Details
-                        </div>
+                        <mat-table #table [dataSource]="dataSource">
+
+                            <!-- To -->
+                            <ng-container cdkColumnDef="to">
+                                <mat-header-cell *cdkHeaderCellDef> To</mat-header-cell>
+                                <mat-cell *cdkCellDef="let row"> {{row.to}}</mat-cell>
+                            </ng-container>
+
+                            <!-- Value -->
+                            <ng-container cdkColumnDef="value">
+                                <mat-header-cell *cdkHeaderCellDef class="right"> Value</mat-header-cell>
+                                <mat-cell *cdkCellDef="let row" class="right"> {{row.value}}</mat-cell>
+                            </ng-container>
+
+                            <!-- Time -->
+                            <ng-container cdkColumnDef="time">
+                                <mat-header-cell *cdkHeaderCellDef class="right"> Time</mat-header-cell>
+                                <mat-cell *cdkCellDef="let row" class="right"> {{row.time | m2SimpleDateTime}}</mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *cdkRowDef="let row; columns: displayedColumns;" (click)="appService.openTransaction(row)"></mat-row>
+                        </mat-table>
                     </div>
                     <ng-template #noActiveDelegateTemplate>
                         Choose a delegate from the list to see it's transactions
