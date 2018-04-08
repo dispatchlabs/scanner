@@ -2,7 +2,7 @@
 export const environment = {
     name: 'dev',
     production: false,
-    seedNodeIp: ['10.0.1.3'],
+    seedNodeIp: ['35.197.66.200'],
     m2AppName: 'Dispatch',
     m2AppId: '',
     m2AppVersion: '',

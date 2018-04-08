@@ -153,6 +153,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
             this.delegates = response.data;
             this.loading = false;
+            console.log(response)
         });
     }
 
