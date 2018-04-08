@@ -34,7 +34,6 @@ import {M2Module} from './m2-angular/m2.module';
 import {APP_CLEAR_ALL_STATES} from './m2-angular/services/m2.service';
 import {MetaPageComponent} from './pages/meta/meta-page.component';
 import {NewsListPageComponent} from './pages/news/news-list-page.component';
-import {WalletDialogComponent} from './dialogs/wallet/wallet-dialog.component';
 import {ConfigAction} from './store/reducers/config.reducer';
 import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
 import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
@@ -108,7 +107,6 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // Components
         // Dialogs
         SignInDialogComponent,
-        WalletDialogComponent,
         SendTokensDialogComponent,
         TransactionDialogComponent
     ],
@@ -156,7 +154,6 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
     ],
     entryComponents: [
         SignInDialogComponent,
-        WalletDialogComponent,
         SendTokensDialogComponent,
         TransactionDialogComponent,
     ],

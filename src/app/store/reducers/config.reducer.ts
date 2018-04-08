@@ -39,9 +39,7 @@ export class ConfigAction implements Action {
     public static getInitialState(): Config {
         return {
             seedNodeIp: environment.seedNodeIp,
-            privateKey: '',
-            address: '',
-            balance: 0,
+            delegates: null
         };
     }
 

@@ -17,7 +17,7 @@
                     <h3><i class="far fa-cubes"></i> Delegates</h3>
                 </div>
                 <div class="list-body">
-                    <div fxLayout="row" *ngFor="let delegate of delegates" class="list-item" (click)="select(delegate)">
+                    <div fxLayout="row" *ngFor="let delegate of config?.delegates" class="list-item" (click)="select(delegate)">
                         <div fxFlex>
                         {{delegate.address}}
                                  {{delegate.endpoint.host}}

@@ -9,11 +9,20 @@
 <mat-dialog-content>
     <div [formGroup]="formGroup">
         <mat-form-field>
-            <input matInput formControlName="to" placeholder="Address">
+            <input matInput formControlName="privateKey" placeholder="Private Key">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput formControlName="address" placeholder="Address">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput formControlName="to" placeholder="To Address">
         </mat-form-field>
         <mat-form-field>
             <input matInput formControlName="tokens" placeholder="Tokens">
         </mat-form-field>
+        <div fxFlex>
+            <a (click)="generatePrivateKeyAndAddress()"><i class="fa fa-plus-circle"></i> Generate New Private Key and Address</a>
+        </div>
 
         <div class="mt30">
             <m2-button [disabled]="!formGroup.valid || spinner" [spinner]="spinner" (click)="send()" text="Send Tokens"></m2-button>

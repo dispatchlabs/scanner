@@ -14,6 +14,7 @@ import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {M2Util} from '../../m2-angular/utils/m2-util';
 import {KeyHelper} from '../../m2-angular/helpers/key-helper';
+import {ConfigAction} from '../../store/reducers/config.reducer';
 
 /**
  *
@@ -89,7 +90,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public config: Config;
     public configSubscription: any;
     private appEventSubscription: any;
-    public delegates: Contact[];
     public selectedDelegate: Contact;
     public transactions: Transaction [];
     public dataSource: TransactionDataSource | null;
@@ -144,16 +144,13 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     public refresh(): void {
         this.loading = true;
-        /*
         setTimeout(() => {
             this.loading = false;
         }, 1000 * 3);
-        */
-
         this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
-            this.delegates = response.data;
             this.loading = false;
-            console.log(response)
+            this.config.delegates = response.data;
+            this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
         });
     }
 

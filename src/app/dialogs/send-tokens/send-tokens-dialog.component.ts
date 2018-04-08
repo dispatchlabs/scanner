@@ -30,6 +30,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
+    private actionId: any;
 
     /**
      *
@@ -41,8 +42,10 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private http: Http, private store: Store<AppState>) {
         this.formGroup = formBuilder.group({
-            to: new FormControl('', Validators.compose([Validators.required, Validators.minLength(40)])),
-            tokens: new FormControl(0, Validators.compose([Validators.required, Validators.min(1)])),
+            privateKey: new FormControl('e7181240095e27679bf38e8ad77d37bedb5865b569157b4c14cdb1bebb7c6e2b', Validators.compose([Validators.required, Validators.minLength(64)])),
+            address: new FormControl('79db55dd1c8ae495c267bde617f7a9e5d5c67719', Validators.compose([Validators.required, Validators.minLength(40)])),
+            to: new FormControl('43f603c04610c87326e88fcd24152406d23da032', Validators.compose([Validators.required, Validators.minLength(40)])),
+            tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
         });
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
@@ -74,20 +77,16 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
-        if (M2Util.isNullOrEmpty(this.config.privateKey) || M2Util.isNullOrEmpty(this.config.address)) {
-            this.appService.error('Please generate a wallet before sending tokens.');
-            return;
-        }
-
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
+            const privateKey = this.formGroup.get('privateKey').value;
             const date = new Date();
             const type = this.numberToBuffer(0);
-            const from = Buffer.from(this.config.address, 'hex');
+            const from = Buffer.from(this.formGroup.get('address').value, 'hex');
             const to = Buffer.from(this.formGroup.get('to').value, 'hex');
             const tokens = this.numberToBuffer(parseInt(this.formGroup.get('tokens').value, 10));
             const time = this.numberToBuffer(date.getTime());
             const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
-            const signature = secp256k1.sign(hash, Buffer.from(this.config.privateKey, 'hex'));
+            const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
             const transaction = {
                 hash: hash.toString('hex'),
                 type: 0,
@@ -97,14 +96,39 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 time: date.getTime(),
                 signature: new Buffer(signature.signature).toString('hex') + '00',
             };
+
             this.spinner = true;
-            /*
-            this.post('http://' + this.config.delegateIps[0] + ':1975/v1/transactions', transaction).subscribe(() => {
-                this.close();
-                this.appService.appEvents.emit({type: APP_REFRESH});
+            console.log(this.config.delegates[0].endpoint.host);
+            const send = this.post('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/transactions', transaction).subscribe(response => {
+                this.actionId = response.id;
+                this.getStatus();
             });
-            */
         });
+    }
+
+    /**
+     *
+     */
+    private getStatus(): void {
+        setTimeout(() => {
+            const send = this.get('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/actions/' + this.actionId).subscribe(response => {
+
+                console.log(response)
+                if (response.data.status === 'PENDING') {
+                    this.getStatus();
+                    return;
+                }
+
+                if (response.data.status === 'OK') {
+                    this.close();
+                    this.appService.success('Tokens sent.');
+                    this.appService.appEvents.emit({type: APP_REFRESH});
+                }else {
+                    this.close();
+                    this.appService.error(response.data.status);
+                }
+            });
+        }, 300);
     }
 
     /**
@@ -124,11 +148,28 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
 
     /**
      *
+     */
+    public generatePrivateKeyAndAddress(): void {
+        const privateKey = new Buffer(32);
+        do {
+            crypto.getRandomValues(privateKey);
+        } while (!secp256k1.privateKeyVerify(privateKey));
+        const publicKey = secp256k1.publicKeyCreate(privateKey);
+        const address = new Buffer(20);
+        for (let i = 0; i < address.length; i++) {
+            address[i] = publicKey[i + 12];
+        }
+        this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
+        this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
+    }
+
+    /**
+     *
      * @param {string} url
      * @param json
      * @returns {Observable<any>}
      */
-    public post(url: string, json: any) {
+    public post(url: string, json: any): any {
         const headers = new Headers({'Content-Type': 'application/json'});
         const requestOptions = new RequestOptions({headers: headers});
 
@@ -138,6 +179,30 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             this.spinner = false;
             if (e.status === 0) {
                 this.spinner = false;
+                this.appService.error('Dispatch node is currently down for maintenance.');
+            } else {
+                const response = e.json();
+                return new Observable(observer => {
+                    observer.next(response);
+                    observer.complete();
+                });
+            }
+        });
+    }
+
+    /**
+     *
+     * @param {string} url
+     * @returns {Observable<any>}
+     */
+    public get(url: string): any {
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const requestOptions = new RequestOptions({headers: headers});
+
+        // Post.
+        return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
+        }).catch(e => {
+            if (e.status === 0) {
                 this.appService.error('Dispatch node is currently down for maintenance.');
             } else {
                 const response = e.json();

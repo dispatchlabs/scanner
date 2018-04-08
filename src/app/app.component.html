@@ -5,9 +5,6 @@
                 <div class="logo" (click)="appService.navigateToHome()">
                     <img src="assets/images/logo-white.png">
                 </div>
-                <div fxFlex class="my-address">
-                    <strong>My Address:</strong> {{config.address}}
-                </div>
             </div>
         </div>
         <div class="right-buttons">
@@ -15,7 +12,6 @@
                 <i class="far fa-bars"></i>
             </div>
             <mat-menu #appMenu="matMenu">
-                <button mat-menu-item (click)="appService.openWallet()">My Wallet</button>
                 <button mat-menu-item (click)="appService.openSendTokens()">Send Tokens</button>
             </mat-menu>
         </div>
