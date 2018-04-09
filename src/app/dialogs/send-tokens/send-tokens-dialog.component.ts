@@ -98,7 +98,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             };
 
             this.spinner = true;
-            console.log(this.config.delegates[0].endpoint.host);
             const send = this.post('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/transactions', transaction).subscribe(response => {
                 this.actionId = response.id;
                 this.getStatus();
@@ -113,7 +112,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             const send = this.get('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/actions/' + this.actionId).subscribe(response => {
 
-                console.log(response)
+
                 if (response.data.status === 'PENDING') {
                     this.getStatus();
                     return;
@@ -128,7 +127,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                     this.appService.error(response.data.status);
                 }
             });
-        }, 300);
+        }, 500);
     }
 
     /**

@@ -173,20 +173,18 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
                 this.loading = false;
                 this.transactions = response.data;
-                console.log(response);
                 if (this.transactions && this.transactions.length > 0) {
                     this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
                 }
+                console.log(response);
             });
         } else {
             this.loading = true;
             this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
                 this.loading = false;
                 this.transactions = response.data;
-                console.log(response);
                 if (this.transactions && this.transactions.length > 0) {
                     this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
-
                 }
             });
         }
