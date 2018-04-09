@@ -112,7 +112,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.appEventSubscription = this.appService.appEvents.subscribe((event: any) => {
             switch (event.type) {
                 case APP_REFRESH:
-                    this.refresh();
+                    this.getTransactions();
                     return;
             }
         });
@@ -146,7 +146,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = true;
         setTimeout(() => {
             this.loading = false;
-        }, 1000 * 3);
+        }, 1000 * 5);
         this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
             this.loading = false;
             this.config.delegates = response.data;
@@ -160,37 +160,37 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     public select(delegate: Contact): void {
         this.selectedDelegate = delegate;
-        this.loading = true;
+        this.getTransactions();
+    }
+
+    /**
+     *
+     */
+    public getTransactions(): void {
+        if (!this.selectedDelegate) {
+            return;
+        }
         if (M2Util.isNullOrEmpty(this.search)) {
             this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
                 this.loading = false;
                 this.transactions = response.data;
+                console.log(response);
                 if (this.transactions && this.transactions.length > 0) {
                     this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
                 }
             });
+        } else {
+            this.loading = true;
+            this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
+                this.loading = false;
+                this.transactions = response.data;
+                console.log(response);
+                if (this.transactions && this.transactions.length > 0) {
+                    this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
+
+                }
+            });
         }
-    }
-
-    /**
-     *
-     */
-    public searchByAddress(): void {
-        this.loading = true;
-        this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
-            this.loading = false;
-            this.transactions = response.data;
-            if (this.transactions && this.transactions.length > 0) {
-                this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
-            }
-        });
-    }
-
-    /**
-     *
-     */
-    public scrollDown() {
-        this.getStartedDiv.nativeElement.scrollIntoView({block: 'start', behavior: 'smooth'});
     }
 
     /**
