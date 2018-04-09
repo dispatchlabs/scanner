@@ -86,6 +86,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('getStartedDiv')
     public getStartedDiv: any;
     public loading = true;
+    public refreshOverlay = false;
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;

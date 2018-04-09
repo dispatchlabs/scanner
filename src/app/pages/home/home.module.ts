@@ -29,6 +29,7 @@ import {FormsModule} from '@angular/forms';
         MatPaginatorModule,
         MatIconModule,
         MatRadioModule,
+        MatIconModule,
     ],
     declarations: [
         HomePageComponent

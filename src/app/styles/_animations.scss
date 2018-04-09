@@ -50,6 +50,21 @@
   animation: fade-in-up .5s forwards;
 }
 
+@keyframes bounce-left {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+.bounce-left {
+  animation: bounce-left 1s infinite;
+}
+
 .delay-1 {
   animation-delay: .5s;
 }
