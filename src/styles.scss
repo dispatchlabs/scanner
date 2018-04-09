@@ -177,6 +177,12 @@ ul.none {
   overflow: hidden;
 }
 
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .separator {
   width: 240px;
   height: 6px;

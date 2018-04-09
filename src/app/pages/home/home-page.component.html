@@ -49,8 +49,13 @@
             </div>
 
             <div fxFlex.gt-sm="75" class="fade-in-up delay-1">
-                <div class="list-header">
-                    <h3><i class="fal fa-list-ul"></i> Transactions</h3>
+                <div class="list-header" fxLayout="column">
+                    <div fxFlex>
+                        <h3><i class="fal fa-list-ul"></i> Transactions</h3>
+                    </div>
+                    <div fxFlex>
+                        <span *ngIf="selectedDelegate">{{delegate.address}}</span>
+                    </div>
                 </div>
                 <div class="list-body">
                     <div *ngIf="selectedDelegate; else noActiveDelegateTemplate">
