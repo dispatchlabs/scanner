@@ -26,10 +26,10 @@
             <div fxFlex.gt-sm="25" class="fade-in-up">
                 <div class="list-header" fxLayout="column">
                     <div fxFlex>
-                        <h3><i class="far fa-cubes"></i> Delegates</h3>
+                        <h3><i class="far fa-cubes fa-fw"></i> Delegates</h3>
                     </div>
                     <div fxFlex class="refresh">
-                        <a (click)="refresh()"><i class="far fa-sync"></i> Refresh</a>
+                        <a (click)="refresh()"><i class="far fa-sync fa-fw"></i> Refresh</a>
                     </div>
                 </div>
                 <div class="list-body">
@@ -51,10 +51,10 @@
             <div fxFlex.gt-sm="75" class="fade-in-up delay-1">
                 <div class="list-header" fxLayout="column">
                     <div fxFlex>
-                        <h3><i class="fal fa-list-ul"></i> Transactions</h3>
+                        <h3><i class="fal fa-list-ul fa-fw"></i> Transactions</h3>
                     </div>
                     <div fxFlex>
-                        <span *ngIf="selectedDelegate">{{selectedDelegate?.address}}</span>
+                        <i class="fal fa-cube fa-fw"></i> <span *ngIf="selectedDelegate">{{selectedDelegate.address}}</span>
                     </div>
                 </div>
                 <div class="list-body">
