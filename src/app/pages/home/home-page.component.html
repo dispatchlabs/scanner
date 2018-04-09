@@ -13,8 +13,13 @@
     <div class="container" *ngIf="!loading">
         <div fxLayout="column" fxLayout.gt-sm="row" ngClass.gt-sm="two-column-container">
             <div fxFlex class="fade-in-up">
-                <div class="list-header">
-                    <h3><i class="far fa-cubes"></i> Delegates</h3>
+                <div class="list-header" fxLayout="row">
+                    <div fxFlex>
+                        <h3><i class="far fa-cubes"></i> Delegates</h3>
+                    </div>
+                    <div>
+                        <a (click)="refresh()"><i class="far fa-sync"></i> Refresh</a>
+                    </div>
                 </div>
                 <div class="list-body">
                     <div fxLayout="row" *ngFor="let delegate of config?.delegates" class="list-item" (click)="select(delegate)">
