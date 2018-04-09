@@ -82,18 +82,37 @@ button.mat-button, button.mat-raised-button {
   }
 }
 
+.refresh {
+  svg {
+    transition: all .3s;
+  }
 
-.mat-calendar-controls button.mat-button {
-  color: #666;
-  font-size: 14px;
-  font-weight: 500;
-  height: auto;
+  &:hover {
+    svg {
+      transform: rotate(45deg);
+    }
+  }
 }
 
-.mat-input-container {
-  width: 100%;
+.search-button {
+  position: absolute;
+  top: 90px;
+  right: 20px;
 }
 
-.mat-form-field {
-  width: 100% !important;
-}
+
+  .mat-calendar-controls button.mat-button {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    height: auto;
+  }
+
+  .mat-input-container {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    width: 100% !important;
+  }
+

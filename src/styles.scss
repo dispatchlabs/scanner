@@ -101,6 +101,10 @@ ul.none {
   text-align: left;
 }
 
+.relative {
+  position: relative;
+}
+
 .font-light {
   font-weight: 300 !important;
 }
@@ -318,16 +322,6 @@ ul.none {
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px white inset;
-}
-
-.mat-header-row {
-  background: url('assets/images/rainbow-bg.png');
-  background-attachment: fixed;
-  background-position: top center;
-
-  .mat-header-cell {
-    color: #FFF !important;
-  }
 }
 
 .mat-row:hover {

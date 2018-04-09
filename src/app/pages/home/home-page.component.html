@@ -12,21 +12,23 @@
 
     <div class="container" *ngIf="!loading">
         <div fxLayout="column" fxLayout.gt-sm="row" ngClass.gt-sm="two-column-container">
-            <div fxFlex class="fade-in-up">
-                <div class="list-header" fxLayout="row">
+            <div fxFlex.gt-sm="25" class="fade-in-up">
+                <div class="list-header" fxLayout="column">
                     <div fxFlex>
                         <h3><i class="far fa-cubes"></i> Delegates</h3>
                     </div>
-                    <div>
+                    <div fxFlex class="refresh">
                         <a (click)="refresh()"><i class="far fa-sync"></i> Refresh</a>
                     </div>
                 </div>
                 <div class="list-body">
                     <div fxLayout="row" *ngFor="let delegate of config?.delegates" class="list-item" (click)="select(delegate)">
                         <div fxFlex>
-                        {{delegate.address}}
-                                 {{delegate.endpoint.host}}
-                                 {{delegate.endpoint.port}}
+                            <ul class="none">
+                                <li>{{delegate.address}}</li>
+                                <li>{{delegate.endpoint.host}}</li>
+                                <li>{{delegate.endpoint.port}}</li>
+                            </ul>
                         </div>
                         <div *ngIf="selectedDelegate?.address === delegate.address">
                             <i class="fa fa-check-circle"></i>
@@ -35,7 +37,7 @@
                 </div>
             </div>
 
-            <div fxFlex class="fade-in-up">
+            <div fxFlex.gt-sm="75" class="fade-in-up delay-1">
                 <div class="list-header">
                     <h3><i class="fal fa-list-ul"></i> Transactions</h3>
                 </div>
@@ -43,13 +45,13 @@
                     <div *ngIf="selectedDelegate; else noActiveDelegateTemplate">
                         <div class="search">
                             <div fxLayout="row">
-                                <div fxFlex>
+                                <div fxFlex class="reative">
                                     <mat-form-field >
                                         <input [(ngModel)]="search" matInput placeholder="Enter Address" (keydown)="KeyHelper.onHexKeyDown($event, 40)">
                                     </mat-form-field>
                                 </div>
-                                <div>
-                                    <m2-button [disabled]="search?.length < 40" text="search" className="primary input-button" (click)=" getTransactions()"></m2-button>
+                                <div class="search-button">
+                                    <button mat-icon-button [disabled]="search?.length < 40" (click)=" getTransactions()"><mat-icon>search</mat-icon></button>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +80,16 @@
                         </mat-table>
                     </div>
                     <ng-template #noActiveDelegateTemplate>
-                        Choose a delegate from the list to see it's transactions
+                        <div class="p20">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <div class="bounce-left">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                                <div fxFlex>
+                                    <h3>Choose a delegate from the list to see it's transactions</h3>
+                                </div>
+                            </div>
+                        </div>
                     </ng-template>
                 </div>
             </div>

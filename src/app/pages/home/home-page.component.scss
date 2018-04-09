@@ -44,7 +44,7 @@
   }
 
   .list-item {
-    padding: 20px;
+    padding: 10px;
     border-bottom: 1px solid #CCC;
 
     &:hover {
@@ -67,6 +67,22 @@
 
     .container {
       padding: 0 20px;
+    }
+  }
+
+  ul {
+    margin: 0;
+  }
+
+  ul.none li {
+    margin-bottom: 10px;
+  }
+
+  .bounce-left {
+    width: 20px;
+
+    svg {
+      color: #2D434B !important;
     }
   }
 }
