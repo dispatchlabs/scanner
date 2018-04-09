@@ -170,19 +170,20 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!this.selectedDelegate) {
             return;
         }
+        this.refreshOverlay = true;
+        setTimeout(() => {
+            this.refreshOverlay = false;
+            if (this.transactions && this.transactions.length > 0) {
+                this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
+            }
+        }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
             this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
                 this.transactions = response.data;
-                if (this.transactions && this.transactions.length > 0) {
-                    this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
-                }
             });
         } else {
             this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
                 this.transactions = response.data;
-                if (this.transactions && this.transactions.length > 0) {
-                    this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
-                }
             });
         }
     }
