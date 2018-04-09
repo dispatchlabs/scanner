@@ -10,6 +10,17 @@
         </div>
     </div>
 
+    <div *ngIf="refreshOverlay" class="loading-overlay">
+        <div class="loading">
+            <div class="ping"></div>
+            <div class="ping one"></div>
+            <div class="ping two"></div>
+            <div class="icon">
+                <img src="assets/images/icon-character-black.png">
+            </div>
+        </div>
+    </div>
+
     <div class="container" *ngIf="!loading">
         <div fxLayout="column" fxLayout.gt-sm="row" ngClass.gt-sm="two-column-container">
             <div fxFlex.gt-sm="25" class="fade-in-up">
