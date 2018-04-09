@@ -1,10 +1,8 @@
 <div class="site-container">
     <div [class]="headerClass" fxLayout="row" fxLayoutAlign="center center">
         <div fxFlex>
-            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center center">
-                <div class="logo" (click)="appService.navigateToHome()">
-                    <img src="assets/images/logo-white.png">
-                </div>
+            <div class="logo" (click)="appService.navigateToHome()">
+                <img src="assets/images/logo-white.png">
             </div>
         </div>
         <div class="right-buttons">
