@@ -20,11 +20,6 @@ import {HttpClient} from '@angular/common/http';
 declare const Buffer;
 
 /**
- * Events
- */
-export const APP_PRE_QUALIFY_NEXT_STEP = 'APP_PRE_QUALIFY_NEXT_STEP';
-
-/**
  *
  */
 @Injectable()
