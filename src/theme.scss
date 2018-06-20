@@ -1,73 +1,8 @@
-@import '~@angular/material/theming';
+@import '../node_modules/@angular/material/theming';
 @include mat-core();
 
-$mat-outside-primary: (
-        50 : #e2f3fa,
-        100 : #b7e1f3,
-        200 : #87cdeb,
-        300 : #57b8e2,
-        400 : #33a9dc,
-        500 : #0f9ad6,
-        600 : #0d92d1,
-        700 : #0b88cc,
-        800 : #087ec6,
-        900 : #046cbc,
-        A100 : #e5f2ff,
-        A200 : #b2daff,
-        A400 : #7fc1ff,
-        A700 : #65b5ff,
-        contrast: (
-                50 : #000000,
-                100 : #000000,
-                200 : #000000,
-                300 : #000000,
-                400 : #000000,
-                500 : #ffffff,
-                600 : #ffffff,
-                700 : #ffffff,
-                800 : #ffffff,
-                900 : #ffffff,
-                A100 : #000000,
-                A200 : #000000,
-                A400 : #000000,
-                A700 : #000000,
-        )
-);
-$mat-outside-gold: (
-        50 : #fdf6e6,
-        100 : #fbe9bf,
-        200 : #f8db95,
-        300 : #f5cd6b,
-        400 : #f3c24b,
-        500 : #f1b72b,
-        600 : #efb026,
-        700 : #eda720,
-        800 : #eb9f1a,
-        900 : #e79010,
-        A100 : #ffffff,
-        A200 : #fff2e0,
-        A400 : #ffdbad,
-        A700 : #ffd094,
-        contrast: (
-                50 : #000000,
-                100 : #000000,
-                200 : #000000,
-                300 : #000000,
-                400 : #000000,
-                500 : #000000,
-                600 : #000000,
-                700 : #000000,
-                800 : #000000,
-                900 : #000000,
-                A100 : #000000,
-                A200 : #000000,
-                A400 : #000000,
-                A700 : #000000,
-        )
-);
-
-$my-app-primary: mat-palette($mat-outside-primary);
-$my-app-accent:  mat-palette($mat-outside-gold);
+$my-app-primary: mat-palette($mat-blue);
+$my-app-accent:  mat-palette($mat-yellow);
 $my-app-warn:    mat-palette($mat-red);
 
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
@@ -83,24 +18,4 @@ $my-dark-theme:   mat-dark-theme($my-dark-primary, $my-dark-accent, $my-dark-war
 
 .dark-theme {
   @include angular-material-theme($my-dark-theme);
-
-  .mat-select-disabled .mat-select-value, .mat-select-arrow, .mat-select-trigger {
-    color: #FFF;
-  }
-
-  .mat-select-underline {
-    background-color: #CCC;
-  }
-
-  .mat-input-underline {
-    background-color: #FFF;
-  }
-
-  .mat-input-placeholder {
-    color: #FFF;
-  }
-
-  input {
-    color: #FFF;
-  }
 }
