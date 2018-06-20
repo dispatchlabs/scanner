@@ -1,16 +1,16 @@
 <div [formGroup]="formGroup" [class]="cssClassName">
     <h3>Credit Card Information</h3>
     <div layout-xs="column" layout="row" layout-align-gt-sm="center center" layout-wrap>
-        <mat-input-container>
+        <mat-form-field>
             <input matInput placeholder="Card Number" formControlName="creditCard"
                    onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-        </mat-input-container>
+        </mat-form-field>
     </div>
     <div layout-xs="column" layout="row" layout-align-gt-sm="center center" layout-wrap>
-        <mat-input-container>
+        <mat-form-field>
             <input matInput placeholder="CVC" formControlName="cvc"
                    onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-        </mat-input-container>
+        </mat-form-field>
     </div>
     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="center center">
         <div fxFlex.gt-xs="20">

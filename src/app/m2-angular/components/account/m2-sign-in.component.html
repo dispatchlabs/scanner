@@ -1,10 +1,10 @@
 <div [formGroup]="formGroup" fxLayout="column">
-    <mat-input-container>
+    <mat-form-field>
         <input matInput placeholder="Email" type="email" formControlName="email">
-    </mat-input-container>
-    <mat-input-container>
+    </mat-form-field>
+    <mat-form-field>
         <input matInput placeholder="Password" formControlName="password" type="password" (keyup.enter)="signIn()">
-    </mat-input-container>
+    </mat-form-field>
     <div>
         <mat-checkbox color="primary">Remember me</mat-checkbox>
     </div>
@@ -17,7 +17,7 @@
             <a (click)="forgotPassword()">Forgot Password?</a>
         </div>
         <div [hidden]="hideRegister">
-            <a (click)="register.emit()">Register</a>
+            <a (click)="onRegister.emit()">Register</a>
         </div>
     </div>
 </div>

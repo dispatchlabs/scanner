@@ -2,19 +2,19 @@ import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild, ElementR
 import {AppService} from '../../app.service';
 import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
-import {Observable} from 'rxjs/Rx';
-import {Headers, Http, RequestOptions} from '@angular/http';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {APP_REFRESH} from '../../app.component';
-import {Contact} from '../../store/states/contact';
+import {Node} from '../../store/states/node';
 import {Transaction} from '../../store/states/transaction';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {M2Util} from '../../m2-angular/utils/m2-util';
 import {KeyHelper} from '../../m2-angular/helpers/key-helper';
 import {ConfigAction} from '../../store/reducers/config.reducer';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 /**
  *
@@ -91,7 +91,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public config: Config;
     public configSubscription: any;
     private appEventSubscription: any;
-    public selectedDelegate: Contact;
+    public selectedDelegate: Node;
     public transactions: Transaction [];
     public dataSource: TransactionDataSource | null;
     public displayedColumns = ['to', 'value', 'time'];
@@ -102,10 +102,10 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      *
      * @param appService
      * @param {Router} router
-     * @param {Http} http
+     * @param {HttpClient} http
      * @param {Store<AppState>} store
      */
-    constructor(@Inject('AppService') public appService: any, private router: Router, private http: Http, private store: Store<AppState>) {
+    constructor(@Inject('AppService') public appService: any, private router: Router, private http: HttpClient, private store: Store<AppState>) {
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
@@ -156,9 +156,9 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     /**
      *
-     * @param {Contact} delegate
+     * @param {Node} delegate
      */
-    public select(delegate: Contact): void {
+    public select(delegate: Node): void {
         this.selectedDelegate = delegate;
         this.getTransactions();
     }
@@ -194,6 +194,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      * @returns {Observable<any>}
      */
     public get(url: string): any {
+
+        /*
         const headers = new Headers({'Content-Type': 'application/json'});
         const requestOptions = new RequestOptions({headers: headers});
 
@@ -211,5 +213,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         });
+        */
     }
 }

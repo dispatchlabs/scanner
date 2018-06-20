@@ -43,6 +43,7 @@ export class M2ButtonComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.className !== 'mat-button primary') {
             this.className = 'mat-button ' + this.className;
         }
+        this.iconClass = 'fa ' + this.iconClass;
     }
 
     /**

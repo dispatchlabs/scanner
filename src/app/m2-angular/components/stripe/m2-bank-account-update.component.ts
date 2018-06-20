@@ -1,6 +1,6 @@
 import {Component, forwardRef, Inject, Input, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import 'rxjs/add/operator/catch';
+
 
 /**
  *

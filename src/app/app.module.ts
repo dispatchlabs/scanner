@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {
     MatButtonModule,
     MatCheckboxModule,
@@ -13,8 +12,20 @@ import {
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatTooltipModule, MatSnackBarModule, MatRadioModule, MatSlideToggleModule, MatAutocompleteModule, MatMenuModule,
-    MatSliderModule, MatTableModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatAutocompleteModule,
+    MatMenuModule,
+    MatSliderModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatCardModule
 } from '@angular/material';
 import {AppComponent} from './app.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -37,6 +48,8 @@ import {NewsListPageComponent} from './pages/news/news-list-page.component';
 import {ConfigAction} from './store/reducers/config.reducer';
 import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
 import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
+import {HttpClientModule} from '@angular/common/http';
+import {AngularFontAwesomeModule} from 'angular-font-awesome';
 
 /**
  *
@@ -115,14 +128,15 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         BrowserModule.withServerTransition({appId: environment.m2AppId}),
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
+        HttpClientModule,
         NoopAnimationsModule,
         FlexLayoutModule,
-        RouterModule.forRoot(routes, {useHash: false}),
+        RouterModule.forRoot(routes, {useHash: false, initialNavigation: true}),
         // M2
         M2Module.forRoot(environment),
         // NGRX
         StoreModule.forRoot(reducers, {metaReducers}),
+        AngularFontAwesomeModule,
         // Material
         MatButtonModule,
         MatCheckboxModule,
@@ -130,6 +144,7 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         MatSidenavModule,
         MatIconModule,
         MatInputModule,
+        MatFormFieldModule,
         MatDialogModule,
         MatTabsModule,
         MatSelectModule,
@@ -147,10 +162,12 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         MatDatepickerModule,
         MatNativeDateModule,
         MatFormFieldModule,
+        MatCardModule,
+        MatProgressBarModule,
         // Other.
         CdkTableModule,
         FileUploadModule,
-        environment.browserModulesOnly
+        AngularFontAwesomeModule
     ],
     entryComponents: [
         SignInDialogComponent,

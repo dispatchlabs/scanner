@@ -23,7 +23,7 @@ export class M2SignInComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input()
     public hideRegister = false;
     @Output()
-    public register: EventEmitter<void> = new EventEmitter<void>();
+    public onRegister: EventEmitter<void> = new EventEmitter<void>();
     @Output()
     public onSignIn: EventEmitter<void> = new EventEmitter<void>();
     public formGroup: FormGroup;
@@ -74,13 +74,19 @@ export class M2SignInComponent implements OnInit, AfterViewInit, OnDestroy {
         this.spinner = true;
         this.appService.post(this.signInClassName, {email: this.formGroup.get('email').value, password: this.formGroup.get('password').value}).subscribe(response => {
             this.spinner = false;
-            if (response.status === 'OK') {
-                this.appService.m2.account = response.account;
-                this.store.dispatch(new M2Action(M2Action.M2_UPDATE, this.appService.m2));
-                this.appService.appEvents.emit({type: APP_SIGN_IN, account: response.account});
-                this.onSignIn.emit();
-            } else {
-                this.appService.error(response.humanReadableStatus);
+            switch (response.status) {
+                case 'OK':
+                    this.appService.m2.account = response.account;
+                    this.store.dispatch(new M2Action(M2Action.M2_UPDATE, this.appService.m2));
+                    this.appService.appEvents.emit({type: APP_SIGN_IN, account: response.account});
+                    this.onSignIn.emit();
+                    return;
+                case 'INVALID_EMAIL_OR_PASSWORD':
+                    this.appService.error('We don’t recognize that combination. Please try again. If you forgot your password, click below to reset it. If you don’t have an account with us, click below to onRegister.');
+                    return;
+                default:
+                    this.appService.error(response.humanReadableStatus);
+                    return;
             }
         });
     }

@@ -10,7 +10,6 @@
 # dependencies
 /node_modules
 /bower_components
-m2-server.js
 
 # IDEs and editors
 /.idea

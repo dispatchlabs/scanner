@@ -2,7 +2,6 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {AppService} from '../../app.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Headers, Http, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
@@ -40,7 +39,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      * @param {Http} http
      * @param {Store<AppState>} store
      */
-    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private http: Http, private store: Store<AppState>) {
+    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private store: Store<AppState>) {
         this.formGroup = formBuilder.group({
             privateKey: new FormControl('e7181240095e27679bf38e8ad77d37bedb5865b569157b4c14cdb1bebb7c6e2b', Validators.compose([Validators.required, Validators.minLength(64)])),
             address: new FormControl('79db55dd1c8ae495c267bde617f7a9e5d5c67719', Validators.compose([Validators.required, Validators.minLength(40)])),
@@ -77,6 +76,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
+        /*
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
             const privateKey = this.formGroup.get('privateKey').value;
             const date = new Date();
@@ -103,12 +103,14 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 this.getStatus();
             });
         });
+        */
     }
 
     /**
      *
      */
     private getStatus(): void {
+        /*
         setTimeout(() => {
             const send = this.get('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/actions/' + this.actionId).subscribe(response => {
 
@@ -128,6 +130,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 }
             });
         }, 500);
+        */
     }
 
     /**
@@ -149,17 +152,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public generatePrivateKeyAndAddress(): void {
-        const privateKey = new Buffer(32);
-        do {
-            crypto.getRandomValues(privateKey);
-        } while (!secp256k1.privateKeyVerify(privateKey));
-        const publicKey = secp256k1.publicKeyCreate(privateKey);
-        const address = new Buffer(20);
-        for (let i = 0; i < address.length; i++) {
-            address[i] = publicKey[i + 12];
-        }
-        this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
-        this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
+
     }
 
     /**
@@ -169,24 +162,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      * @returns {Observable<any>}
      */
     public post(url: string, json: any): any {
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
 
-        // Post.
-        return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
-        }).catch(e => {
-            this.spinner = false;
-            if (e.status === 0) {
-                this.spinner = false;
-                this.appService.error('Dispatch node is currently down for maintenance.');
-            } else {
-                const response = e.json();
-                return new Observable(observer => {
-                    observer.next(response);
-                    observer.complete();
-                });
-            }
-        });
     }
 
     /**
@@ -195,21 +171,5 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      * @returns {Observable<any>}
      */
     public get(url: string): any {
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
-
-        // Post.
-        return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
-        }).catch(e => {
-            if (e.status === 0) {
-                this.appService.error('Dispatch node is currently down for maintenance.');
-            } else {
-                const response = e.json();
-                return new Observable(observer => {
-                    observer.next(response);
-                    observer.complete();
-                });
-            }
-        });
     }
 }

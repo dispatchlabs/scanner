@@ -1,4 +1,5 @@
-import {Contact} from './contact';
+import {Account} from './account';
+import {Node} from './node';
 
 /**
  * Config
@@ -8,6 +9,7 @@ export interface Config {
     /**
      * Interface level-declarations.
      */
-    seedNodeIp: string[];
-    delegates: Contact[];
+    seedNodeIp: string;
+    delegates: Node[];
+    account: Account;
 }

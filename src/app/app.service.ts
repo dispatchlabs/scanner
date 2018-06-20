@@ -1,16 +1,23 @@
 import {ApplicationRef, ComponentFactoryResolver, Inject, Injectable, Injector, OnDestroy, PLATFORM_ID} from '@angular/core';
-import {Router} from '@angular/router';
-import {Http} from '@angular/http';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer, Meta, Title} from '@angular/platform-browser';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from './app.state';
 import {APP_SERVER_DOWN_FOR_MAINTENANCE, APP_SIGN_OUT, M2Service} from './m2-angular/services/m2.service';
 import {SignInDialogComponent} from './dialogs/sign-in/sign-in-dialog.component';
-import {routes} from './app.module';
 import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
 import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
 import {Transaction} from './store/states/transaction';
+import {Observable} from 'rxjs';
+import {Config} from './store/states/config';
+import * as keccak from 'keccak';
+import * as secp256k1 from 'secp256k1';
+import {ConfigAction} from './store/reducers/config.reducer';
+import {Account} from './store/states/account';
+import {HttpClient} from '@angular/common/http';
+
+declare const Buffer;
 
 /**
  * Events
@@ -21,13 +28,16 @@ export const APP_PRE_QUALIFY_NEXT_STEP = 'APP_PRE_QUALIFY_NEXT_STEP';
  *
  */
 @Injectable()
-export class AppService extends M2Service {
+export class AppService extends M2Service implements OnDestroy {
 
     /**
      * Class level-declarations.
      */
     private mdDialogRef: any;
     private appEventSubscription: any;
+    public configState: Observable<Config>;
+    public config: Config;
+    public configSubscription: any;
 
     /**
      *
@@ -35,7 +45,7 @@ export class AppService extends M2Service {
      * @param {Title} title
      * @param {Meta} meta
      * @param {Router} router
-     * @param {Http} http
+     * @param {HttpClient} httpClient
      * @param {DomSanitizer} domSanitizer
      * @param {MatDialog} mdDialog
      * @param {MatSnackBar} mdSnackBar
@@ -44,9 +54,10 @@ export class AppService extends M2Service {
      * @param {ApplicationRef} applicationRef
      * @param {Injector} injector
      * @param platformId
+     * @param {ActivatedRoute} activatedRoute
      */
-    constructor(@Inject('AppConfig') protected appConfig: any, protected title: Title, protected meta: Meta, protected router: Router, protected http: Http, protected domSanitizer: DomSanitizer, protected mdDialog: MatDialog, protected mdSnackBar: MatSnackBar, protected store: Store<AppState>, protected componentFactoryResolver: ComponentFactoryResolver, protected applicationRef: ApplicationRef, protected injector: Injector, @Inject(PLATFORM_ID) protected platformId: any) {
-        super(appConfig, title, meta, router, http, domSanitizer, mdDialog, mdSnackBar, store, componentFactoryResolver, applicationRef, injector, platformId);
+    constructor(@Inject('AppConfig') protected appConfig: any, protected title: Title, protected meta: Meta, protected router: Router, protected httpClient: HttpClient, protected domSanitizer: DomSanitizer, protected mdDialog: MatDialog, protected mdSnackBar: MatSnackBar, protected store: Store<AppState>, protected componentFactoryResolver: ComponentFactoryResolver, protected applicationRef: ApplicationRef, protected injector: Injector, @Inject(PLATFORM_ID) protected platformId: any, protected activatedRoute: ActivatedRoute) {
+        super(appConfig, title, meta, router, httpClient, domSanitizer, mdDialog, mdSnackBar, store, componentFactoryResolver, applicationRef, injector, platformId, activatedRoute);
         this.appEventSubscription = this.appEvents.subscribe((data: any) => {
             if (!data || !data.type) {
                 return;
@@ -67,7 +78,18 @@ export class AppService extends M2Service {
                     break;
             }
         });
-        this.createMetas(routes);
+        this.configState = this.store.select('config');
+        this.configSubscription = this.configState.subscribe((config: Config) => {
+            this.config = config;
+        });
+        // this.createMetas(routes);
+    }
+
+    /**
+     *
+     */
+    ngOnDestroy() {
+        this.configSubscription.unsubscribe();
     }
 
     /**
@@ -164,6 +186,49 @@ export class AppService extends M2Service {
                 transaction: transaction
             }
         });
+    }
+
+    /**
+     *
+     */
+    public generateNewAccount(): void {
+        const privateKey = new Buffer(32);
+        do {
+            crypto.getRandomValues(privateKey);
+        } while (!secp256k1.privateKeyVerify(privateKey));
+        const publicKey = secp256k1.publicKeyCreate(privateKey, false);
+
+        const account: Account = {
+            address: Buffer.from(this.toAddress(publicKey)).toString('hex'),
+            privateKey: Buffer.from(privateKey).toString('hex'),
+            balance: 0,
+            name: 'New Wallet'
+        };
+
+        this.config.account = account;
+        this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
+    }
+
+    /**
+     *
+     * @param publicKey
+     * @returns {any}
+     */
+    public toAddress(publicKey: any): any {
+
+        // Hash publicKey.
+        const hashablePublicKey = new Buffer(publicKey.length - 1);
+        for (let i = 0; i < hashablePublicKey.length; i++) {
+            hashablePublicKey[i] = publicKey[i + 1];
+        }
+        const hash = keccak('keccak256').update(hashablePublicKey).digest();
+
+        // Create address.
+        const address = new Buffer(20);
+        for (let i = 0; i < address.length; i++) {
+            address[i] = hash[i + 12];
+        }
+        return address;
     }
 }
 

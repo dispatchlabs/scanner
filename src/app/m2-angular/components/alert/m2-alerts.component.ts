@@ -1,8 +1,8 @@
 import {Component, ViewEncapsulation, OnInit, AfterViewInit, ViewChild, ElementRef, Input, Inject, forwardRef} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
 import {Alert} from '../../store/states/alert';
+import {M2Service} from '../../services/m2.service';
 
 /**
  *

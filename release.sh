@@ -1,22 +1,16 @@
 #!/usr/bin/env bash
 
 if [ "$1" = "" ] ; then
-   echo "usage: ./release.sh environment (dev, dispatch)"
+   echo "usage: ./release.sh environment (dev, qa, aws)"
 else
     rm -rf dist
     rm -rf node_modules
     npm i
     npm run build:$1
-    cp ./src/app/m2-angular/server/m2-server.js .
-    zip -r -X dispatch-web.zip ./dist ./m2-server.js ./package.json
-    rm -rf ~/Deploy/dispatch-dist.zip
-    cp dispatch-web.zip ~/Deploy
-    rm dispatch-web.zip
+    zip -r -X outside-web.zip ./dist ./server.js ./package.json
+    rm -rf ~/Deploy/outside-dist.zip
+    cp outside-web.zip ~/Deploy
+    rm outside-web.zip
     rm -rf dist
     cd ~/Deploy
 fi
-
-
-
-
-

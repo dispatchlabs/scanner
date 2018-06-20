@@ -1,5 +1,4 @@
-import {Component, OnInit, AfterViewInit, Output, EventEmitter, Inject, Input, OnDestroy, ViewChild, ElementRef, HostListener, forwardRef} from '@angular/core';
-import {M2Service} from '../../services/m2.service';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter, Inject, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import {FileItem, FileUploader, ParsedResponseHeaders} from 'ng2-file-upload';
 import {Media} from '../../store/states/media';
 
@@ -19,11 +18,13 @@ export class M2UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input()
     public media: Media;
     @Input()
+    public access = 'public-read';
+    @Input()
     public deleteDisabled = false;
     @Input()
     public uploadToM2 = true;
     @Output()
-    public onUpload: EventEmitter<Media> = new EventEmitter<Media>();
+    public onUpload: EventEmitter<any> = new EventEmitter<any>();
     @Output()
     public onDelete: EventEmitter<Media> = new EventEmitter<Media>();
     @Output()
@@ -45,6 +46,7 @@ export class M2UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.fileUploader.onBuildItemForm = (item, form) => {
             form.append('appId', appConfig.m2AppId);
             form.append('sessionId', this.appService.m2.sessionId);
+            form.append('access', this.access);
         };
         this.fileUploader.onWhenAddingFileFailed = (item: any, filter: any, options: any) => {
             this.fileInput.nativeElement.value = '';
@@ -68,7 +70,7 @@ export class M2UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.appService.error(response.status);
             } else {
                 if (this.onUpload) {
-                    this.onUpload.emit(response.media);
+                    this.onUpload.emit({media: response.media, file: item._file});
                 }
             }
         }
@@ -96,6 +98,10 @@ export class M2UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      *
      */
     ngOnDestroy() {
+    }
+
+    public open(): void {
+        this.fileInput.nativeElement.click();
     }
 
     /**

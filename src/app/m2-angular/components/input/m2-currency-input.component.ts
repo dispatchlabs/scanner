@@ -3,7 +3,7 @@ import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, ElementRef, HostBinding, Input, OnDestroy, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, NgControl} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {KeyHelper} from '../../helpers/key-helper';
 import {M2Util} from '../../utils/m2-util';
 
@@ -74,6 +74,19 @@ export class M2CurrencyInputComponent implements ControlValueAccessor, MatFormFi
     ngOnDestroy() {
         this.stateChanges.complete();
         this.focusMonitor.stopMonitoring(this.elementRef.nativeElement);
+    }
+
+    /**
+     *
+     */
+    public onFocus(): void {
+        if (this.currency === '0') {
+            this.currency = '';
+        }
+        setTimeout(() => {
+            this.input.nativeElement.selectionStart = 0;
+            this.input.nativeElement.selectionEnd = 0;
+        }, 1);
     }
 
     /**
@@ -215,7 +228,7 @@ export class M2CurrencyInputComponent implements ControlValueAccessor, MatFormFi
      */
     set value(value: number | null) {
         if (M2Util.isNullOrNaN(value)) {
-            this.currency = '0';
+            this.currency = '';
         } else {
             this.currency = this.formatCurrency((value / 100).toString());
         }
