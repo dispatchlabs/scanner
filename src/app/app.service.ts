@@ -17,7 +17,9 @@ import {ConfigAction} from './store/reducers/config.reducer';
 import {Account} from './store/states/account';
 import {HttpClient} from '@angular/common/http';
 
+
 declare const Buffer;
+declare const BrowserSolc: any;
 
 /**
  * Events
@@ -83,6 +85,21 @@ export class AppService extends M2Service implements OnDestroy {
             this.config = config;
         });
         // this.createMetas(routes);
+
+
+        /*
+        const input = {
+            'cont.sol': 'import "lib.sol"; contract x { function g() { L.f(); } }'
+        }
+        function findImports (path) {
+            if (path === 'lib.sol') {
+                return {contents: 'library L { function f() returns (uint) { return 7; } }'}
+            } else {
+                return {error: 'File not found'}
+            }
+        }
+        */
+
     }
 
     /**
@@ -155,6 +172,8 @@ export class AppService extends M2Service implements OnDestroy {
      * @returns {MatDialogRef<SendTokensDialogComponent>}
      */
     public openSendTokens(): any {
+
+        /*
         return this.mdDialogRef = this.mdDialog.open(SendTokensDialogComponent, {
             width: '600px',
             height: '',
@@ -164,6 +183,25 @@ export class AppService extends M2Service implements OnDestroy {
                 left: '',
                 right: ''
             },
+        });
+        */
+
+
+
+
+        // BrowserSolc.getVersions(function(soljsonSources, soljsonReleases) {
+        //     console.log(soljsonSources);
+        //     console.log(soljsonReleases);
+        // });
+
+        BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function(compiler) {
+            const source = 'contract x { function g() {} }';
+
+            console.log(source);
+            const optimize = 1;
+            const result = compiler.compile(source, optimize);
+
+            console.log(result);
         });
     }
 
@@ -204,7 +242,6 @@ export class AppService extends M2Service implements OnDestroy {
             balance: 0,
             name: 'New Wallet'
         };
-
         this.config.account = account;
         this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
     }

@@ -12,7 +12,6 @@ import {M2Util} from '../../m2-angular/utils/m2-util';
 import * as secp256k1 from 'secp256k1';
 import {Transaction} from '../../store/states/transaction';
 
-declare const Buffer;
 
 @Component({
     selector: 'app-send-tokens-dialog',
@@ -139,6 +138,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      * @returns {any}
      */
     private numberToBuffer(value: number): any {
+        /*
         const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
         for (let i = 0; i < bytes.length; i++) {
             const byte = value & 0xff;
@@ -146,6 +146,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
             value = (value - byte) / 256;
         }
         return new Buffer(bytes);
+        */
     }
 
     /**
