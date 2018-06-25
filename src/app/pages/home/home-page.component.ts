@@ -178,44 +178,12 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
             this.appService.getTransactions(this.selectedDelegate).subscribe(response => {
-                console.log(response);
+                this.transactions = response.data;
             });
-
-        //     this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
-        //         this.transactions = response.data;
-        //     });
         } else {
             // this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
             //     this.transactions = response.data;
             // });
         }
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @returns {Observable<any>}
-     */
-    public get(url: string): any {
-
-        /*
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
-
-        // Post.
-        return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
-        }).catch(e => {
-            this.loading = false;
-            if (e.status === 0) {
-                this.appService.error('Dispatch node is currently down for maintenance.');
-            } else {
-                const response = e.json();
-                return new Observable(observer => {
-                    observer.next(response);
-                    observer.complete();
-                });
-            }
-        });
-        */
     }
 }
