@@ -1,7 +1,6 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild, ElementRef} from '@angular/core';
 import {AppService} from '../../app.service';
 import {Router} from '@angular/router';
-import {environment} from '../../../environments/environment';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
@@ -148,10 +147,10 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.loading = false;
         }, 1000 * 3);
-        this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
-            this.config.delegates = response.data;
-            this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
-        });
+        // this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
+        //     this.config.delegates = response.data;
+        //     this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
+        // });
     }
 
     /**
@@ -178,13 +177,17 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
-            this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
-                this.transactions = response.data;
+            this.appService.getTransactions(this.selectedDelegate).subscribe(response => {
+                console.log(response);
             });
+
+        //     this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
+        //         this.transactions = response.data;
+        //     });
         } else {
-            this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
-                this.transactions = response.data;
-            });
+            // this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
+            //     this.transactions = response.data;
+            // });
         }
     }
 

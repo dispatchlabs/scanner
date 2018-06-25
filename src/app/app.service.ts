@@ -16,6 +16,9 @@ import * as secp256k1 from 'secp256k1';
 import {ConfigAction} from './store/reducers/config.reducer';
 import {Account} from './store/states/account';
 import {HttpClient} from '@angular/common/http';
+import {M2Action} from './m2-angular/store/reducers/m2.reducer';
+import {environment} from '../environments/environment';
+import {Node} from './store/states/node';
 
 
 declare const Buffer;
@@ -84,22 +87,6 @@ export class AppService extends M2Service implements OnDestroy {
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
         });
-        // this.createMetas(routes);
-
-
-        /*
-        const input = {
-            'cont.sol': 'import "lib.sol"; contract x { function g() { L.f(); } }'
-        }
-        function findImports (path) {
-            if (path === 'lib.sol') {
-                return {contents: 'library L { function f() returns (uint) { return 7; } }'}
-            } else {
-                return {error: 'File not found'}
-            }
-        }
-        */
-
     }
 
     /**
@@ -172,8 +159,6 @@ export class AppService extends M2Service implements OnDestroy {
      * @returns {MatDialogRef<SendTokensDialogComponent>}
      */
     public openSendTokens(): any {
-
-        /*
         return this.mdDialogRef = this.mdDialog.open(SendTokensDialogComponent, {
             width: '600px',
             height: '',
@@ -184,7 +169,6 @@ export class AppService extends M2Service implements OnDestroy {
                 right: ''
             },
         });
-        */
 
 
 
@@ -193,16 +177,16 @@ export class AppService extends M2Service implements OnDestroy {
         //     console.log(soljsonSources);
         //     console.log(soljsonReleases);
         // });
-
-        BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function(compiler) {
-            const source = 'contract x { function g() {} }';
-
-            console.log(source);
-            const optimize = 1;
-            const result = compiler.compile(source, optimize);
-
-            console.log(result);
-        });
+        //
+        // BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function(compiler) {
+        //     const source = 'contract x { function g() {} }';
+        //
+        //     console.log(source);
+        //     const optimize = 1;
+        //     const result = compiler.compile(source, optimize);
+        //
+        //     console.log(result);
+        // });
     }
 
     /**
@@ -266,6 +250,15 @@ export class AppService extends M2Service implements OnDestroy {
             address[i] = hash[i + 12];
         }
         return address;
+    }
+
+    /**
+     *
+     * @returns {any}
+     */
+    public getTransactions(delegate: Node): any {
+        const url = 'http://' + delegate.endpoint.host + ':' + delegate.endpoint.port + '/v1/transactions';
+        return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
     }
 }
 

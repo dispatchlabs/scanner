@@ -89,10 +89,6 @@ export class M2Service implements OnDestroy {
                 });
             }
         });
-        if (!M2Util.isNullOrEmpty(this.m2.sessionId) && this.isBrowser) {
-            this.refresh().subscribe(response => {
-            });
-        }
     }
 
     /**
