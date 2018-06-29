@@ -41,7 +41,7 @@
                                 <li>{{delegate.endpoint.port}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="selectedDelegate?.address === delegate.address">
+                        <div *ngIf="config.selectedDelegate?.address === delegate.address">
                             <i class="fa fa-check-circle"></i>
                         </div>
                     </div>
@@ -54,11 +54,11 @@
                         <h3><i class="fal fa-list-ul fa-fw"></i> Transactions</h3>
                     </div>
                     <div fxFlex>
-                        <i class="fal fa-cube fa-fw"></i> <span *ngIf="selectedDelegate">{{selectedDelegate.address}}</span>
+                        <i class="fal fa-cube fa-fw"></i> <span *ngIf="config.selectedDelegate">{{config.selectedDelegate.address}}</span>
                     </div>
                 </div>
                 <div class="list-body">
-                    <div *ngIf="selectedDelegate; else noActiveDelegateTemplate">
+                    <div *ngIf="config.selectedDelegate; else noActiveDelegateTemplate">
                         <div class="search">
                             <div fxLayout="row">
                                 <div fxFlex class="reative">

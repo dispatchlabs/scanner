@@ -39,6 +39,7 @@ export class ConfigAction implements Action {
     public static getInitialState(): Config {
         return {
             delegates: environment.delegates,
+            selectedDelegate: null,
             account: null
         };
     }

@@ -8,6 +8,7 @@ import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {Transaction} from '../../store/states/transaction';
 import {KeyHelper} from '../../m2-angular/helpers/key-helper';
+import {HttpClient} from '@angular/common/http';
 
 /**
  *
@@ -35,10 +36,10 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      * @param appService
      * @param {MatDialogRef<SendTokensDialogComponent>} mdDialogRef
      * @param {FormBuilder} formBuilder
-     * @param {Http} http
      * @param {Store<AppState>} store
+     * @param {HttpClient} httpClient
      */
-    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private store: Store<AppState>) {
+    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private store: Store<AppState>, private httpClient: HttpClient) {
         this.formGroup = formBuilder.group({
             privateKey: new FormControl('e7181240095e27679bf38e8ad77d37bedb5865b569157b4c14cdb1bebb7c6e2b', Validators.compose([Validators.required, Validators.minLength(64)])),
             address: new FormControl('79db55dd1c8ae495c267bde617f7a9e5d5c67719', Validators.compose([Validators.required, Validators.minLength(40)])),
@@ -85,15 +86,19 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
                 value: parseInt(this.formGroup.get('tokens').value, 10)
             } as any;
 
-            this.appService.hashAndSign(this.formGroup.get('pprivateKey').value, transaction);
+            this.appService.hashAndSign(this.formGroup.get('privateKey').value, transaction);
 
             console.log(transaction);
 
             this.spinner = true;
-            const send = this.post('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/transactions', transaction).subscribe(response => {
-                this.actionId = response.id;
-                this.getStatus();
-            });});
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/transactions';
+            this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe(response => {
+                //this.actionId = response.id;
+                //this.getStatus();
+
+                console.log(response);
+            });
+        });
 
     }
 
@@ -103,6 +108,8 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     private getStatus(): void {
         /*
         setTimeout(() => {
+            const url = 'http://' + this.config..endpoint.host + ':' + delegate.endpoint.port + '/v1/transactions';
+            return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
             const send = this.get('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/actions/' + this.actionId).subscribe(response => {
 
 

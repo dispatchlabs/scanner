@@ -90,7 +90,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public config: Config;
     public configSubscription: any;
     private appEventSubscription: any;
-    public selectedDelegate: Node;
     public transactions: Transaction [];
     public dataSource: TransactionDataSource | null;
     public displayedColumns = ['to', 'value', 'time'];
@@ -158,7 +157,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      * @param {Node} delegate
      */
     public select(delegate: Node): void {
-        this.selectedDelegate = delegate;
+        this.config.selectedDelegate = delegate;
+        this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
         this.getTransactions();
     }
 
@@ -166,7 +166,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      *
      */
     public getTransactions(): void {
-        if (!this.selectedDelegate) {
+        if (!this.config.selectedDelegate) {
             return;
         }
         this.refreshOverlay = true;
@@ -177,7 +177,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
-            this.appService.getTransactions(this.selectedDelegate).subscribe(response => {
+            this.appService.getTransactions(this.config.selectedDelegate).subscribe(response => {
                 this.transactions = response.data;
             });
         } else {

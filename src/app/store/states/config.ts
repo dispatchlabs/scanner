@@ -10,5 +10,6 @@ export interface Config {
      * Interface level-declarations.
      */
     delegates: Node[];
+    selectedDelegate: Node;
     account: Account;
 }

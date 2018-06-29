@@ -269,6 +269,9 @@ export class AppService extends M2Service implements OnDestroy {
         const abi = this.stringToBuffer(transaction.abi);
         const method = this.stringToBuffer(transaction.method);
         const time = this.numberToBuffer(transaction.time);
+
+
+
         // TODO: params.
         const hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, code, abi, method, time])).digest();
         const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
@@ -309,8 +312,8 @@ export class AppService extends M2Service implements OnDestroy {
      *
      * @returns {any}
      */
-    public getTransactions(delegate: Node): any {
-        const url = 'http://' + delegate.endpoint.host + ':' + delegate.endpoint.port + '/v1/transactions';
+    public getTransactions(): any {
+        const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/transactions';
         return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
     }
 }
