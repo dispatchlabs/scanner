@@ -19,6 +19,7 @@ import {HttpClient} from '@angular/common/http';
 import {M2Action} from './m2-angular/store/reducers/m2.reducer';
 import {environment} from '../environments/environment';
 import {Node} from './store/states/node';
+import {TransactionType} from './store/states/transaction-type';
 
 
 declare const Buffer;
@@ -261,19 +262,33 @@ export class AppService extends M2Service implements OnDestroy {
         transaction.time = new Date().getTime();
 
         // Create hash.
+        let hash: any;
         const type = this.numberToBuffer(0);
         const from = Buffer.from(transaction.from, 'hex');
         const to = Buffer.from(transaction.to, 'hex');
         const value = this.numberToBuffer(transaction.value);
-        const code = Buffer.from(transaction.code, 'hex');
+        const time = this.numberToBuffer(transaction.time);
+
+        // Type?
+        switch (transaction.type) {
+            case TransactionType.TransferTokens:
+                hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, time])).digest();
+                break;
+            case TransactionType.DeploySmartContract:
+                break;
+            case TransactionType.ExecuteSmartContract:
+                break;
+        }
+
+
+
         const abi = this.stringToBuffer(transaction.abi);
         const method = this.stringToBuffer(transaction.method);
-        const time = this.numberToBuffer(transaction.time);
 
 
 
         // TODO: params.
-        const hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, code, abi, method, time])).digest();
+        //const hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, code, abi, method, time])).digest();
         const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
 
         transaction.hash = hash.toString('hex');
