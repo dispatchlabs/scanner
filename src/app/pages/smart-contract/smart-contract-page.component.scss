@@ -1,0 +1,16 @@
+.smart-contract-page {
+  min-height: 100vh;
+  padding: 20px 40px 40px;
+
+  .error-messages {
+    background: lighten(pink, 5%);
+    color: red;
+    margin-top: 20px;
+
+    pre {
+      border-bottom: 1px solid pink;
+      padding: 10px;
+      margin: 0;
+    }
+  }
+}

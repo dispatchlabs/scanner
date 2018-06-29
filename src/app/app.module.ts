@@ -52,6 +52,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {SmartContractPageComponent} from './pages/smart-contract/smart-contract-page.component';
 import {HomePageComponent} from './pages/home/home-page.component';
+import {AceEditorModule} from 'ng2-ace-editor';
 
 /**
  *
@@ -169,7 +170,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // Other.
         CdkTableModule,
         FileUploadModule,
-        AngularFontAwesomeModule
+        AngularFontAwesomeModule,
+        AceEditorModule,
     ],
     entryComponents: [
         SignInDialogComponent,
