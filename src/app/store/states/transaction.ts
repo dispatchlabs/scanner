@@ -9,10 +9,17 @@ export interface Transaction {
     hash: string;
     type: number;
     from: string;
-    fromName: string;
     to: string;
-    toName: string;
     value: number;
+    code: string;
+    abi: string;
+    method: string;
+    params: any;
     time: number;
     signature: string;
+    hertz: number;
+    // Transients.
+    fromName: string;
+    toName: string;
 }
+

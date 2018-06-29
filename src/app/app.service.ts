@@ -171,14 +171,12 @@ export class AppService extends M2Service implements OnDestroy {
         });
 
 
-
-
         // BrowserSolc.getVersions(function(soljsonSources, soljsonReleases) {
         //     console.log(soljsonSources);
         //     console.log(soljsonReleases);
         // });
-        //
-        // BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function(compiler) {
+
+        // BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function (compiler) {
         //     const source = 'contract x { function g() {} }';
         //
         //     console.log(source);
@@ -250,6 +248,61 @@ export class AppService extends M2Service implements OnDestroy {
             address[i] = hash[i + 12];
         }
         return address;
+    }
+
+    /**
+     *
+     * @param {string} privateKey
+     * @param {Transaction} transaction
+     */
+    public hashAndSign(privateKey: string, transaction: Transaction): void {
+
+        // Set time.
+        transaction.time = new Date().getTime();
+
+        // Create hash.
+        const type = this.numberToBuffer(0);
+        const from = Buffer.from(transaction.from, 'hex');
+        const to = Buffer.from(transaction.to, 'hex');
+        const value = this.numberToBuffer(transaction.value);
+        const code = Buffer.from(transaction.code, 'hex');
+        const abi = this.stringToBuffer(transaction.abi);
+        const method = this.stringToBuffer(transaction.method);
+        const time = this.numberToBuffer(transaction.time);
+        // TODO: params.
+        const hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, code, abi, method, time])).digest();
+        const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
+
+        transaction.hash = hash.toString('hex');
+        transaction.signature = new Buffer(signature.signature).toString('hex') + '00';
+    }
+
+    /**
+     *
+     * @param {string} value
+     * @returns {any}
+     */
+    private stringToBuffer(value: string): any {
+        const bytes = [];
+        for (let i = 0; i < value.length; i++) {
+            bytes.push(value.charCodeAt(i));
+        }
+        return new Buffer(bytes);
+    }
+
+    /**
+     *
+     * @param {number} value
+     * @returns {any}
+     */
+    private numberToBuffer(value: number): any {
+        const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
+        for (let i = 0; i < bytes.length; i++) {
+            const byte = value & 0xff;
+            bytes [i] = byte;
+            value = (value - byte) / 256;
+        }
+        return new Buffer(bytes);
     }
 
     /**

@@ -6,13 +6,12 @@ import {Observable} from 'rxjs/Observable';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
-import {APP_REFRESH} from '../../app.component';
-import * as keccak from 'keccak';
-import {M2Util} from '../../m2-angular/utils/m2-util';
-import * as secp256k1 from 'secp256k1';
 import {Transaction} from '../../store/states/transaction';
+import {KeyHelper} from '../../m2-angular/helpers/key-helper';
 
-
+/**
+ *
+ */
 @Component({
     selector: 'app-send-tokens-dialog',
     templateUrl: './send-tokens-dialog.component.html',
@@ -29,6 +28,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public config: Config;
     public configSubscription: any;
     private actionId: any;
+    public KeyHelper = KeyHelper;
 
     /**
      *
@@ -75,34 +75,26 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
-        /*
+
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
-            const privateKey = this.formGroup.get('privateKey').value;
-            const date = new Date();
-            const type = this.numberToBuffer(0);
-            const from = Buffer.from(this.formGroup.get('address').value, 'hex');
-            const to = Buffer.from(this.formGroup.get('to').value, 'hex');
-            const tokens = this.numberToBuffer(parseInt(this.formGroup.get('tokens').value, 10));
-            const time = this.numberToBuffer(date.getTime());
-            const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
-            const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
-            const transaction = {
-                hash: hash.toString('hex'),
+
+            const transaction: Transaction = {
                 type: 0,
-                from: from.toString('hex'),
-                to: to.toString('hex'),
-                value: parseInt(this.formGroup.get('tokens').value, 10),
-                time: date.getTime(),
-                signature: new Buffer(signature.signature).toString('hex') + '00',
-            };
+                from: this.formGroup.get('address').value,
+                to: this.formGroup.get('to').value,
+                value: parseInt(this.formGroup.get('tokens').value, 10)
+            } as any;
+
+            this.appService.hashAndSign(this.formGroup.get('pprivateKey').value, transaction);
+
+            console.log(transaction);
 
             this.spinner = true;
             const send = this.post('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/transactions', transaction).subscribe(response => {
                 this.actionId = response.id;
                 this.getStatus();
-            });
-        });
-        */
+            });});
+
     }
 
     /**
@@ -132,22 +124,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         */
     }
 
-    /**
-     *
-     * @param {number} value
-     * @returns {any}
-     */
-    private numberToBuffer(value: number): any {
-        /*
-        const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
-        for (let i = 0; i < bytes.length; i++) {
-            const byte = value & 0xff;
-            bytes [i] = byte;
-            value = (value - byte) / 256;
-        }
-        return new Buffer(bytes);
-        */
-    }
+
 
     /**
      *
