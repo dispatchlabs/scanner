@@ -68,21 +68,6 @@ export class AppService extends M2Service implements OnDestroy {
             if (!data || !data.type) {
                 return;
             }
-            switch (data.type) {
-                case APP_SIGN_OUT:
-                    if (this.mdDialogRef) {
-                        this.mdDialogRef.close();
-                    }
-                    this.navigateToHome();
-                    break;
-                case APP_SERVER_DOWN_FOR_MAINTENANCE:
-                    if (this.mdDialogRef) {
-                        this.mdDialogRef.close();
-                    }
-                    this.navigateToHome();
-                    // this.error(environment.m2AppName + ' server is down for maintenance. Please try again later.');
-                    break;
-            }
         });
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
@@ -107,6 +92,15 @@ export class AppService extends M2Service implements OnDestroy {
         this.router.navigate(['/']);
     }
 
+    /**
+     *
+     */
+    public navigateToSmartContract() {
+        if (typeof window !== 'undefined') {
+            window.scrollTo(0, 0);
+        }
+        this.router.navigate(['/smart-contract']);
+    }
     /**
      *
      */

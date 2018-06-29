@@ -51,15 +51,13 @@ import {TransactionDialogComponent} from './dialogs/transaction/transaction-dial
 import {HttpClientModule} from '@angular/common/http';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {SmartContractPageComponent} from './pages/smart-contract/smart-contract-page.component';
+import {HomePageComponent} from './pages/home/home-page.component';
 
 /**
  *
  */
 export const routes: Routes = [
-    {
-        path: '',
-        loadChildren: './pages/home/home.module#HomeModule'
-    },
+    {path: '', pathMatch: 'full', component: HomePageComponent},
     {path: 'smart-contract', component: SmartContractPageComponent},
     {path: 'meta', component: MetaPageComponent, pathMatch: 'full'},
     {path: 'blog', component: BlogListPageComponent, pathMatch: 'full'},
@@ -115,6 +113,7 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // App
         AppComponent,
         // Pages
+        HomePageComponent,
         NotFoundPageComponent,
         BlogListPageComponent,
         MetaPageComponent,
