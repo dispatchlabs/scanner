@@ -110,16 +110,6 @@ export class AppService extends M2Service implements OnDestroy {
     /**
      *
      */
-    public navigateToSmartContract(): void {
-        if (typeof window !== 'undefined') {
-            window.scrollTo(0, 0);
-        }
-        this.router.navigate(['/smart-contract']);
-    }
-
-    /**
-     *
-     */
     public navigateToMeta() {
         if (typeof window !== 'undefined') {
             window.scrollTo(0, 0);
@@ -282,9 +272,11 @@ export class AppService extends M2Service implements OnDestroy {
         // Type?
         switch (transaction.type) {
             case TransactionType.TransferTokens:
+
                 hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, time])).digest();
                 break;
             case TransactionType.DeploySmartContract:
+                const code = Buffer.from(transaction.code, 'hex');
                 break;
             case TransactionType.ExecuteSmartContract:
                 break;
