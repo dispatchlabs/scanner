@@ -109,6 +109,16 @@ export class AppService extends M2Service implements OnDestroy {
     /**
      *
      */
+    public navigateToSmartContract(): void {
+        if (typeof window !== 'undefined') {
+            window.scrollTo(0, 0);
+        }
+        this.router.navigate(['/smart-contract']);
+    }
+
+    /**
+     *
+     */
     public navigateToMeta() {
         if (typeof window !== 'undefined') {
             window.scrollTo(0, 0);

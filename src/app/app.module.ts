@@ -50,6 +50,7 @@ import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialo
 import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import {SmartContractPageComponent} from './pages/smart-contract/smart-contract-page.component';
 
 /**
  *
@@ -59,6 +60,7 @@ export const routes: Routes = [
         path: '',
         loadChildren: './pages/home/home.module#HomeModule'
     },
+    {path: 'smart-contract', component: SmartContractPageComponent},
     {path: 'meta', component: MetaPageComponent, pathMatch: 'full'},
     {path: 'blog', component: BlogListPageComponent, pathMatch: 'full'},
     {
@@ -117,6 +119,7 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         BlogListPageComponent,
         MetaPageComponent,
         NewsListPageComponent,
+        SmartContractPageComponent,
         // Components
         // Dialogs
         SignInDialogComponent,
