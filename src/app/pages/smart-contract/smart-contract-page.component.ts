@@ -113,8 +113,6 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
                 this.getStatus();
             });
         });
-
-
         this.deploying = true;
     }
 

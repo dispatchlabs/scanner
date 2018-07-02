@@ -22,8 +22,8 @@ export const environment = {
         {
             address: 'Delegate 0',
             endpoint: {
-                host: '10.0.1.2', // 35.185.218.82
-                port: 1975
+                host: 'mcgregor.io', // 35.185.218.82
+                port: 1951
             }
         },
         {
