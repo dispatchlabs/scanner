@@ -262,8 +262,6 @@ export class AppService extends M2Service implements OnDestroy {
         }
         transaction.hash = hash.toString('hex');
 
-        console.log(transaction);
-
         // Create signature.
         const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
         const signatureBytes = new Uint8Array(65);

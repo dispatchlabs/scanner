@@ -40,7 +40,7 @@
         <div fxFlex="33" style="background: #DDD; padding: 20px; text-align: center">
             <m2-button text="compile" [spinner]="compiling" [disabled]="!code || code === ''" (click)="compile()"></m2-button>
             <div class="mt20">
-                <m2-button [disabled]="!contract || deploying" text="deploy" (click)="deploy()"></m2-button>
+                <m2-button [disabled]="!contract || deploying" [spinner]="deploying" text="deploy" (click)="deploy()"></m2-button>
             </div>
         </div>
     </div>

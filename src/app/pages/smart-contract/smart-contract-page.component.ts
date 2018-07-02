@@ -113,8 +113,6 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
                 this.getStatus();
             });
         });
-
-
         this.deploying = true;
     }
 
@@ -130,6 +128,7 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
                     return;
                 }
 
+                this.deploying = false;
                 if (response.status === 'Ok') {
                     this.appService.success('Smart contract deployed.');
                     this.appService.appEvents.emit({type: APP_REFRESH});
