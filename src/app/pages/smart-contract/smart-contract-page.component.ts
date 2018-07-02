@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Transaction} from '../../store/states/transaction';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
@@ -86,9 +86,6 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
             this.compiling = false;
             this.errors = result.errors;
             this.contract = result.contracts[Object.keys(result.contracts)[0]];
-
-            console.log(this.contract);
-
         });
     }
 
