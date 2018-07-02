@@ -96,7 +96,7 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
      *
      */
     public deploy(): void {
-        this.appService.confirm('<p>Are you sure you want to deploy this contract?', () => {
+        this.appService.confirm('<p>Are you sure you want to deploy this smart contract?', () => {
             const transaction: Transaction = {
                 type: TransactionType.DeploySmartContract,
                 from: this.config.account.address,
