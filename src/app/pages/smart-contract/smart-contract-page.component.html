@@ -1,6 +1,8 @@
 <div class="smart-contract-page">
+    <mat-progress-spinner></mat-progress-spinner>
     <div fxLayout="row" fxLayoutGap="20px">
         <div fxFlex="66">
+            <h3>Smart Contract Code</h3>
             <div ace-editor #editor
                  [(text)]="code"
                  [mode]="'sql'"
@@ -13,8 +15,27 @@
                  style="min-height: 200px; width:100%; overflow: auto;"></div>
             <div class="error-messages">
                 <pre *ngFor="let error of errors"><i class="fas fa-times-circle"></i> {{error}}</pre>
-
             </div>
+            <div fxLayout="row">
+                <div fxFlex>
+                    <p>
+                        <b>Byte Code</b>
+                    </p>
+                    <div>
+                        <!-- TODO: byte code goes here -->
+                    </div>
+                </div>
+                <div fxFlex>
+                    <p>
+                        <b>API</b>
+                    </p>
+                    <div>
+                        <!-- TODO: API goes here -->
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <div fxFlex="33" style="background: #DDD; padding: 20px; text-align: center">
             <m2-button text="compile" [spinner]="compiling" [disabled]="!code || code === ''" (click)="compile()"></m2-button>

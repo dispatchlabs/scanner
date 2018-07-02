@@ -7,7 +7,7 @@ export const environment = {
     m2Url: 'https://www.mcgregor.io:9500',
     m2SessionTimeToLive: 20,
     m2SpinnerUrl: null,
-    m2SpinnerWidth: 40,
+    m2SpinnerWidth: 30,
     m2ButtonMinWidth: '180px',
     m2WebsiteUrl: 'http://outside.mcgegor.io',
     m2WebProxyPort: 3001,
