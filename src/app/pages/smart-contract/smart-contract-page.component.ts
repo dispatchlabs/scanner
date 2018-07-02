@@ -12,6 +12,7 @@ export class SmartContractPageComponent implements OnInit {
      */
     public errorMessage = 'ERROR: Fook you';
     public errorMessageTwo = 'ERROR: Fook me';
+    public byteCode = '';
 
     /**
      *

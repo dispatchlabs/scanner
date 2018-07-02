@@ -14,6 +14,7 @@ import {KeyHelper} from '../../m2-angular/helpers/key-helper';
 import {ConfigAction} from '../../store/reducers/config.reducer';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {TransactionType} from '../../store/states/transaction-type';
 
 /**
  *
@@ -92,9 +93,10 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private appEventSubscription: any;
     public transactions: Transaction [];
     public dataSource: TransactionDataSource | null;
-    public displayedColumns = ['to', 'value', 'time'];
+    public displayedColumns = ['to', 'value', 'time', 'type'];
     public search: string;
     public KeyHelper = KeyHelper;
+    public TransactionType = TransactionType;
 
     /**
      *

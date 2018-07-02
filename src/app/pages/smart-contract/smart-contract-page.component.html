@@ -11,7 +11,7 @@
                  [durationBeforeCallback]="1000"
                  (textChanged)="onChange($event)"
                  style="min-height: 200px; width:100%; overflow: auto;"></div>
-            <div class="error-messages">
+            <div class="error-messages" *ngIf="errorMessage">
                 <pre><i class="fas fa-times-circle"></i> {{errorMessage}}</pre>
                 <pre><i class="fas fa-times-circle"></i> {{errorMessageTwo}}</pre>
             </div>
