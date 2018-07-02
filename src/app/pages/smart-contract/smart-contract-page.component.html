@@ -1,5 +1,4 @@
 <div class="smart-contract-page">
-    <mat-progress-spinner></mat-progress-spinner>
     <div fxLayout="row" fxLayoutGap="20px">
         <div fxFlex="66">
             <h3>Smart Contract Code</h3>
@@ -16,20 +15,16 @@
             <div class="error-messages">
                 <pre *ngFor="let error of errors"><i class="fas fa-times-circle"></i> {{error}}</pre>
             </div>
-            <div fxLayout="row">
+            <div fxLayout="row" fxLayoutGap="20px">
                 <div fxFlex>
-                    <p>
-                        <b>Byte Code</b>
-                    </p>
-                    <div>
-                        {{contract?.bytecode}}
+                    <h3>Byte Code</h3>
+                    <div class="bg-white">
+                        <pre>{{contract?.bytecode}}</pre>
                     </div>
                 </div>
                 <div fxFlex>
-                    <p>
-                        <b>ABI</b>
-                    </p>
-                    <div>
+                    <h3>API</h3>
+                    <div class="bg-white">
                         <pre> {{contract?.interface | json}}</pre>
                     </div>
                 </div>
