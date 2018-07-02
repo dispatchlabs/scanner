@@ -19,3 +19,46 @@
 @keyframes m2-spin {
   100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
 }
+
+.loading {
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.ping {
+  border: 10px solid #FFF;
+  border-radius: 50%;
+  position: absolute;
+  animation: wave-out 2s infinite;
+}
+
+.ping.one {
+  opacity: 0;
+  animation-delay: .5s;
+}
+
+.ping.two {
+  opacity: 0;
+  animation-delay: 1s;
+}
+
+@keyframes wave-out {
+  0% {
+    border-width: 0;
+    height: 0;
+    width: 0;
+    top: 50%;
+    right: 50%;
+    opacity: 1;
+  }
+  100% {
+    border-width: 2px;
+    height: 30px;
+    width: 30px;
+    top: calc(50% - 15px);
+    right: calc(50% - 15px);;
+    opacity: 0;
+  }
+}

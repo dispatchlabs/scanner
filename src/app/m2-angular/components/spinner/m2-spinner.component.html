@@ -1,10 +1,7 @@
 <div *ngIf="appService.isBrowser">
-    <div *ngIf="url; else defaultSpinnerTemplate" class="m2-spinner">
-        <img [src]="url" [style.width.px]="width"/>
+    <div class="loading">
+        <div class="ping"></div>
+        <div class="ping one"></div>
+        <div class="ping two"></div>
     </div>
-    <ng-template #defaultSpinnerTemplate>
-        <div class="m2-default-spinner-container">
-            <mat-spinner [diameter]="width" [strokeWidth]="strokeWidth"></mat-spinner>
-        </div>
-    </ng-template>
 </div>
