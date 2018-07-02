@@ -61,7 +61,7 @@
                     <div *ngIf="config.selectedDelegate; else noActiveDelegateTemplate">
                         <div class="search">
                             <div fxLayout="row">
-                                <div fxFlex class="reative">
+                                <div fxFlex class="relative">
                                     <mat-form-field >
                                         <input [(ngModel)]="search" matInput placeholder="Enter Address" (keydown)="KeyHelper.onHexKeyDown($event, 40)">
                                     </mat-form-field>
@@ -89,6 +89,19 @@
                             <ng-container cdkColumnDef="time">
                                 <mat-header-cell *cdkHeaderCellDef class="right"> Time</mat-header-cell>
                                 <mat-cell *cdkCellDef="let row" class="right"> {{row.time | m2SimpleDateTime}}</mat-cell>
+                            </ng-container>
+
+                            <!-- Type -->
+                            <ng-container cdkColumnDef="type">
+                                <mat-header-cell *cdkHeaderCellDef class="right"> Type</mat-header-cell>
+                                <mat-cell *cdkCellDef="let row" class="right">
+                                    {{row.type}}
+                                    <div ngSwitch="row.type">
+                                        <span *ngSwitchCase="TransactionType.DeploySmartContract">Deploy</span>
+                                        <span *ngSwitchCase="TransactionType.ExecuteSmartContract">Execute</span>
+                                        <span *ngSwitchCase="TransactionType.TransferTokens">Transfer</span>
+                                    </div>
+                                </mat-cell>
                             </ng-container>
 
                             <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
