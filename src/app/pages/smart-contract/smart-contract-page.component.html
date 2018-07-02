@@ -22,15 +22,15 @@
                         <b>Byte Code</b>
                     </p>
                     <div>
-                        <!-- TODO: byte code goes here -->
+                        {{contract?.bytecode}}
                     </div>
                 </div>
                 <div fxFlex>
                     <p>
-                        <b>API</b>
+                        <b>ABI</b>
                     </p>
                     <div>
-                        <!-- TODO: API goes here -->
+                        <pre> {{contract?.interface | json}}</pre>
                     </div>
                 </div>
             </div>

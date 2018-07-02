@@ -96,11 +96,6 @@
                                 <mat-header-cell *cdkHeaderCellDef class="right"> Type</mat-header-cell>
                                 <mat-cell *cdkCellDef="let row" class="right">
                                     {{row.type}}
-                                    <div ngSwitch="row.type">
-                                        <span *ngSwitchCase="TransactionType.DeploySmartContract">Deploy</span>
-                                        <span *ngSwitchCase="TransactionType.ExecuteSmartContract">Execute</span>
-                                        <span *ngSwitchCase="TransactionType.TransferTokens">Transfer</span>
-                                    </div>
                                 </mat-cell>
                             </ng-container>
 

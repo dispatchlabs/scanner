@@ -181,6 +181,16 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         if (M2Util.isNullOrEmpty(this.search)) {
             this.appService.getTransactions(this.config.selectedDelegate).subscribe(response => {
                 this.transactions = response.data;
+                for (const transaction of this.transactions) {
+                    switch (transaction.type) {
+                        case TransactionType.TransferTokens:
+                            transaction.type = 'Transfer Tokens';
+                            break;
+                        case TransactionType.DeploySmartContract:
+                            transaction.type = 'Deploy Smart Contract';
+                            break;
+                    }
+                }
             });
         } else {
             // this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {

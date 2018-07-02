@@ -7,7 +7,7 @@ export interface Transaction {
      * Interface level-declarations.
      */
     hash: string;
-    type: number;
+    type: any;
     from: string;
     to: string;
     value: number;
