@@ -40,7 +40,12 @@ export class ConfigAction implements Action {
         return {
             delegates: environment.delegates,
             selectedDelegate: null,
-            account: null
+            account: {
+                privateKey: '0f86ea981203b26b5b8244c8f661e30e5104555068a4bd168d3e3015db9bb25a',
+                address: '3ed25f42484d517cdfc72cafb7ebc9e8baa52c2c',
+                balance: 0,
+                name: ''
+            }
         };
     }
 

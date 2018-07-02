@@ -9,6 +9,8 @@ import {Store} from '@ngrx/store';
 import {Transaction} from '../../store/states/transaction';
 import {KeyHelper} from '../../m2-angular/helpers/key-helper';
 import {HttpClient} from '@angular/common/http';
+import {APP_REFRESH} from '../../app.component';
+import {TransactionType} from '../../store/states/transaction-type';
 
 /**
  *
@@ -28,7 +30,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
-    private actionId: any;
+    private id: any;
     public KeyHelper = KeyHelper;
 
     /**
@@ -40,16 +42,17 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      * @param {HttpClient} httpClient
      */
     constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private store: Store<AppState>, private httpClient: HttpClient) {
-        this.formGroup = formBuilder.group({
-            privateKey: new FormControl('e7181240095e27679bf38e8ad77d37bedb5865b569157b4c14cdb1bebb7c6e2b', Validators.compose([Validators.required, Validators.minLength(64)])),
-            address: new FormControl('79db55dd1c8ae495c267bde617f7a9e5d5c67719', Validators.compose([Validators.required, Validators.minLength(40)])),
-            to: new FormControl('43f603c04610c87326e88fcd24152406d23da032', Validators.compose([Validators.required, Validators.minLength(40)])),
-            tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
-        });
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
         });
+        this.formGroup = formBuilder.group({
+            privateKey: new FormControl(this.config.account.privateKey, Validators.compose([Validators.required, Validators.minLength(64)])),
+            address: new FormControl(this.config.account.address, Validators.compose([Validators.required, Validators.minLength(40)])),
+            to: new FormControl('43f603c04610c87326e88fcd24152406d23da032', Validators.compose([Validators.required, Validators.minLength(40)])),
+            tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
+        });
+
     }
 
     /**
@@ -76,85 +79,54 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      *
      */
     public send(): void {
-
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
-
             const transaction: Transaction = {
-                type: 0,
+                type: TransactionType.TransferTokens,
                 from: this.formGroup.get('address').value,
                 to: this.formGroup.get('to').value,
                 value: parseInt(this.formGroup.get('tokens').value, 10)
             } as any;
 
             this.appService.hashAndSign(this.formGroup.get('privateKey').value, transaction);
-
-            console.log(transaction);
-
             this.spinner = true;
             const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/transactions';
-            this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe(response => {
-                //this.actionId = response.id;
-                //this.getStatus();
-
-                console.log(response);
+            this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe ((response: any) => {
+                this.id = response.id;
+                this.getStatus();
             });
         });
-
     }
 
     /**
      *
      */
     private getStatus(): void {
-        /*
         setTimeout(() => {
-            const url = 'http://' + this.config..endpoint.host + ':' + delegate.endpoint.port + '/v1/transactions';
-            return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
-            const send = this.get('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/actions/' + this.actionId).subscribe(response => {
-
-
-                if (response.data.status === 'PENDING') {
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/statuses/' + this.id;
+            return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}}).subscribe( (response: any) => {
+                if (response.status === 'Pending') {
                     this.getStatus();
                     return;
                 }
 
-                if (response.data.status === 'OK') {
+                if (response.status === 'Ok') {
                     this.close();
                     this.appService.success('Tokens sent.');
                     this.appService.appEvents.emit({type: APP_REFRESH});
-                }else {
+                } else {
                     this.close();
-                    this.appService.error(response.data.status);
+                    this.appService.error(response.status);
                 }
             });
         }, 500);
-        */
     }
-
-
 
     /**
      *
      */
     public generatePrivateKeyAndAddress(): void {
-
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @param json
-     * @returns {Observable<any>}
-     */
-    public post(url: string, json: any): any {
-
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @returns {Observable<any>}
-     */
-    public get(url: string): any {
+        this.appService.generateNewAccount();
+        this.formGroup.get('privateKey').setValue(this.config.account.privateKey);
+        this.formGroup.get('address').setValue(this.config.account.address);
     }
 }

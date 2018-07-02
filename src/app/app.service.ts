@@ -16,14 +16,10 @@ import * as secp256k1 from 'secp256k1';
 import {ConfigAction} from './store/reducers/config.reducer';
 import {Account} from './store/states/account';
 import {HttpClient} from '@angular/common/http';
-import {M2Action} from './m2-angular/store/reducers/m2.reducer';
-import {environment} from '../environments/environment';
-import {Node} from './store/states/node';
 import {TransactionType} from './store/states/transaction-type';
 
 
 declare const Buffer;
-declare const BrowserSolc: any;
 
 /**
  * Events
@@ -164,22 +160,6 @@ export class AppService extends M2Service implements OnDestroy {
                 right: ''
             },
         });
-
-
-        // BrowserSolc.getVersions(function(soljsonSources, soljsonReleases) {
-        //     console.log(soljsonSources);
-        //     console.log(soljsonReleases);
-        // });
-
-        // BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function (compiler) {
-        //     const source = 'contract x { function g() {} }';
-        //
-        //     console.log(source);
-        //     const optimize = 1;
-        //     const result = compiler.compile(source, optimize);
-        //
-        //     console.log(result);
-        // });
     }
 
     /**
@@ -205,8 +185,9 @@ export class AppService extends M2Service implements OnDestroy {
 
     /**
      *
+     * @returns {Account}
      */
-    public generateNewAccount(): void {
+    public generateNewAccount(): Account {
         const privateKey = new Buffer(32);
         do {
             crypto.getRandomValues(privateKey);
@@ -221,6 +202,8 @@ export class AppService extends M2Service implements OnDestroy {
         };
         this.config.account = account;
         this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
+
+        return account;
     }
 
     /**
@@ -257,7 +240,6 @@ export class AppService extends M2Service implements OnDestroy {
 
         // Create hash.
         let hash: any;
-        const type = this.numberToBuffer(0);
         const from = Buffer.from(transaction.from, 'hex');
         const to = Buffer.from(transaction.to, 'hex');
         const value = this.numberToBuffer(transaction.value);
@@ -266,29 +248,30 @@ export class AppService extends M2Service implements OnDestroy {
         // Type?
         switch (transaction.type) {
             case TransactionType.TransferTokens:
-
-                hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, time])).digest();
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('00', 'hex'), from, to, value, time])).digest();
                 break;
             case TransactionType.DeploySmartContract:
                 const code = Buffer.from(transaction.code, 'hex');
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('01', 'hex'), from, to, value, code, time])).digest();
                 break;
             case TransactionType.ExecuteSmartContract:
+                const abi = this.stringToBuffer(transaction.abi);
+                const method = this.stringToBuffer(transaction.method);
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('02', 'hex'), from, to, value, abi, method, time])).digest();
                 break;
         }
-
-
-
-        const abi = this.stringToBuffer(transaction.abi);
-        const method = this.stringToBuffer(transaction.method);
-
-
-
-        // TODO: params.
-        //const hash = keccak('keccak256').update(Buffer.concat([type, from, to, value, code, abi, method, time])).digest();
-        const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
-
         transaction.hash = hash.toString('hex');
-        transaction.signature = new Buffer(signature.signature).toString('hex') + '00';
+
+        console.log(transaction);
+
+        // Create signature.
+        const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
+        const signatureBytes = new Uint8Array(65);
+        for (let i = 0; i < 64; i++) {
+            signatureBytes[i] = signature.signature[i];
+        }
+        signatureBytes[64] = signature.recovery;
+        transaction.signature = new Buffer(signatureBytes).toString('hex');
     }
 
     /**
