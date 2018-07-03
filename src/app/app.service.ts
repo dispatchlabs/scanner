@@ -17,6 +17,8 @@ import {ConfigAction} from './store/reducers/config.reducer';
 import {Account} from './store/states/account';
 import {HttpClient} from '@angular/common/http';
 import {TransactionType} from './store/states/transaction-type';
+import {environment} from '../environments/environment';
+import {AccountDialogComponent} from './dialogs/account/account-dialog.component';
 
 
 declare const Buffer;
@@ -92,6 +94,7 @@ export class AppService extends M2Service implements OnDestroy {
         }
         this.router.navigate(['/smart-contract']);
     }
+
     /**
      *
      */
@@ -159,6 +162,26 @@ export class AppService extends M2Service implements OnDestroy {
 
     /**
      *
+     * @returns {any}
+     */
+    public openAccount(): any {
+        return this.mdDialogRef = this.mdDialog.open(AccountDialogComponent, {
+            width: '600px',
+            height: '',
+            position: {
+                top: '16px',
+                bottom: '',
+                left: '',
+                right: ''
+            },
+            data: {
+            }
+        });
+    }
+
+
+    /**
+     *
      * @param {Transaction} transaction
      * @returns {any}
      */
@@ -182,7 +205,7 @@ export class AppService extends M2Service implements OnDestroy {
      *
      * @returns {Account}
      */
-    public generateNewAccount(): Account {
+    public generateNewAccount(): void {
         const privateKey = new Buffer(32);
         do {
             crypto.getRandomValues(privateKey);
@@ -197,8 +220,6 @@ export class AppService extends M2Service implements OnDestroy {
         };
         this.config.account = account;
         this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
-
-        return account;
     }
 
     /**
@@ -300,7 +321,25 @@ export class AppService extends M2Service implements OnDestroy {
      * @returns {any}
      */
     public getTransactions(): any {
-        const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/transactions';
+        const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975' + '/v1/transactions';
+        return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
+    }
+
+    /**
+     *
+     * @returns {any}
+     */
+    public getTransactionsFrom(address: string): any {
+        const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975' + '/v1/transactions/from/' + address;
+        return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
+    }
+
+    /**
+     *
+     * @returns {any}
+     */
+    public getDelegates(): any {
+        const url = 'http://' + environment.seedNodeHost + '/v1/delegates';
         return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
     }
 }

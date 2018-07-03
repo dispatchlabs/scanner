@@ -93,7 +93,13 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
      *
      */
     public deploy(): void {
-        this.appService.confirm('<p>Are you sure you want to deploy this smart contract?', () => {
+        const mdDialogRef = this.appService.openAccount();
+        const mdDialogRefSubscription = mdDialogRef.afterClosed().subscribe(result => {
+            mdDialogRefSubscription.unsubscribe();
+            if (!result) {
+                return;
+            }
+
             const transaction: Transaction = {
                 type: TransactionType.DeploySmartContract,
                 from: this.config.account.address,
@@ -104,13 +110,12 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
 
             this.appService.hashAndSign(this.config.account.privateKey, transaction);
             this.deploying = true;
-            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/transactions';
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/transactions';
             this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe((response: any) => {
                 this.id = response.id;
                 this.getStatus();
             });
         });
-        this.deploying = true;
     }
 
     /**
@@ -118,7 +123,7 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
      */
     private getStatus(): void {
         setTimeout(() => {
-            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/statuses/' + this.id;
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/statuses/' + this.id;
             return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}}).subscribe((response: any) => {
                 if (response.status === 'Pending') {
                     this.getStatus();
