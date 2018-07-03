@@ -32,6 +32,7 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
     public contract: any;
     public deploying = false;
     public id: string;
+    public options: any;
 
     /**
      *
