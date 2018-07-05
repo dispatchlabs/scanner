@@ -96,7 +96,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayedColumns = ['to', 'value', 'time', 'type'];
     public search: string;
     public KeyHelper = KeyHelper;
-    public TransactionType = TransactionType;
 
     /**
      *
@@ -149,6 +148,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loading = false;
         }, 500);
         this.appService.getDelegates().subscribe((response: any) => {
+            this.loading = false;
             if (response.status !== 'Ok') {
                 this.loading = false;
                 this.appService.error(response.status);
@@ -191,7 +191,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
 
             }
-        }, 1500);
+        }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
             this.appService.getTransactions().subscribe(response => {
                 this.transactions = response.data;
