@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, DoCheck, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, Inject, OnDestroy, OnInit} from '@angular/core';
 import {AppState} from './app.state';
 import {Store} from '@ngrx/store';
 import {MatDialog} from '@angular/material';
 import {AppService} from './app.service';
 import {Router} from '@angular/router';
 import {Config} from './store/states/config';
-import {Observable} from 'rxjs/Observable';
+//import {Observable} from 'rxjs/Observable';
 
 export const APP_REFRESH = 'APP_REFRESH';
 
@@ -24,9 +24,9 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
      * Class level-declarations.
      */
     public headerClass = 'header';
-    public configState: Observable<Config>;
-    public config: Config;
-    public configSubscription: any
+    // public configState: Observable<Config>;
+    // public config: Config;
+    // public configSubscription: any
 
     /**
      *
@@ -36,10 +36,10 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
      * @param {} router
      */
     constructor(@Inject('AppService') public appService: any, private store: Store<AppState>, private mdDialog: MatDialog, private router: Router) {
-        this.configState = this.store.select('config');
-        this.configSubscription = this.configState.subscribe((config: Config) => {
-            this.config = config;
-        });
+        // this.configState = this.store.select('config');
+        // this.configSubscription = this.configState.subscribe((config: Config) => {
+        //     this.config = config;
+        // });
     }
 
     /**
@@ -67,6 +67,6 @@ export class AppComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
      *
      */
     ngOnDestroy() {
-        this.configSubscription.unsubscribe();
+       // this.configSubscription.unsubscribe();
     }
 }
