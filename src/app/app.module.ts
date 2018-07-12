@@ -53,6 +53,7 @@ import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {SmartContractPageComponent} from './pages/smart-contract/smart-contract-page.component';
 import {HomePageComponent} from './pages/home/home-page.component';
 import {AceEditorModule} from 'ng2-ace-editor';
+import {AccountDialogComponent} from './dialogs/account/account-dialog.component';
 
 /**
  *
@@ -124,7 +125,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // Dialogs
         SignInDialogComponent,
         SendTokensDialogComponent,
-        TransactionDialogComponent
+        TransactionDialogComponent,
+        AccountDialogComponent
     ],
     imports: [
         // Angular
@@ -177,6 +179,7 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         SignInDialogComponent,
         SendTokensDialogComponent,
         TransactionDialogComponent,
+        AccountDialogComponent
     ],
     providers: [{provide: 'AppService', useClass: AppService}],
     bootstrap: [AppComponent]

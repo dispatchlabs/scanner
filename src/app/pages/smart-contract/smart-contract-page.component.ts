@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Transaction} from '../../store/states/transaction';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
@@ -32,6 +32,7 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
     public contract: any;
     public deploying = false;
     public id: string;
+    public options: any;
 
     /**
      *
@@ -86,9 +87,6 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
             this.compiling = false;
             this.errors = result.errors;
             this.contract = result.contracts[Object.keys(result.contracts)[0]];
-
-            console.log(this.contract);
-
         });
     }
 
@@ -96,7 +94,13 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
      *
      */
     public deploy(): void {
-        this.appService.confirm('<p>Are you sure you want to deploy this smart contract?', () => {
+        const mdDialogRef = this.appService.openAccount();
+        const mdDialogRefSubscription = mdDialogRef.afterClosed().subscribe(result => {
+            mdDialogRefSubscription.unsubscribe();
+            if (!result) {
+                return;
+            }
+
             const transaction: Transaction = {
                 type: TransactionType.DeploySmartContract,
                 from: this.config.account.address,
@@ -107,13 +111,12 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
 
             this.appService.hashAndSign(this.config.account.privateKey, transaction);
             this.deploying = true;
-            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/transactions';
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/transactions';
             this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe((response: any) => {
                 this.id = response.id;
                 this.getStatus();
             });
         });
-        this.deploying = true;
     }
 
     /**
@@ -121,7 +124,7 @@ export class SmartContractPageComponent implements OnInit, AfterViewInit, OnDest
      */
     private getStatus(): void {
         setTimeout(() => {
-            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':' + this.config.selectedDelegate.endpoint.port + '/v1/statuses/' + this.id;
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/statuses/' + this.id;
             return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}}).subscribe((response: any) => {
                 if (response.status === 'Pending') {
                     this.getStatus();

@@ -96,7 +96,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayedColumns = ['to', 'value', 'time', 'type'];
     public search: string;
     public KeyHelper = KeyHelper;
-    public TransactionType = TransactionType;
 
     /**
      *
@@ -147,11 +146,25 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = true;
         setTimeout(() => {
             this.loading = false;
-        }, 1000 * 3);
-        // this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
-        //     this.config.delegates = response.data;
-        //     this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
-        // });
+        }, 500);
+        this.appService.getDelegates().subscribe((response: any) => {
+            this.loading = false;
+            if (response.status !== 'Ok') {
+                this.loading = false;
+                this.appService.error(response.status);
+                return;
+            }
+            this.config.delegates = response.data;
+            if (!this.config.selectedDelegate) {
+                this.config.selectedDelegate = this.config.delegates[0];
+            }
+            this.getTransactions();
+
+            for (let i = 0; i < this.config.delegates.length; i++) {
+                this.config.delegates[i].address = 'Delegate ' + i;
+            }
+            this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
+        });
     }
 
     /**
@@ -176,10 +189,11 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             this.refreshOverlay = false;
             if (this.transactions && this.transactions.length > 0) {
                 this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
+
             }
         }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
-            this.appService.getTransactions(this.config.selectedDelegate).subscribe(response => {
+            this.appService.getTransactions().subscribe(response => {
                 this.transactions = response.data;
                 for (const transaction of this.transactions) {
                     switch (transaction.type) {
@@ -189,13 +203,29 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                         case TransactionType.DeploySmartContract:
                             transaction.type = 'Deploy Smart Contract';
                             break;
+                        case TransactionType.ExecuteSmartContract:
+                            transaction.type = 'Execute Smart Contract';
+                            break;
                     }
                 }
             });
         } else {
-            // this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
-            //     this.transactions = response.data;
-            // });
+            this.appService.getTransactionsFrom(this.search).subscribe(response => {
+                this.transactions = response.data;
+                for (const transaction of this.transactions) {
+                    switch (transaction.type) {
+                        case TransactionType.TransferTokens:
+                            transaction.type = 'Transfer Tokens';
+                            break;
+                        case TransactionType.DeploySmartContract:
+                            transaction.type = 'Deploy Smart Contract';
+                            break;
+                        case TransactionType.ExecuteSmartContract:
+                            transaction.type = 'Execute Smart Contract';
+                            break;
+                    }
+                }
+            });
         }
     }
 }
