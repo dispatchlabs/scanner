@@ -6,7 +6,7 @@ export const environment = {
     m2AppVersion: 'x.x',
     m2Url: 'https://www.mcgregor.io:9500',
     m2SessionTimeToLive: 20,
-    m2SpinnerUrl: null,
+    m2SpinnerUrl: 'assets/images/wheel-white.svg',
     m2SpinnerWidth: 30,
     m2ButtonMinWidth: '180px',
     m2WebsiteUrl: 'http://outside.mcgegor.io',
