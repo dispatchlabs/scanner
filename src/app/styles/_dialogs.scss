@@ -1,9 +1,12 @@
 @import 'colors';
 
+.mat-dialog-container {
+  background-image: linear-gradient(-136deg, #D2508D 0%, #74298C 47%, #2C2E8B 100%) !important;
+  color: #FFF !important;
+}
+
 .dialog-header {
-  background: #123985;
-  background: linear-gradient(to left, #123985 0%, #007DC5 50%, #3CBFBE 100%);
-  border-bottom: 1px solid #DFDFDF;
+  background: rgba(0,0,0,0.25);
   margin: -24px -24px 24px -24px;
   padding: 24px 24px 18px 24px;
 
@@ -38,15 +41,15 @@
     margin: 0;
   }
 
-  a {
-    color: $primary-blue;
+  //a {
+  //  color: $primary-blue;
+  //
+  //  &:hover {
+  //    color: darken($primary-blue, 10%);
+  //  }
+  //}
 
-    &:hover {
-      color: darken($primary-blue, 10%);
-    }
-  }
-
-  button.mat-button.primary {
-    background: $primary-blue;
-  }
+  //button.mat-button.primary {
+  //  background: $primary-blue;
+  //}
 }

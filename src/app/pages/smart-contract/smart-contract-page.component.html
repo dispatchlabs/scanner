@@ -1,5 +1,5 @@
 <div class="smart-contract-page">
-    <div fxLayout="row" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutGap="20px" class="bg-dark p20">
         <div fxFlex="66">
             <h3>Smart Contract Code</h3>
             <div ace-editor #editor
@@ -18,13 +18,13 @@
             <div fxLayout="row" fxLayoutGap="20px">
                 <div fxFlex>
                     <h3>Byte Code</h3>
-                    <div class="bg-white">
+                    <div class="bg-dark">
                         <pre>{{contract?.bytecode}}</pre>
                     </div>
                 </div>
                 <div fxFlex>
                     <h3>ABI</h3>
-                    <div  class="bg-white">
+                    <div  class="bg-dark">
                         <pre *ngIf="contract?.interface"> {{contract.interface | json}}</pre>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
 
         </div>
-        <div fxFlex="33" style="background: #DDD; padding: 20px; text-align: center">
+        <div fxFlex="33" style="background: rgba(0,0,0,0.25); border-radius: 4px; padding: 20px; text-align: center">
             <m2-button text="compile" [spinner]="compiling" [disabled]="!code || code === ''" (click)="compile()"></m2-button>
             <div class="mt20">
                 <m2-button [disabled]="!contract || deploying" [spinner]="deploying" text="deploy" (click)="deploy()"></m2-button>

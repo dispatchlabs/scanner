@@ -17,11 +17,6 @@
   }
 
   .list-header {
-    background: #123985;
-    background: url('../../../assets/images/rainbow-bg.png');
-    background-attachment: fixed;
-    background-position: top center;
-    border-bottom: 1px solid #DFDFDF;
     color: #FFF;
     min-height: 84px;
     padding: 10px;
@@ -37,11 +32,7 @@
   }
 
   .list-body {
-    background: #FFF;
-
-    .svg-inline--fa {
-      color: $primary;
-    }
+    background: rgba(0,0,0,0.15);
   }
 
   .list-item {
@@ -49,9 +40,6 @@
     border-bottom: 1px solid #CCC;
 
     &:hover {
-      background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('assets/images/rainbow-bg.png');
-      background-attachment: fixed;
-      background-position: top center;
       cursor: pointer;
       transform: scale(1.025);
       transition: all .3s;

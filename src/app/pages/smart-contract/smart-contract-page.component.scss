@@ -1,5 +1,5 @@
 .smart-contract-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 200px);
   padding: 20px 40px 40px;
 
   .error-messages {
@@ -15,7 +15,7 @@
     }
   }
 
-  .bg-white {
+  .bg-dark {
     word-break: break-all;
     padding: 10px;
 

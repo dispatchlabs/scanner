@@ -5,14 +5,11 @@
 @import 'app/styles/dialogs';
 
 body {
-  background: #F0F0F0;
-  color: #2D434B;
-  font-family: 'Caecilia', Serif;
+  background-image: linear-gradient(-136deg, #D2508D 0%, #74298C 47%, #2C2E8B 100%);
+  color: #FFF;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.6px;
   margin: 0;
-}
-
-h1, h2, h3, h4 {
-  font-family: 'Avant Garde', Futura, SansSerif;
 }
 
 div {
@@ -20,12 +17,12 @@ div {
 }
 
 a {
-  color: $primary;
+  color: hotpink;
   cursor: pointer;
   transition: color .3s;
 
   &:hover {
-    color: darken($primary, 15%)
+    color: darken(hotpink, 15%)
   }
 }
 
@@ -156,8 +153,14 @@ ul.none {
   }
 }
 
+.bg-dark {
+  background: rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
 .bg-white {
-  background: #FFF;
+  background: rgba(255,255,255,0.25);
+  border-radius: 4px;
 }
 
 .collapse-link {
@@ -331,9 +334,6 @@ input:-webkit-autofill {
 }
 
 .mat-row:hover {
-  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('assets/images/rainbow-bg.png');
-  background-attachment: fixed;
-  background-position: top center;
   cursor: pointer;
   transform: scale(1.025);
   transition: all .3s;
@@ -341,5 +341,37 @@ input:-webkit-autofill {
 
 .mat-cell {
   padding: 10px 20px;
+}
+
+.mat-table {
+  background: transparent !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  color: #FFF !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #FFF !important;
+}
+
+.mat-icon-button {
+  color: #FFF !important;
+}
+
+.mat-header-cell, .mat-cell, .mat-footer-cell {
+  color: #FFF !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+// ACE editor
+.ace-tm {
+  background-color: rgba(0,0,0,0.15) !important;
+  color: #FFF !important;
+}
+
+.ace-tm .ace_gutter {
+  background-color: rgba(0,0,0,0.25) !important;
+  color: #FFF !important;
 }
 

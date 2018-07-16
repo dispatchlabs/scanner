@@ -54,6 +54,7 @@ import {SmartContractPageComponent} from './pages/smart-contract/smart-contract-
 import {HomePageComponent} from './pages/home/home-page.component';
 import {AceEditorModule} from 'ng2-ace-editor';
 import {AccountDialogComponent} from './dialogs/account/account-dialog.component';
+import {WalletPageComponent} from './pages/wallet/wallet-page.component';
 
 /**
  *
@@ -72,6 +73,7 @@ export const routes: Routes = [
         path: 'news/:slug',
         loadChildren: './pages/news/news.module#NewsModule'
     },
+    {path: 'wallet', component: WalletPageComponent},
     {path: '**', component: NotFoundPageComponent}
 ];
 
@@ -121,6 +123,7 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         MetaPageComponent,
         NewsListPageComponent,
         SmartContractPageComponent,
+        WalletPageComponent,
         // Components
         // Dialogs
         SignInDialogComponent,

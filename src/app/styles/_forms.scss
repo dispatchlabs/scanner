@@ -16,13 +16,14 @@ input {
 
 button.mat-button, button.mat-raised-button {
   border: none;
-  border-radius: 25px;
-  color: #FFF;
+  border-radius: 3px;
+  color: #4A31B5;
   cursor: pointer;
-  font-size: 18px;
-  font-weight: 700;
-  height: 50px;
+  font-size: 14px;
+  height: 40px;
   padding: 0 25px;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
   transition: background .3s;
 
   &:focus {
@@ -30,7 +31,7 @@ button.mat-button, button.mat-raised-button {
   }
 
   &.primary {
-    background: $primary;
+    background: #FFF;
   }
 
   &.light {
@@ -57,12 +58,12 @@ button.mat-button, button.mat-raised-button {
   }
 
   .mat-button-focus-overlay, .mat-button-ripple {
-    border-radius: 25px;
+    border-radius: 3px;
   }
 
   &[disabled] {
-    background: #CCC !important;
-    color: #FFF !important;
+    color: #4A31B5 !important;
+    opacity: .5;
     cursor: not-allowed;
   }
 
