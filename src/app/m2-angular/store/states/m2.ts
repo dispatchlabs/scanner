@@ -11,5 +11,4 @@ export interface M2 {
     sessionId: string;
     account: any;
     alerts: Alert[];
-    timestamp: string;
 }

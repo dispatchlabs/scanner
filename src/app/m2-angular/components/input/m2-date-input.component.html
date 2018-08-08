@@ -1,7 +1,7 @@
 <div [formGroup]="formGroup">
     <input [readonly]="readonly" #monthInput class="area" formControlName="month" size="2" (keydown)="KeyHelper.onNumericKeyDown($event, 2)">
     <span>/</span>
-    <input [readonly]="readonly" #dayInput class="exchange" formControlName="day" size="2" (keydown)="KeyHelper.onNumericKeyDown($event, 2)">
+    <input [readonly]="readonly" #dayInput class="exchange" formControlName="day" size="2" (keydown)="KeyHelper.onNumericKeyDown($event, 2)" (focus)="onDayFocus()">
     <span>/</span>
-    <input [readonly]="readonly" #yearInput class="subscriber" formControlName="year" size="4" (keydown)="KeyHelper.onNumericKeyDown($event, 4)">
+    <input [readonly]="readonly" #yearInput class="subscriber" formControlName="year" size="4" (keydown)="KeyHelper.onNumericKeyDown($event, 4)" (focus)="onYearFocus()">
 </div>

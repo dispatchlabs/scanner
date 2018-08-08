@@ -1,6 +1,5 @@
 import {Action} from '@ngrx/store';
 import {M2} from '../states/m2';
-import * as moment from 'moment/moment';
 
 /**
  *
@@ -40,8 +39,7 @@ export class M2Action implements Action {
         return {
             sessionId: null,
             account: null,
-            alerts: [],
-            timestamp: moment(new Date()).format('YYYY-MM-DDTHH:mm:ssZZ')
+            alerts: []
         };
     }
 

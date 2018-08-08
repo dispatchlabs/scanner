@@ -1,6 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {
     MatButtonModule,
     MatCheckboxModule,
@@ -13,7 +12,7 @@ import {
     MatSelectModule,
     MatOptionModule,
     MatTooltipModule, MatSnackBarModule, MatRadioModule, MatSlideToggleModule, MatAutocompleteModule, MatMenuModule,
-    MatSliderModule, MatTableModule, MatPaginatorModule, MatGridListModule, MatFormFieldModule
+    MatSliderModule, MatTableModule, MatPaginatorModule, MatFormFieldModule
 } from '@angular/material';
 import {M2MetaUpdateComponent} from './components/meta/m2-meta-update.component';
 import {M2ConfirmComponent} from './dialogs/m2-confirm.component';
@@ -51,6 +50,8 @@ import {M2MobileInputComponent} from './components/input/m2-mobile-input.compone
 import {M2SsnInputComponent} from './components/input/m2-ssn-input.component';
 import {M2DateInputComponent} from './components/input/m2-date-input.component';
 import {M2CurrencyInputComponent} from './components/input/m2-currency-input.component';
+import {HttpClientModule} from '@angular/common/http';
+import {M2LoadingComponent} from './components/loading/m2-loading.component';
 
 /**
  * M2Module
@@ -60,7 +61,7 @@ import {M2CurrencyInputComponent} from './components/input/m2-currency-input.com
         // Angular
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
+        HttpClientModule,
         CommonModule,
         FlexLayoutModule,
         RouterModule,
@@ -114,6 +115,7 @@ import {M2CurrencyInputComponent} from './components/input/m2-currency-input.com
         M2SsnInputComponent,
         M2DateInputComponent,
         M2CurrencyInputComponent,
+        M2LoadingComponent,
         // Pipes
         M2CurrencyPipe,
         M2SimpleDateTimePipe,
@@ -148,6 +150,7 @@ import {M2CurrencyInputComponent} from './components/input/m2-currency-input.com
         M2SsnInputComponent,
         M2DateInputComponent,
         M2CurrencyInputComponent,
+        M2LoadingComponent,
         // Pipes
         M2CurrencyPipe,
         M2SimpleDateTimePipe,

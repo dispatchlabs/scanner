@@ -1,12 +1,12 @@
 <div [class]="cssClassName" [formGroup]="formGroup">
     <h3>Bank Account Information</h3>
 
-    <mat-input-container>
+    <mat-form-field>
         <input matInput onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="routingNumber" placeholder="Routing Number">
-    </mat-input-container>
-    <mat-input-container>
+    </mat-form-field>
+    <mat-form-field>
         <input matInput onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="accountNumber" placeholder="Account Number">
-    </mat-input-container>
+    </mat-form-field>
 
     <p class="small">
         Tax Type

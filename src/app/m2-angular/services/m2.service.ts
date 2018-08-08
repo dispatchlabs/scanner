@@ -1,12 +1,10 @@
 import {Injectable, ComponentFactoryResolver, ApplicationRef, Injector, EventEmitter, OnDestroy, Inject, PLATFORM_ID} from '@angular/core';
 import {M2} from '../store/states/m2';
-import {NavigationEnd, Router} from '@angular/router';
-import {Http, RequestOptions, Headers} from '@angular/http';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {DomSanitizer, Meta, Title} from '@angular/platform-browser';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {OAuthVendor} from '../store/states/oauth';
-import * as moment from 'moment/moment';
 import {M2NotificationComponent} from '../components/notification/m2-notification.component';
 import {M2ConfirmComponent} from '../dialogs/m2-confirm.component';
 import {Media} from '../store/states/media';
@@ -14,10 +12,11 @@ import {AccountType} from '../store/states/account';
 import {M2Action} from '../store/reducers/m2.reducer';
 import {AppState} from '../app.state';
 import {M2InfoComponent} from '../dialogs/m2-info.component';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Observable} from 'rxjs/Rx';
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
-import {environment} from '../../../environments/environment';
+import {M2Util} from '../utils/m2-util';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 /**
  * Events
@@ -26,6 +25,7 @@ export const APP_CLEAR_ALL_STATES = 'APP_CLEAR_ALL_STATES';
 export const APP_SERVER_DOWN_FOR_MAINTENANCE = 'APP_SERVER_DOWN_FOR_MAINTENANCE';
 export const APP_SIGN_OUT = 'APP_SIGN_OUT';
 export const APP_SIGN_IN = 'APP_SIGN_IN';
+export const APP_SESSION_EXPIRED = 'APP_SESSION_EXPIRED';
 
 /**
  *
@@ -51,7 +51,7 @@ export class M2Service implements OnDestroy {
      * @param {Title} title
      * @param {Meta} meta
      * @param {Router} router
-     * @param {Http} http
+     * @param {HttpClient} httpClient
      * @param {DomSanitizer} domSanitizer
      * @param {MatDialog} matDialog
      * @param {MatSnackBar} matSnackBar
@@ -60,8 +60,9 @@ export class M2Service implements OnDestroy {
      * @param {ApplicationRef} applicationRef
      * @param {Injector} injector
      * @param platformId
+     * @param {ActivatedRoute} activatedRoute
      */
-    constructor(@Inject('AppConfig') protected appConfig: any, protected title: Title, protected meta: Meta, protected router: Router, protected http: Http, protected domSanitizer: DomSanitizer, protected matDialog: MatDialog, protected matSnackBar: MatSnackBar, protected store: Store<AppState>, protected componentFactoryResolver: ComponentFactoryResolver, protected applicationRef: ApplicationRef, protected injector: Injector, @Inject(PLATFORM_ID) protected platformId: any) {
+    constructor(@Inject('AppConfig') protected appConfig: any, protected title: Title, protected meta: Meta, protected router: Router, protected httpClient: HttpClient, protected domSanitizer: DomSanitizer, protected matDialog: MatDialog, protected matSnackBar: MatSnackBar, protected store: Store<AppState>, protected componentFactoryResolver: ComponentFactoryResolver, protected applicationRef: ApplicationRef, protected injector: Injector, @Inject(PLATFORM_ID) protected platformId: any, protected activatedRoute: ActivatedRoute) {
         if (isPlatformBrowser(this.platformId)) {
             this.isBrowser = true;
         }
@@ -71,24 +72,23 @@ export class M2Service implements OnDestroy {
         this.m2State = this.store.select('m2');
         this.m2State.subscribe((m2: M2) => {
             this.m2 = m2;
-            const timestamp = moment(this.m2.timestamp).toDate().getTime();
-            if ((timestamp + (1000 * 60 * this.appConfig.m2SessionTimeToLive)) < new Date().getTime()) {
-                this.store.dispatch({type: APP_CLEAR_ALL_STATES});
-                this.router.navigate(['/']);
-            }
         });
         this.routerSubscription = this.router.events.subscribe((event) => {
-            if (event instanceof NavigationEnd) {
-                // this.createOrUpdateMeta(event.url);
+            if (event instanceof NavigationEnd && this.isBrowser) {
+                this.createOrUpdateMeta(event.url);
             }
         });
-        if (typeof window !== 'undefined') {
-            this.setTimestamp();
-        }
-        /*
-        this.refresh().subscribe(response => {
+        this.activatedRoute.queryParams.subscribe(params => {
+            if (params['sessionId'] && this.isBrowser) {
+                this.m2.sessionId = params['sessionId'];
+                this.store.dispatch(new M2Action(M2Action.M2_UPDATE, this.m2));
+                this.refresh().subscribe(response => {
+                    if (response.status === 'OK') {
+                        this.appEvents.emit({type: APP_SIGN_IN, account: response.account});
+                    }
+                });
+            }
         });
-        */
     }
 
     /**
@@ -96,17 +96,6 @@ export class M2Service implements OnDestroy {
      */
     ngOnDestroy() {
         this.routerSubscription.unsubscribe();
-    }
-
-    /**
-     *
-     */
-    private setTimestamp(): void {
-        this.m2.timestamp = this.toIsoString(new Date());
-        this.store.dispatch(new M2Action(M2Action.M2_UPDATE, this.m2));
-        setTimeout(() => {
-            this.setTimestamp();
-        }, 1000 * 60 * 1);
     }
 
     /**
@@ -146,8 +135,8 @@ export class M2Service implements OnDestroy {
      * @param routes
      */
     public createMetas(routes: any): void {
-        //this.post('m2.action.meta.CreateAction', {routes: routes}).subscribe(response => {
-        //});
+        this.post('m2.action.meta.CreateAction', {routes: routes}).subscribe(response => {
+        });
     }
 
     /**
@@ -250,11 +239,11 @@ export class M2Service implements OnDestroy {
      */
     public confirm(message: string, ok: any): void {
         this.matDialog.open(M2ConfirmComponent, {
-            disableClose: true,
-            width: '560px',
+            disableClose: false,
+            width: '600px',
             height: '',
             position: {
-                top: '40px',
+                top: '100px',
                 bottom: '',
                 left: '',
                 right: ''
@@ -281,16 +270,13 @@ export class M2Service implements OnDestroy {
         });
     }
 
-    /**
-     *
-     * @param address
-     * @param response
-     */
+    /*
     public getLatitudeAndLongitude(address: string, geometry?: (latitude: number, longitude: number) => void): void {
-        this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(address)).subscribe((data) => {
-            geometry(data.json().results[0].geometry.location.lat, data.json().results[0].geometry.location.lng);
+        this.httpClient.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(address)).subscribe((data) => {
+            geometry(data.results[0].geometry.location.lat, data.results[0].geometry.location.lng);
         });
     }
+    */
 
     /**
      *
@@ -298,27 +284,23 @@ export class M2Service implements OnDestroy {
      * @param json
      * @returns {Observable<any | any>}
      */
-    public post(className: string, json: any) {
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
+    public post(className: string, json: any): any {
         let url = this.getUrl(this.appConfig.m2Url) + '/Action?className=' + className + '&appId=' + this.appConfig.m2AppId + '&version=' + this.appConfig.m2AppVersion;
         if (this.m2.sessionId) {
             url += '&sessionId=' + this.m2.sessionId;
         }
 
-        // Post.
-        return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
+        return this.httpClient.post(url, JSON.stringify(json), {headers: {'Content-Type': 'application/json'}}).do(response => {
             this.handleResponse(response);
-        }).catch(e => {
+        }).catch((e: any) => {
             if (e.status === 0) {
                 this.store.dispatch(new M2Action(M2Action.M2_INITIAL_STATE));
                 this.appEvents.emit({type: APP_SERVER_DOWN_FOR_MAINTENANCE});
-                return Observable.throw({status: APP_SERVER_DOWN_FOR_MAINTENANCE});
+                return Observable.throwError({status: APP_SERVER_DOWN_FOR_MAINTENANCE});
             } else {
-                const response = e.json();
-                this.handleResponse(response);
-                return new Observable(observer => {
-                    observer.next(response);
+                this.handleResponse(e.error);
+                return new Observable<any>(observer => {
+                    observer.next(e.error);
                     observer.complete();
                 });
             }
@@ -330,9 +312,9 @@ export class M2Service implements OnDestroy {
      * @param response
      */
     private handleResponse(response: any): void {
-        if (response.status === 'INVALID_SESSION_ID' || response.status === 'SESSION_ID_OR_API_KEY_MISSING') {
+        if (response.status === 'INVALID_SESSION_ID') {
             this.store.dispatch(new M2Action(M2Action.M2_INITIAL_STATE));
-            this.appEvents.emit({type: APP_SIGN_OUT});
+            this.appEvents.emit({type: APP_SESSION_EXPIRED});
         } else {
             if (response.sessionId) {
                 this.m2.sessionId = response.sessionId;
@@ -385,13 +367,9 @@ export class M2Service implements OnDestroy {
      * @returns {any}
      */
     public createStripeCardToken(cardNumber: string, cvc: any, expMonth: string, expYear: string): any {
-        const headers = new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer ' + this.appConfig.stripePublishableKey
-        });
-        const requestOptions = new RequestOptions({headers: headers});
-        const url = 'https://api.stripe.com/v1/tokens';
-        return this.http.post(url, 'card[number]=' + cardNumber + '&card[exp_month]=' + expMonth + '&card[exp_year]=' + expYear + '&card[cvc]=' + cvc + '&card[currency]=usd', requestOptions).map(tokenId => tokenId.json().id);
+        return null;
+        // const url = 'https://api.stripe.com/v1/tokens';
+        // return this.httpClient.post(url, 'card[number]=' + cardNumber + '&card[exp_month]=' + expMonth + '&card[exp_year]=' + expYear + '&card[cvc]=' + cvc + '&card[currency]=usd', {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + this.appConfig.stripePublishableKey}}).map(response => response.id);
     }
 
     /**
@@ -403,13 +381,10 @@ export class M2Service implements OnDestroy {
      * @returns {any}
      */
     public createStripeBankToken(country: string, routingNumber: string, accountNumber: string, type: string): any {
-        const headers = new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer ' + this.appConfig.stripePublishableKey
-        });
-        const requestOptions = new RequestOptions({headers: headers});
-        const url = 'https://api.stripe.com/v1/tokens';
-        return this.http.post(url, 'bank_account[country]=' + country + '&bank_account[routing_number]=' + routingNumber + '&bank_account[account_number]=' + accountNumber + '&bank_account[account_holder_type]=' + type, requestOptions).map(tokenId => tokenId.json().id);
+
+        return null;
+        //const url = 'https://api.stripe.com/v1/tokens';
+        // return this.httpClient.post(url, 'bank_account[country]=' + country + '&bank_account[routing_number]=' + routingNumber + '&bank_account[account_number]=' + accountNumber + '&bank_account[account_holder_type]=' + type, {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + this.appConfig.stripePublishableKey}}).map(response => response.id);
     }
 
     /**
@@ -426,6 +401,7 @@ export class M2Service implements OnDestroy {
      */
     public markAlertAsRead(alertId: string): void {
         this.post('m2.action.alert.MarkAsReadAction', {'alertId': alertId}).subscribe(response => {
+            /*
             if (response.status === 'OK') {
                 if (this.m2.alerts) {
                     let index = 0;
@@ -438,6 +414,7 @@ export class M2Service implements OnDestroy {
                     }
                 }
             }
+            */
         });
     }
 

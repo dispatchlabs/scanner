@@ -2,19 +2,19 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {AppService} from '../../app.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Headers, Http, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
-import {APP_REFRESH} from '../../app.component';
-import * as keccak from 'keccak';
-import {M2Util} from '../../m2-angular/utils/m2-util';
-import * as secp256k1 from 'secp256k1';
 import {Transaction} from '../../store/states/transaction';
+import {KeyHelper} from '../../m2-angular/helpers/key-helper';
+import {HttpClient} from '@angular/common/http';
+import {APP_REFRESH} from '../../app.component';
+import {TransactionType} from '../../store/states/transaction-type';
 
-declare const Buffer;
-
+/**
+ *
+ */
 @Component({
     selector: 'app-send-tokens-dialog',
     templateUrl: './send-tokens-dialog.component.html',
@@ -30,26 +30,27 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
-    private actionId: any;
+    private id: any;
+    public KeyHelper = KeyHelper;
 
     /**
      *
      * @param appService
-     * @param {MatDialogRef<SendTokensDialogComponent>} mdDialogRef
+     * @param {MatDialogRef<AccountDialogComponent>} mdDialogRef
      * @param {FormBuilder} formBuilder
-     * @param {Http} http
      * @param {Store<AppState>} store
+     * @param {HttpClient} httpClient
      */
-    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private http: Http, private store: Store<AppState>) {
-        this.formGroup = formBuilder.group({
-            privateKey: new FormControl('e7181240095e27679bf38e8ad77d37bedb5865b569157b4c14cdb1bebb7c6e2b', Validators.compose([Validators.required, Validators.minLength(64)])),
-            address: new FormControl('79db55dd1c8ae495c267bde617f7a9e5d5c67719', Validators.compose([Validators.required, Validators.minLength(40)])),
-            to: new FormControl('43f603c04610c87326e88fcd24152406d23da032', Validators.compose([Validators.required, Validators.minLength(40)])),
-            tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
-        });
+    constructor(@Inject('AppService') public appService: any, private mdDialogRef: MatDialogRef<SendTokensDialogComponent>, private formBuilder: FormBuilder, private store: Store<AppState>, private httpClient: HttpClient) {
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
+        });
+        this.formGroup = formBuilder.group({
+            privateKey: new FormControl(this.config.account == null ? '' : this.config.account.privateKey, Validators.compose([Validators.required, Validators.minLength(64)])),
+            address: new FormControl(this.config.account == null ? '' : this.config.account.address, Validators.compose([Validators.required, Validators.minLength(40)])),
+            to: new FormControl('', Validators.compose([Validators.required, Validators.minLength(40)])),
+            tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
         });
     }
 
@@ -78,28 +79,18 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     public send(): void {
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
-            const privateKey = this.formGroup.get('privateKey').value;
-            const date = new Date();
-            const type = this.numberToBuffer(0);
-            const from = Buffer.from(this.formGroup.get('address').value, 'hex');
-            const to = Buffer.from(this.formGroup.get('to').value, 'hex');
-            const tokens = this.numberToBuffer(parseInt(this.formGroup.get('tokens').value, 10));
-            const time = this.numberToBuffer(date.getTime());
-            const hash = keccak('keccak256').update(Buffer.concat([type, from, to, tokens, time])).digest();
-            const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
-            const transaction = {
-                hash: hash.toString('hex'),
-                type: 0,
-                from: from.toString('hex'),
-                to: to.toString('hex'),
-                value: parseInt(this.formGroup.get('tokens').value, 10),
-                time: date.getTime(),
-                signature: new Buffer(signature.signature).toString('hex') + '00',
-            };
+            const transaction: Transaction = {
+                type: TransactionType.TransferTokens,
+                from: this.formGroup.get('address').value,
+                to: this.formGroup.get('to').value,
+                value: parseInt(this.formGroup.get('tokens').value, 10)
+            } as any;
 
+            this.appService.hashAndSign(this.formGroup.get('privateKey').value, transaction);
             this.spinner = true;
-            const send = this.post('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/transactions', transaction).subscribe(response => {
-                this.actionId = response.id;
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/transactions';
+            this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe ((response: any) => {
+                this.id = response.id;
                 this.getStatus();
             });
         });
@@ -110,21 +101,20 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     private getStatus(): void {
         setTimeout(() => {
-            const send = this.get('http://' + this.config.delegates[0].endpoint.host + ':1975/v1/actions/' + this.actionId).subscribe(response => {
-
-
-                if (response.data.status === 'PENDING') {
+            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/statuses/' + this.id;
+            return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}}).subscribe( (response: any) => {
+                if (response.status === 'Pending') {
                     this.getStatus();
                     return;
                 }
 
-                if (response.data.status === 'OK') {
+                if (response.status === 'Ok') {
                     this.close();
                     this.appService.success('Tokens sent.');
                     this.appService.appEvents.emit({type: APP_REFRESH});
-                }else {
+                } else {
                     this.close();
-                    this.appService.error(response.data.status);
+                    this.appService.error(response.status);
                 }
             });
         }, 500);
@@ -132,84 +122,10 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
 
     /**
      *
-     * @param {number} value
-     * @returns {any}
-     */
-    private numberToBuffer(value: number): any {
-        const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
-        for (let i = 0; i < bytes.length; i++) {
-            const byte = value & 0xff;
-            bytes [i] = byte;
-            value = (value - byte) / 256;
-        }
-        return new Buffer(bytes);
-    }
-
-    /**
-     *
      */
     public generatePrivateKeyAndAddress(): void {
-        const privateKey = new Buffer(32);
-        do {
-            crypto.getRandomValues(privateKey);
-        } while (!secp256k1.privateKeyVerify(privateKey));
-        const publicKey = secp256k1.publicKeyCreate(privateKey);
-        const address = new Buffer(20);
-        for (let i = 0; i < address.length; i++) {
-            address[i] = publicKey[i + 12];
-        }
-        this.formGroup.get('privateKey').setValue(Buffer.from(privateKey).toString('hex'));
-        this.formGroup.get('address').setValue(Buffer.from(address).toString('hex'));
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @param json
-     * @returns {Observable<any>}
-     */
-    public post(url: string, json: any): any {
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
-
-        // Post.
-        return this.http.post(url, JSON.stringify(json), requestOptions).map(response => response.json()).do(response => {
-        }).catch(e => {
-            this.spinner = false;
-            if (e.status === 0) {
-                this.spinner = false;
-                this.appService.error('Dispatch node is currently down for maintenance.');
-            } else {
-                const response = e.json();
-                return new Observable(observer => {
-                    observer.next(response);
-                    observer.complete();
-                });
-            }
-        });
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @returns {Observable<any>}
-     */
-    public get(url: string): any {
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
-
-        // Post.
-        return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
-        }).catch(e => {
-            if (e.status === 0) {
-                this.appService.error('Dispatch node is currently down for maintenance.');
-            } else {
-                const response = e.json();
-                return new Observable(observer => {
-                    observer.next(response);
-                    observer.complete();
-                });
-            }
-        });
+        this.appService.generateNewAccount();
+        this.formGroup.get('privateKey').setValue(this.config.account.privateKey);
+        this.formGroup.get('address').setValue(this.config.account.address);
     }
 }

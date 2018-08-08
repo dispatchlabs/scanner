@@ -1,9 +1,7 @@
 @import 'styles/colors';
 
 .header {
-  background: #0E3178;
-  background: linear-gradient(to right, #0E3178 0%, #782B90 50%, #EF5BA1 100%);
-  text-align: center;
+  background: rgba(0,0,0,0.25);
   height: 180px;
   padding: 30px;
   position: fixed;
@@ -81,8 +79,7 @@
 }
 
 footer {
-  background: #F04E23;
-  background: linear-gradient(to right, #F04E23 0%, #F7941D 50%, #FFF200 100%);
+  background: rgba(0,0,0,0.5);
   color: #FFF;
   font-size: 10px;
   padding: 30px;

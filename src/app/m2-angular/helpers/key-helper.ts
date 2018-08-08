@@ -52,7 +52,6 @@ export class KeyHelper {
         }
         return true;
     }
-
     /**
      *
      * @param event
@@ -60,9 +59,6 @@ export class KeyHelper {
      * @returns {boolean}
      */
     public static onHexKeyDown(event: any, maxLength: number): boolean {
-        if (event.metaKey === true && event.key === 'v') {
-            return true;
-        }
         switch (event.key) {
             case 'Tab':
             case 'ArrowLeft':
@@ -80,4 +76,5 @@ export class KeyHelper {
         }
         return true;
     }
+
 }

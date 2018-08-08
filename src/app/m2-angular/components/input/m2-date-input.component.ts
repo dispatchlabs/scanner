@@ -3,10 +3,9 @@ import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, ElementRef, forwardRef, HostBinding, Input, OnDestroy, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, NgControl} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {M2Util} from '../../utils/m2-util';
 import {KeyHelper} from '../../helpers/key-helper';
-import * as moment from 'moment/moment';
 
 // TODO: When tabbing to this component the placeholder does not float! MAO!
 
@@ -43,6 +42,8 @@ export class M2DateInputComponent implements ControlValueAccessor, MatFormFieldC
     private _required = false;
     controlType = 'm2-date-input';
     public KeyHelper = KeyHelper;
+    @ViewChild('monthInput')
+    public monthInputElement: ElementRef;
     @ViewChild('dayInput')
     public dayInputElement: ElementRef;
     @ViewChild('yearInput')
@@ -114,6 +115,24 @@ export class M2DateInputComponent implements ControlValueAccessor, MatFormFieldC
         this.yearSubscription.unsubscribe();
         this.stateChanges.complete();
         this.focusMonitor.stopMonitoring(this.elementRef.nativeElement);
+    }
+
+    /**
+     *
+     */
+    public onDayFocus(): void {
+        if (this.formGroup.get('month').value.length !== 2) {
+            this.monthInputElement.nativeElement.focus();
+        }
+    }
+
+    /**
+     *
+     */
+    public onYearFocus(): void {
+        if (this.formGroup.get('day').value.length !== 2) {
+            this.dayInputElement.nativeElement.focus();
+        }
     }
 
     /**

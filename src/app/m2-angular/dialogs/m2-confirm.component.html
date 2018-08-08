@@ -4,11 +4,11 @@
 </div>
 <mat-dialog-content>
     <p [innerHTML]="message"></p>
-    <div fxLayout="column" fxLayout.gt-xs="row" class="m2-confirm-buttons">
+    <div fxLayout="row" class="mt40">
         <div fxFlex>
             <m2-button text="Cancel" (click)="close(false)" className="outline">Cancel</m2-button>
         </div>
-        <div fxFlex ngClass.gt-xs="right">
+        <div fxFlex class="right">
             <m2-button text="OK" (click)="close(true)">OK</m2-button>
         </div>
     </div>

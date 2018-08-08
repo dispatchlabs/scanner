@@ -5,90 +5,29 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script defer src="assets/fonts/fontawesome/fontawesome-all.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script async src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    <script async type="text/javascript" src="https://cdnjs.tradepending.com/javascript/snap-search.js"></script>
 
+    <!-- Poppins Web Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet">
+
+    <script type="text/javascript" src="http://code.dappbench.com/browser-solc.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '');
+    </script>
+    -->
 </head>
 <body>
 <app-root>
-    <style>
-        body {
-            background: #2D434B;
-            color: #FFF;
-            font-family: Helvetica, SansSerif;
-        }
-
-        .content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .loading {
-            position: relative;
-            height: 200px;
-            width: 200px;
-        }
-
-        .ping {
-            border: 3px solid #FFF;
-            border-radius: 50%;
-            position: absolute;
-            animation: wave-out 2s infinite;
-        }
-
-        .ping.one {
-             opacity: 0;
-             animation-delay: .5s;
-         }
-
-        .ping.two {
-             opacity: 0;
-             animation-delay: 1s;
-        }
-
-        .icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .icon img {
-            width: 50px;
-        }
-
-        @keyframes wave-out {
-            0% {
-                border-width: 0;
-                height: 0;
-                width: 0;
-                top: 50%;
-                right: 50%;
-                opacity: 1;
-            }
-            100% {
-                border-width: 5px;
-                height: 100px;
-                width: 100px;
-                top: calc(50% - 50px);
-                right: calc(50% - 50px);;
-                opacity: 0;
-            }
-        }
-    </style>
-    <div class="content">
-        <div class="loading">
-            <div class="ping"></div>
-            <div class="ping one"></div>
-            <div class="ping two"></div>
-            <div class="icon">
-                <img src="assets/images/icon.png">
-            </div>
-        </div>
-    </div>
 </app-root>
 </body>
 </html>
