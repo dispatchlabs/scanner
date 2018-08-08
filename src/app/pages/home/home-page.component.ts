@@ -1,7 +1,6 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Inject, ViewChild, ElementRef} from '@angular/core';
 import {AppService} from '../../app.service';
 import {Router} from '@angular/router';
-import {environment} from '../../../environments/environment';
 import {Config} from '../../store/states/config';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
@@ -15,6 +14,7 @@ import {KeyHelper} from '../../m2-angular/helpers/key-helper';
 import {ConfigAction} from '../../store/reducers/config.reducer';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {TransactionType} from '../../store/states/transaction-type';
 
 /**
  *
@@ -91,10 +91,9 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public config: Config;
     public configSubscription: any;
     private appEventSubscription: any;
-    public selectedDelegate: Node;
     public transactions: Transaction [];
     public dataSource: TransactionDataSource | null;
-    public displayedColumns = ['to', 'value', 'time'];
+    public displayedColumns = ['to', 'value', 'time', 'type'];
     public search: string;
     public KeyHelper = KeyHelper;
 
@@ -147,9 +146,23 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = true;
         setTimeout(() => {
             this.loading = false;
-        }, 1000 * 3);
-        this.get('http://' + environment.seedNodeIp + ':1975/v1/delegates').subscribe(response => {
+        }, 500);
+        this.appService.getDelegates().subscribe((response: any) => {
+            this.loading = false;
+            if (response.status !== 'Ok') {
+                this.loading = false;
+                this.appService.error(response.status);
+                return;
+            }
             this.config.delegates = response.data;
+            if (!this.config.selectedDelegate) {
+                this.config.selectedDelegate = this.config.delegates[0];
+            }
+            this.getTransactions();
+
+            for (let i = 0; i < this.config.delegates.length; i++) {
+                this.config.delegates[i].address = 'Delegate ' + i;
+            }
             this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
         });
     }
@@ -159,7 +172,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      * @param {Node} delegate
      */
     public select(delegate: Node): void {
-        this.selectedDelegate = delegate;
+        this.config.selectedDelegate = delegate;
+        this.store.dispatch(new ConfigAction(ConfigAction.CONFIG_UPDATE, this.config));
         this.getTransactions();
     }
 
@@ -167,7 +181,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
      *
      */
     public getTransactions(): void {
-        if (!this.selectedDelegate) {
+        if (!this.config.selectedDelegate) {
             return;
         }
         this.refreshOverlay = true;
@@ -175,44 +189,43 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             this.refreshOverlay = false;
             if (this.transactions && this.transactions.length > 0) {
                 this.dataSource = new TransactionDataSource(new TransactionDatabase(this.transactions));
+
             }
         }, 500);
         if (M2Util.isNullOrEmpty(this.search)) {
-            this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions').subscribe(response => {
+            this.appService.getTransactions().subscribe(response => {
                 this.transactions = response.data;
+                for (const transaction of this.transactions) {
+                    switch (transaction.type) {
+                        case TransactionType.TransferTokens:
+                            transaction.type = 'Transfer Tokens';
+                            break;
+                        case TransactionType.DeploySmartContract:
+                            transaction.type = 'Deploy Smart Contract';
+                            break;
+                        case TransactionType.ExecuteSmartContract:
+                            transaction.type = 'Execute Smart Contract';
+                            break;
+                    }
+                }
             });
         } else {
-            this.get('http://' + environment.seedNodeIp + ':1975/v1/transactions/' + this.search).subscribe(response => {
+            this.appService.getTransactionsFrom(this.search).subscribe(response => {
                 this.transactions = response.data;
+                for (const transaction of this.transactions) {
+                    switch (transaction.type) {
+                        case TransactionType.TransferTokens:
+                            transaction.type = 'Transfer Tokens';
+                            break;
+                        case TransactionType.DeploySmartContract:
+                            transaction.type = 'Deploy Smart Contract';
+                            break;
+                        case TransactionType.ExecuteSmartContract:
+                            transaction.type = 'Execute Smart Contract';
+                            break;
+                    }
+                }
             });
         }
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @returns {Observable<any>}
-     */
-    public get(url: string): any {
-
-        /*
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const requestOptions = new RequestOptions({headers: headers});
-
-        // Post.
-        return this.http.get(url, requestOptions).map(response => response.json()).do(response => {
-        }).catch(e => {
-            this.loading = false;
-            if (e.status === 0) {
-                this.appService.error('Dispatch node is currently down for maintenance.');
-            } else {
-                const response = e.json();
-                return new Observable(observer => {
-                    observer.next(response);
-                    observer.complete();
-                });
-            }
-        });
-        */
     }
 }

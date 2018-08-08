@@ -1,6 +1,5 @@
 import {Action} from '@ngrx/store';
 import {Config} from '../states/config';
-import {environment} from '../../../environments/environment';
 
 /**
  *
@@ -38,8 +37,8 @@ export class ConfigAction implements Action {
      */
     public static getInitialState(): Config {
         return {
-            seedNodeIp: environment.seedNodeIp,
-            delegates: null,
+            delegates: [],
+            selectedDelegate: null,
             account: null
         };
     }

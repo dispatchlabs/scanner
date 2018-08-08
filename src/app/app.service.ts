@@ -16,15 +16,12 @@ import * as secp256k1 from 'secp256k1';
 import {ConfigAction} from './store/reducers/config.reducer';
 import {Account} from './store/states/account';
 import {HttpClient} from '@angular/common/http';
+import {TransactionType} from './store/states/transaction-type';
+import {environment} from '../environments/environment';
+import {AccountDialogComponent} from './dialogs/account/account-dialog.component';
 
 
 declare const Buffer;
-declare const BrowserSolc: any;
-
-/**
- * Events
- */
-export const APP_PRE_QUALIFY_NEXT_STEP = 'APP_PRE_QUALIFY_NEXT_STEP';
 
 /**
  *
@@ -64,42 +61,11 @@ export class AppService extends M2Service implements OnDestroy {
             if (!data || !data.type) {
                 return;
             }
-            switch (data.type) {
-                case APP_SIGN_OUT:
-                    if (this.mdDialogRef) {
-                        this.mdDialogRef.close();
-                    }
-                    this.navigateToHome();
-                    break;
-                case APP_SERVER_DOWN_FOR_MAINTENANCE:
-                    if (this.mdDialogRef) {
-                        this.mdDialogRef.close();
-                    }
-                    this.navigateToHome();
-                    // this.error(environment.m2AppName + ' server is down for maintenance. Please try again later.');
-                    break;
-            }
         });
         this.configState = this.store.select('config');
         this.configSubscription = this.configState.subscribe((config: Config) => {
             this.config = config;
         });
-        // this.createMetas(routes);
-
-
-        /*
-        const input = {
-            'cont.sol': 'import "lib.sol"; contract x { function g() { L.f(); } }'
-        }
-        function findImports (path) {
-            if (path === 'lib.sol') {
-                return {contents: 'library L { function f() returns (uint) { return 7; } }'}
-            } else {
-                return {error: 'File not found'}
-            }
-        }
-        */
-
     }
 
     /**
@@ -117,6 +83,16 @@ export class AppService extends M2Service implements OnDestroy {
             window.scrollTo(0, 0);
         }
         this.router.navigate(['/']);
+    }
+
+    /**
+     *
+     */
+    public navigateToSmartContract() {
+        if (typeof window !== 'undefined') {
+            window.scrollTo(0, 0);
+        }
+        this.router.navigate(['/smart-contract']);
     }
 
     /**
@@ -172,8 +148,6 @@ export class AppService extends M2Service implements OnDestroy {
      * @returns {MatDialogRef<SendTokensDialogComponent>}
      */
     public openSendTokens(): any {
-
-        /*
         return this.mdDialogRef = this.mdDialog.open(SendTokensDialogComponent, {
             width: '600px',
             height: '',
@@ -184,26 +158,27 @@ export class AppService extends M2Service implements OnDestroy {
                 right: ''
             },
         });
-        */
+    }
 
-
-
-
-        // BrowserSolc.getVersions(function(soljsonSources, soljsonReleases) {
-        //     console.log(soljsonSources);
-        //     console.log(soljsonReleases);
-        // });
-
-        BrowserSolc.loadVersion('soljson-v0.4.6+commit.2dabbdf0.js', function(compiler) {
-            const source = 'contract x { function g() {} }';
-
-            console.log(source);
-            const optimize = 1;
-            const result = compiler.compile(source, optimize);
-
-            console.log(result);
+    /**
+     *
+     * @returns {any}
+     */
+    public openAccount(): any {
+        return this.mdDialogRef = this.mdDialog.open(AccountDialogComponent, {
+            width: '600px',
+            height: '',
+            position: {
+                top: '16px',
+                bottom: '',
+                left: '',
+                right: ''
+            },
+            data: {
+            }
         });
     }
+
 
     /**
      *
@@ -228,6 +203,7 @@ export class AppService extends M2Service implements OnDestroy {
 
     /**
      *
+     * @returns {Account}
      */
     public generateNewAccount(): void {
         const privateKey = new Buffer(32);
@@ -266,6 +242,105 @@ export class AppService extends M2Service implements OnDestroy {
             address[i] = hash[i + 12];
         }
         return address;
+    }
+
+    /**
+     *
+     * @param {string} privateKey
+     * @param {Transaction} transaction
+     */
+    public hashAndSign(privateKey: string, transaction: Transaction): void {
+
+        // Set time.
+        transaction.time = new Date().getTime();
+
+        // Create hash.
+        let hash: any;
+        const from = Buffer.from(transaction.from, 'hex');
+        const to = Buffer.from(transaction.to, 'hex');
+        const value = this.numberToBuffer(transaction.value);
+        const time = this.numberToBuffer(transaction.time);
+
+        // Type?
+        switch (transaction.type) {
+            case TransactionType.TransferTokens:
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('00', 'hex'), from, to, value, time])).digest();
+                break;
+            case TransactionType.DeploySmartContract:
+                const code = Buffer.from(transaction.code, 'hex');
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('01', 'hex'), from, to, value, code, time])).digest();
+                break;
+            case TransactionType.ExecuteSmartContract:
+                const abi = this.stringToBuffer(transaction.abi);
+                const method = this.stringToBuffer(transaction.method);
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('02', 'hex'), from, to, value, abi, method, time])).digest();
+                break;
+        }
+        transaction.hash = hash.toString('hex');
+
+        // Create signature.
+        const signature = secp256k1.sign(hash, Buffer.from(privateKey, 'hex'));
+        const signatureBytes = new Uint8Array(65);
+        for (let i = 0; i < 64; i++) {
+            signatureBytes[i] = signature.signature[i];
+        }
+        signatureBytes[64] = signature.recovery;
+        transaction.signature = new Buffer(signatureBytes).toString('hex');
+    }
+
+    /**
+     *
+     * @param {string} value
+     * @returns {any}
+     */
+    private stringToBuffer(value: string): any {
+        const bytes = [];
+        for (let i = 0; i < value.length; i++) {
+            bytes.push(value.charCodeAt(i));
+        }
+        return new Buffer(bytes);
+    }
+
+    /**
+     *
+     * @param {number} value
+     * @returns {any}
+     */
+    private numberToBuffer(value: number): any {
+        const bytes = [0, 0, 0, 0, 0, 0, 0, 0];
+        for (let i = 0; i < bytes.length; i++) {
+            const byte = value & 0xff;
+            bytes [i] = byte;
+            value = (value - byte) / 256;
+        }
+        return new Buffer(bytes);
+    }
+
+    /**
+     *
+     * @returns {any}
+     */
+    public getTransactions(): any {
+        const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975' + '/v1/transactions';
+        return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
+    }
+
+    /**
+     *
+     * @returns {any}
+     */
+    public getTransactionsFrom(address: string): any {
+        const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975' + '/v1/transactions/from/' + address;
+        return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
+    }
+
+    /**
+     *
+     * @returns {any}
+     */
+    public getDelegates(): any {
+        const url = 'http://' + environment.seedNodeHost + '/v1/delegates';
+        return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}});
     }
 }
 

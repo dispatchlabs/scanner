@@ -22,7 +22,7 @@
     </div>
 
     <div class="container" *ngIf="!loading">
-        <div fxLayout="column" fxLayout.gt-sm="row" ngClass.gt-sm="two-column-container">
+        <div fxLayout="column" fxLayout.gt-sm="row" ngClass.gt-sm="two-column-container" class="bg-dark p20">
             <div fxFlex.gt-sm="25" class="fade-in-up">
                 <div class="list-header" fxLayout="column">
                     <div fxFlex>
@@ -41,7 +41,7 @@
                                 <li>{{delegate.endpoint.port}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="selectedDelegate?.address === delegate.address">
+                        <div *ngIf="config.selectedDelegate?.address === delegate.address">
                             <i class="fa fa-check-circle"></i>
                         </div>
                     </div>
@@ -54,14 +54,14 @@
                         <h3><i class="fal fa-list-ul fa-fw"></i> Transactions</h3>
                     </div>
                     <div fxFlex>
-                        <i class="fal fa-cube fa-fw"></i> <span *ngIf="selectedDelegate">{{selectedDelegate.address}}</span>
+                        <i class="fal fa-cube fa-fw"></i> <span *ngIf="config.selectedDelegate">{{config.selectedDelegate.address}}</span>
                     </div>
                 </div>
                 <div class="list-body">
-                    <div *ngIf="selectedDelegate; else noActiveDelegateTemplate">
+                    <div *ngIf="config.selectedDelegate; else noActiveDelegateTemplate">
                         <div class="search">
                             <div fxLayout="row">
-                                <div fxFlex class="reative">
+                                <div fxFlex class="relative">
                                     <mat-form-field >
                                         <input [(ngModel)]="search" matInput placeholder="Enter Address" (keydown)="KeyHelper.onHexKeyDown($event, 40)">
                                     </mat-form-field>
@@ -89,6 +89,14 @@
                             <ng-container cdkColumnDef="time">
                                 <mat-header-cell *cdkHeaderCellDef class="right"> Time</mat-header-cell>
                                 <mat-cell *cdkCellDef="let row" class="right"> {{row.time | m2SimpleDateTime}}</mat-cell>
+                            </ng-container>
+
+                            <!-- Type -->
+                            <ng-container cdkColumnDef="type">
+                                <mat-header-cell *cdkHeaderCellDef class="right"> Type</mat-header-cell>
+                                <mat-cell *cdkCellDef="let row" class="right">
+                                    {{row.type}}
+                                </mat-cell>
                             </ng-container>
 
                             <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>

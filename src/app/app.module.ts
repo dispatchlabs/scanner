@@ -50,15 +50,18 @@ import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialo
 import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import {SmartContractPageComponent} from './pages/smart-contract/smart-contract-page.component';
+import {HomePageComponent} from './pages/home/home-page.component';
+import {AceEditorModule} from 'ng2-ace-editor';
+import {AccountDialogComponent} from './dialogs/account/account-dialog.component';
+import {WalletPageComponent} from './pages/wallet/wallet-page.component';
 
 /**
  *
  */
 export const routes: Routes = [
-    {
-        path: '',
-        loadChildren: './pages/home/home.module#HomeModule'
-    },
+    {path: '', pathMatch: 'full', component: HomePageComponent},
+    {path: 'smart-contract', component: SmartContractPageComponent},
     {path: 'meta', component: MetaPageComponent, pathMatch: 'full'},
     {path: 'blog', component: BlogListPageComponent, pathMatch: 'full'},
     {
@@ -70,6 +73,7 @@ export const routes: Routes = [
         path: 'news/:slug',
         loadChildren: './pages/news/news.module#NewsModule'
     },
+    {path: 'wallet', component: WalletPageComponent},
     {path: '**', component: NotFoundPageComponent}
 ];
 
@@ -113,15 +117,19 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // App
         AppComponent,
         // Pages
+        HomePageComponent,
         NotFoundPageComponent,
         BlogListPageComponent,
         MetaPageComponent,
         NewsListPageComponent,
+        SmartContractPageComponent,
+        WalletPageComponent,
         // Components
         // Dialogs
         SignInDialogComponent,
         SendTokensDialogComponent,
-        TransactionDialogComponent
+        TransactionDialogComponent,
+        AccountDialogComponent
     ],
     imports: [
         // Angular
@@ -167,12 +175,14 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         // Other.
         CdkTableModule,
         FileUploadModule,
-        AngularFontAwesomeModule
+        AngularFontAwesomeModule,
+        AceEditorModule,
     ],
     entryComponents: [
         SignInDialogComponent,
         SendTokensDialogComponent,
         TransactionDialogComponent,
+        AccountDialogComponent
     ],
     providers: [{provide: 'AppService', useClass: AppService}],
     bootstrap: [AppComponent]

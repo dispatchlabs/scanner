@@ -17,5 +17,5 @@ export const environment = {
     stripePublishableKey: 'pk_test_2ub2SvNkrXpT9u2gKNoUYr1R',
     googleApiKey: 'AIzaSyA8KexBx7KwxEUikqfvUg0T4GTAmjIZcaI',
     plaidPublicKey: '817f602baf5a09feeb8f67f38ef94e',
-    plaidEnv: 'sandbox'
+    seedNodeHost: 'seed.dispatchlabs.io:1975'
 };

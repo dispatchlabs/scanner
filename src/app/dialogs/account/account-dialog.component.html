@@ -3,7 +3,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
 
-    <h1 class="section-number">Send Tokens</h1>
+    <h1 class="section-number">Account</h1>
 </div>
 
 <mat-dialog-content>
@@ -14,18 +14,12 @@
         <mat-form-field>
             <input matInput formControlName="address" placeholder="Address">
         </mat-form-field>
-        <mat-form-field>
-            <input matInput formControlName="to" placeholder="To Address">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput formControlName="tokens" placeholder="Tokens" (keydown)="KeyHelper.onNumericKeyDown($event, 9)">
-        </mat-form-field>
         <div fxFlex>
             <a (click)="generatePrivateKeyAndAddress()"><i class="fa fa-plus-circle"></i> Generate New Private Key and Address</a>
         </div>
 
         <div class="mt30">
-            <m2-button [disabled]="!formGroup.valid || spinner" [spinner]="spinner" (click)="send()" text="Send Tokens"></m2-button>
+            <m2-button (click)="save()" text="Save and Deploy"></m2-button>
         </div>
     </div>
 </mat-dialog-content>

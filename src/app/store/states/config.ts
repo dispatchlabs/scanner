@@ -9,7 +9,7 @@ export interface Config {
     /**
      * Interface level-declarations.
      */
-    seedNodeIp: string;
     delegates: Node[];
+    selectedDelegate: Node;
     account: Account;
 }

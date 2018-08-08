@@ -6,8 +6,8 @@ export const environment = {
     m2AppVersion: 'x.x',
     m2Url: 'https://www.mcgregor.io:9500',
     m2SessionTimeToLive: 20,
-    m2SpinnerUrl: null,
-    m2SpinnerWidth: 40,
+    m2SpinnerUrl: 'assets/images/wheel-white.svg',
+    m2SpinnerWidth: 30,
     m2ButtonMinWidth: '180px',
     m2WebsiteUrl: 'http://outside.mcgegor.io',
     m2WebProxyPort: 3001,
@@ -18,5 +18,5 @@ export const environment = {
     googleApiKey: 'AIzaSyA8KexBx7KwxEUikqfvUg0T4GTAmjIZcaI',
     plaidPublicKey: '817f602baf5a09feeb8f67f38ef94e',
     plaidEnv: 'sandbox',
-    seedNodeIp: ''
+    seedNodeHost: 'seed.dispatchlabs.io:1975'
 };
