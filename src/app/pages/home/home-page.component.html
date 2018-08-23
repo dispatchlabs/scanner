@@ -36,8 +36,8 @@
                     <div fxLayout="row" *ngFor="let delegate of config?.delegates" class="list-item" (click)="select(delegate)">
                         <div fxFlex>
                             <ul class="none">
-                                <li>{{delegate.endpoint.host}}</li>
-                                <li>{{delegate.endpoint.port}}</li>
+                                <li>{{delegate.httpEndpoint.host}}</li>
+                                <li>{{delegate.httpEndpoint.port}}</li>
                             </ul>
                         </div>
                         <div *ngIf="config.selectedDelegate?.address === delegate.address">
