@@ -30,7 +30,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
     public configState: Observable<Config>;
     public config: Config;
     public configSubscription: any;
-    private id: any;
+    private hash: string;
     public KeyHelper = KeyHelper;
 
     /**
@@ -48,7 +48,6 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         });
         this.formGroup = formBuilder.group({
             privateKey: new FormControl(this.config.account == null ? '' : this.config.account.privateKey, Validators.compose([Validators.required, Validators.minLength(64)])),
-            address: new FormControl(this.config.account == null ? '' : this.config.account.address, Validators.compose([Validators.required, Validators.minLength(40)])),
             to: new FormControl('', Validators.compose([Validators.required, Validators.minLength(40)])),
             tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
         });
@@ -81,16 +80,16 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         this.appService.confirm('<p>Are you sure you want to send <b>' + this.formGroup.get('tokens').value + '</b> tokens to:</p> ' + this.formGroup.get('to').value + '?', () => {
             const transaction: Transaction = {
                 type: TransactionType.TransferTokens,
-                from: this.formGroup.get('address').value,
+                from: this.appService.getAddressFromPrivateKey(this.formGroup.get('privateKey').value),
                 to: this.formGroup.get('to').value,
                 value: parseInt(this.formGroup.get('tokens').value, 10)
             } as any;
 
             this.appService.hashAndSign(this.formGroup.get('privateKey').value, transaction);
             this.spinner = true;
-            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/transactions';
+            const url = 'http://' + this.config.selectedDelegate.httpEndpoint.host + ':' + this.config.selectedDelegate.httpEndpoint.port + '/v1/transactions';
             this.httpClient.post(url, JSON.stringify(transaction), {headers: {'Content-Type': 'application/json'}}).subscribe ((response: any) => {
-                this.id = response.id;
+                this.hash = transaction.hash;
                 this.getStatus();
             });
         });
@@ -101,7 +100,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
      */
     private getStatus(): void {
         setTimeout(() => {
-            const url = 'http://' + this.config.selectedDelegate.endpoint.host + ':1975/v1/statuses/' + this.id;
+            const url = 'http://' + this.config.selectedDelegate.httpEndpoint.host + ':' + this.config.selectedDelegate.httpEndpoint.port + '/v1/receipts/' + this.hash;
             return this.httpClient.get(url, {headers: {'Content-Type': 'application/json'}}).subscribe( (response: any) => {
                 if (response.status === 'Pending') {
                     this.getStatus();
