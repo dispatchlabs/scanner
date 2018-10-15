@@ -68,6 +68,23 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": false
+            },
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false
             }
           }
         },
@@ -82,6 +99,9 @@
             },
             "stage": {
               "browserTarget": "scandis:build:stage"
+            },
+            "local": {
+              "browserTarget": "scandis:build:local"
             }
           }
         },
