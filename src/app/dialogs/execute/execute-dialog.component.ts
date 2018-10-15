@@ -164,7 +164,7 @@ export class ExecuteDialogComponent implements OnInit, OnDestroy {
                     this.getStatus();
                     return;
                 }
-                this.deploying = false;
+                this.spinner = false;
                 this.appService.success('Smart contract executed.');
                 this.appService.appEvents.emit({type: APP_REFRESH});
             });
