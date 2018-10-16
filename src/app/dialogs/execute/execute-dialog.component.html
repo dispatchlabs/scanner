@@ -1,0 +1,33 @@
+<div class="dialog-header">
+    <button type="button" class="close" (click)="close()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h1 class="section-number">Execute Smart Contract</h1>
+</div>
+
+<mat-dialog-content>
+    <div [formGroup]="formGroup" fxLayout="column">
+        <mat-form-field>
+            <input matInput formControlName="privateKey" placeholder="Private Key">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select formControlName="method" placeholder="Method" class="mat-primary">
+                <mat-option *ngFor="let method of methods; let i=index" [value]="i">{{method.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div formArrayName="params">
+            <div *ngFor="let address of params.controls; let i=index;">
+                <mat-form-field *ngIf="paramsList[i].formType != 'checkbox'">
+                    <input matInput [type]="paramsList[i].formType" [formControlName]="i" [placeholder]="paramsList[i].name">
+                </mat-form-field>
+                <form-field>
+                    <mat-checkbox *ngIf="paramsList[i].formType == 'checkbox'" [formControlName]="i">{{paramsList[i].name}}</mat-checkbox>
+                </form-field>
+            </div>
+        </div>
+        <div class="mt30">
+            <m2-button [disabled]="!formGroup.valid || spinner" [spinner]="spinner" (click)="send()" text="Execute Contract"></m2-button>
+        </div>
+    </div>
+</mat-dialog-content>
