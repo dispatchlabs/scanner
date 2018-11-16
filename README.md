@@ -1,7 +1,7 @@
 ![alt dispatch](https://dispatchlabs.io/wp-content/themes/ccprototypev5/images/dispatchlabs-logo.png)
 
 # Scandis
-Scandis allows you to search for individual delegate nodes and see their information and transaction history, transfer tokens, and submit smart contracts.
+Scandis allows you to search for individual delegate nodes and see their information and transaction history, transfer licenses, and submit smart contracts.
 
 ## Prerequisites
 Scandis requires the following components to be installed:
