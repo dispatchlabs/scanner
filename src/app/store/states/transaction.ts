@@ -18,7 +18,7 @@ export interface Transaction {
     params: any;
     time: number;
     signature: string;
-    hertz: number;
+    hertz: string;
     receipt: any;
     // Transients.
     fromName: string;
