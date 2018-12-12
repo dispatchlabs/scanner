@@ -33,6 +33,7 @@
     "angular-font-awesome": "^3.1.2",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
+    "cryptiles": ">=4.1.2",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "keccak": "^1.4.0",
@@ -46,6 +47,7 @@
     "rxjs-compat": "^6.2.2",
     "secp256k1": "^3.5.0",
     "stream": "0.0.2",
+    "tslint": "^5.9.1",
     "web-animations-js": "^2.3.1",
     "winston": "^3.0.0",
     "zone.js": "^0.8.26"
