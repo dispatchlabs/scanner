@@ -1,4 +1,5 @@
-![alt dispatch](https://www.dispatchlabs.io/wp-content/uploads/2018/12/Dispatch_Logo.png)
+<img src="https://www.dispatchlabs.io/wp-content/uploads/2018/12/Dispatch_Logo.png" alt="drawing" width="200"/>
+
 
 # Scanner
 The Dispatch network scanner enables you to visually see the transaction history, transfer tokens, and deploy and execute  smart contracts.
