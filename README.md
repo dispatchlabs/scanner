@@ -1,10 +1,11 @@
-![alt dispatch](https://dispatchlabs.io/wp-content/themes/ccprototypev5/images/dispatchlabs-logo.png)
+<img src="https://www.dispatchlabs.io/wp-content/uploads/2018/12/Dispatch_Logo.png" alt="drawing" width="200"/>
 
-# Scandis
-Scandis allows you to search for individual delegate nodes and see their information and transaction history, transfer tokens, and submit smart contracts.
+
+# Scanner
+The Dispatch network scanner enables you to visually see the transaction history, transfer tokens, and deploy and execute  smart contracts.
 
 ## Prerequisites
-Scandis requires the following components to be installed:
+Scanner requires the following components to be installed:
 - Node `brew install node` 
 - Angular CLI (optional)  `npm install -g @angular/cli`
 
@@ -13,8 +14,8 @@ Scandis requires the following components to be installed:
 *More information on installing [angular-cli](https://github.com/angular/angular-cli)* ![](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_launch_black_18px.svg)
 
 # ![](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_directions_run_black_24px.svg) Setup and Run
-- `git clone https://github.com/dispatchlabs/web-wallet.git`<br>
-- `cd web-wallet`<br>
+- `git clone https://github.com/dispatchlabs/scanner.git`<br>
+- `cd scanner`<br>
 - `npm i`<br>
 - `node patch.js`<br>
 - `ng serve`<br>
