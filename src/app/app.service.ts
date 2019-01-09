@@ -272,7 +272,7 @@ export class AppService extends M2Service implements OnDestroy {
         const from = Buffer.from(transaction.from, 'hex');
         const to = Buffer.from(transaction.to, 'hex');
         const value = this.stringToBuffer(transaction.value);
-        const params = this.stringToBuffer(transaction.params);
+        const params = this.stringToBuffer(transaction.params || '');
         const time = this.numberToBuffer(transaction.time);
         const code = Buffer.from(transaction.code || '', 'hex');
 
