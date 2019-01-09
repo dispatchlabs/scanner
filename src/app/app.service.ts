@@ -272,21 +272,21 @@ export class AppService extends M2Service implements OnDestroy {
         const from = Buffer.from(transaction.from, 'hex');
         const to = Buffer.from(transaction.to, 'hex');
         const value = this.stringToBuffer(transaction.value);
+        const params = this.stringToBuffer(transaction.params);
         const time = this.numberToBuffer(transaction.time);
-        const abi = this.stringToBuffer(transaction.abi || '');
-        
+        const code = Buffer.from(transaction.code || '', 'hex');
+
         // Type?
         switch (transaction.type) {
             case TransactionType.TransferTokens:
                 hash = keccak('keccak256').update(Buffer.concat([Buffer.from('00', 'hex'), from, to, value, time])).digest();
                 break;
             case TransactionType.DeploySmartContract:
-                const code = Buffer.from(transaction.code, 'hex');
                 hash = keccak('keccak256').update(Buffer.concat([Buffer.from('01', 'hex'), from, to, value, code, time])).digest();
                 break;
             case TransactionType.ExecuteSmartContract:
                 const method = this.stringToBuffer(transaction.method);
-                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('02', 'hex'), from, to, value, method, time])).digest();
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('02', 'hex'), from, to, value, code, method, params, time])).digest();
                 break;
         }
         transaction.hash = hash.toString('hex');

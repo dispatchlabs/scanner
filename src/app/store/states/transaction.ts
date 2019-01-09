@@ -15,7 +15,7 @@ export interface Transaction {
     code: string;
     abi: string;
     method: string;
-    params: any;
+    params: string;
     time: number;
     signature: string;
     hertz: string;

@@ -137,8 +137,8 @@ export class ExecuteDialogComponent implements OnInit, OnDestroy {
                 from: this.appService.getAddressFromPrivateKey(this.formGroup.get('privateKey').value),
                 to: this.transaction.receipt.contractAddress,
                 method: this.methods[this.formGroup.get('method').value].name,
-                params: params,
-                value: '0'
+                value: '0',
+                params: JSON.stringify(params),
             } as any;
             this.appService.hashAndSign(this.formGroup.get('privateKey').value, transaction);
             this.spinner = true;
