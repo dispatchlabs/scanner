@@ -49,7 +49,7 @@ export class SendTokensDialogComponent implements OnInit, OnDestroy {
         this.formGroup = formBuilder.group({
             privateKey: new FormControl(this.config.account == null ? '' : this.config.account.privateKey, Validators.compose([Validators.required, Validators.minLength(64)])),
             to: new FormControl('', Validators.compose([Validators.required, Validators.minLength(40)])),
-            tokens: new FormControl(45, Validators.compose([Validators.required, Validators.min(1)])),
+            tokens: new FormControl(4500000000, Validators.compose([Validators.required, Validators.min(1)])),
         });
     }
 
