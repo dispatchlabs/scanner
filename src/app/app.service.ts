@@ -290,7 +290,6 @@ export class AppService extends M2Service implements OnDestroy {
         const from = Buffer.from(transaction.from, 'hex');
         const to = Buffer.from(transaction.to, 'hex');
         const value = this.stringToBuffer(transaction.value);
-        const params = this.stringToBuffer(transaction.params || '');
         const time = this.numberToBuffer(transaction.time);
 
         // Type?
@@ -299,6 +298,7 @@ export class AppService extends M2Service implements OnDestroy {
                 hash = keccak('keccak256').update(Buffer.concat([Buffer.from('00', 'hex'), from, to, value, time])).digest();
                 break;
             case TransactionType.DeploySmartContract:
+                const code = Buffer.from(transaction.code, 'hex');
                 hash = keccak('keccak256').update(Buffer.concat([Buffer.from('01', 'hex'), from, to, value, code, time])).digest();
                 break;
             case TransactionType.ExecuteSmartContract:
@@ -318,6 +318,7 @@ export class AppService extends M2Service implements OnDestroy {
         signatureBytes[64] = signature.recovery;
         transaction.signature = new Buffer(signatureBytes).toString('hex');
     }
+
 
     /**
      *
