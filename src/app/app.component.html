@@ -10,6 +10,7 @@
                 <i class="far fa-bars"></i>
             </div>
             <mat-menu #appMenu="matMenu">
+                <button mat-menu-item (click)="appService.openCreateAccount()">Create Account</button>
                 <button mat-menu-item (click)="appService.openSendTokens()">Send Tokens</button>
                 <button mat-menu-item (click)="appService.navigateToSmartContract()">Deploy Smart Contract</button>
             </mat-menu>
@@ -23,7 +24,7 @@
     <footer>
         <div fxLayout="row" fxLayoutAlign="start center">
             <div fxFlex>
-                <h1>Rule The Blockchain</h1>
+                <h1>DLT Like it Oughta Be</h1>
             </div>
             <div>
                 &copy; 2018 Dispatch Labs

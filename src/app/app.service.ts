@@ -6,6 +6,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from './app.state';
 import {APP_SERVER_DOWN_FOR_MAINTENANCE, APP_SIGN_OUT, M2Service} from './m2-angular/services/m2.service';
 import {SendTokensDialogComponent} from './dialogs/send-tokens/send-tokens-dialog.component';
+import {CreateAccountDialogComponent} from './dialogs/create-account/create-account-dialog.component';
 import {TransactionDialogComponent} from './dialogs/transaction/transaction-dialog.component';
 import {ExecuteDialogComponent} from './dialogs/execute/execute-dialog.component';
 import {Transaction} from './store/states/transaction';
@@ -131,6 +132,23 @@ export class AppService extends M2Service implements OnDestroy {
      */
     public openSendTokens(): any {
         return this.mdDialogRef = this.mdDialog.open(SendTokensDialogComponent, {
+            width: '600px',
+            height: '',
+            position: {
+                top: '16px',
+                bottom: '',
+                left: '',
+                right: ''
+            },
+        });
+    }
+
+    /**
+     *
+     * @returns {MatDialogRef<CreateAccountDialogComponent>}
+     */
+    public openCreateAccount(): any {
+        return this.mdDialogRef = this.mdDialog.open(CreateAccountDialogComponent, {
             width: '600px',
             height: '',
             position: {
@@ -273,8 +291,7 @@ export class AppService extends M2Service implements OnDestroy {
         const to = Buffer.from(transaction.to, 'hex');
         const value = this.stringToBuffer(transaction.value);
         const time = this.numberToBuffer(transaction.time);
-        const abi = this.stringToBuffer(transaction.abi || '');
-        
+
         // Type?
         switch (transaction.type) {
             case TransactionType.TransferTokens:
@@ -285,8 +302,9 @@ export class AppService extends M2Service implements OnDestroy {
                 hash = keccak('keccak256').update(Buffer.concat([Buffer.from('01', 'hex'), from, to, value, code, time])).digest();
                 break;
             case TransactionType.ExecuteSmartContract:
+                const params = this.stringToBuffer(transaction.params);
                 const method = this.stringToBuffer(transaction.method);
-                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('02', 'hex'), from, to, value, method, time])).digest();
+                hash = keccak('keccak256').update(Buffer.concat([Buffer.from('02', 'hex'), from, to, value, method, params, time])).digest();
                 break;
         }
         transaction.hash = hash.toString('hex');
@@ -300,6 +318,7 @@ export class AppService extends M2Service implements OnDestroy {
         signatureBytes[64] = signature.recovery;
         transaction.signature = new Buffer(signatureBytes).toString('hex');
     }
+
 
     /**
      *

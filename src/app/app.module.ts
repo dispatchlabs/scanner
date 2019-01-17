@@ -52,6 +52,7 @@ import {SmartContractDeployComponent} from './pages/smart-contract/smart-contrac
 import {HomePageComponent} from './pages/home/home-page.component';
 import {AceEditorModule} from 'ng2-ace-editor';
 import {AccountDialogComponent} from './dialogs/account/account-dialog.component';
+import {CreateAccountDialogComponent} from './dialogs/create-account/create-account-dialog.component';
 import {WalletPageComponent} from './pages/wallet/wallet-page.component';
 
 import {ScrollContainerComponent} from './scroll-container/scroll-container.component';
@@ -118,6 +119,7 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         TransactionDialogComponent,
         ExecuteDialogComponent,
         AccountDialogComponent,
+        CreateAccountDialogComponent,
         ScrollContainerComponent
     ],
     imports: [
@@ -171,7 +173,8 @@ const metaReducers: MetaReducer<AppState>[] = [localStorageReducer];
         SendTokensDialogComponent,
         TransactionDialogComponent,
         ExecuteDialogComponent,
-        AccountDialogComponent
+        AccountDialogComponent,
+        CreateAccountDialogComponent
     ],
     providers: [{provide: 'AppService', useClass: AppService}],
     bootstrap: [AppComponent]
